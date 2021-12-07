@@ -28,6 +28,10 @@ const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP ||  'https://hasura.io/lea
 // 'http://localhost:3000/graphql'
 // 
 
+export const filesRoot = process.env.VUE_APP_FILES_ROOT || httpEndpoint.substr(0, httpEndpoint.indexOf('/graphql'))
+
+Vue.prototype.$filesRoot = filesRoot
+
 // Config
 const defaultOptions = {
   httpEndpoint,
@@ -76,7 +80,7 @@ export function createProvider (options = {}) {
     defaultClient: apolloClient,
     defaultOptions: {
       $query: {
-        // fetchPolicy: 'cache-and-network',
+        fetchPolicy: 'no-cache',
       },
     },
     errorHandler (error) {
