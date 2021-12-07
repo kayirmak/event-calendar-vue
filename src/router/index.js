@@ -40,7 +40,18 @@ const routes = [
     props: true,
     name: 'EventDetails',
     component: EventDetails
-  }
+  },
+  {
+    path: '/feed',
+    name: 'feed',
+    component: () => import('../views/Feed')
+  },
+  {
+    path: '/card-location/:id',
+    name: 'card-location',
+    props: true,
+    component: () => import('../views/CardLocation')
+  },
 ]
 
 const router = new VueRouter({
