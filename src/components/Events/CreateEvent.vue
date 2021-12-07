@@ -7,12 +7,12 @@
     </router-link>
     </div>
     <div class="ml-5">
-    <h3 class="mt-2">Create new event</h3>
+    <h3 class="mt-2">Создать новое мероприятие</h3>
     </div>
     <div>
         <router-link :to="{name: 'EventsList'}">
         <b-button class="mr-2" variant="success">
-            List off all events
+            Список всех мероприятий
         </b-button>
         </router-link>
     </div>
@@ -23,30 +23,30 @@
     <b-form class="form-block bg-light rounded p-4" @submit="addEventBtn">
       <b-form-group
         id="input-group-1"
-        label="Event title:"
+        label="Название мероприятия:"
         label-for="input-1"
       >
         <b-form-input
             id="input-1"
             type="text"
-            placeholder="Please, enter your event title..."
+            placeholder="Введите название вашего мероприятия"
             v-model="eventData.name"
             required
         ></b-form-input>
         <b-form-textarea
             id="textarea"
             v-model="eventData.description"
-            placeholder="Enter description for your event..."
+            placeholder="Введите описание вашего мероприятия"
             rows="3"
             max-rows="6"
             class="mt-3"
             required
         ></b-form-textarea>
-        <label class="mt-2" for="datepicker">Choose a date:</label>
-        <b-form-datepicker locale="en-US" required id="datepicker" v-model="eventData.day" class="mb-2"></b-form-datepicker>
+        <label class="mt-2" for="datepicker">Выберите дату проведения:</label>
+        <b-form-datepicker required id="datepicker" v-model="eventData.day" class="mb-2"></b-form-datepicker>
         </b-form-group>
-        <b-button type="submit" variant="success" class="mr-2">Add event</b-button>
-        <b-button type="reset" variant="danger">Reset</b-button>
+        <b-button type="submit" variant="success" class="mr-2">Добавить мероприятия</b-button>
+        <b-button type="reset" variant="danger">Очистить все</b-button>
     </b-form>
     </BContainer>
 </div>

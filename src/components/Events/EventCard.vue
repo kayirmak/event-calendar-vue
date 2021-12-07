@@ -6,10 +6,10 @@
         class="mb-2 mt-3 ml-1"
     >
         <b-card-text>
-            Location : Test location
+            Локация : Test location
         </b-card-text>
             <b-button @click="toEventDetails" variant="primary">
-                Event Details
+                Детали мероприятия
             </b-button>
     </b-card>
 </template>

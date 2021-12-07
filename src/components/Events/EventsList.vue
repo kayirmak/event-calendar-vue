@@ -7,14 +7,14 @@
         </router-link>
       </div>
       <div>
-          <h3 class="mt-2">All Events</h3>
+          <h3 class="mt-2">Список всех мероприятий</h3>
       </div>
       <div></div>
       </div>
       <div>
           <div class="d-flex justify-content-start align-items-center mt-3 mb-5 ml-2">
               <div class="date-block mr-2">
-                <label for="datepicker1">Start Date (YY/MM/DD)</label>
+                <label for="datepicker1">Начало даты (ГГ/MM/ДД)</label>
                     <b-form-datepicker
                     id="datepicker1"
                     class="mb-2"
@@ -23,7 +23,7 @@
                     ></b-form-datepicker>
               </div>
               <div class="date-block">
-                <label for="datepicker2">End Date (YY/MM/DD)</label>
+                <label for="datepicker2">Конец даты (ГГ/MM/ДД)</label>
                     <b-form-datepicker
                     id="datepicker2"
                     class="mb-2"
@@ -32,13 +32,13 @@
                     ></b-form-datepicker>
               </div>
               <div class="ml-3">
-                 <b-button @click="filterDateBtn" variant="primary">Search</b-button>
+                 <b-button @click="filterDateBtn" variant="primary">Искать</b-button>
               </div>
           </div>
         <div class="d-flex justify-content-end mr-2">
                 <router-link :to="{name: 'CreateEvent'}">
             <b-button class="ml-2" variant="success">
-                Create new event
+                Создать новое мероприятие
             </b-button>
                 </router-link>
         </div>

@@ -9,12 +9,12 @@
       <b-navbar-nav>
         <b-nav-item>
         <router-link :to="{name: 'EventsList'}">
-            Events List
+            Список мероприятий
         </router-link>
         </b-nav-item>
         <b-nav-item>
         <router-link :to="{name: 'CreateEvent'}">
-            Create Event
+            Создать мероприятие
         </router-link>
         </b-nav-item>
       </b-navbar-nav>
@@ -29,11 +29,11 @@
             <!-- <em>User</em> -->
           </template>
             <b-dropdown-item href="#">
-              Profile
+              Профиль
             </b-dropdown-item>
             <b-dropdown-item href="#">
                 <router-link :to="{name: 'Login'}">
-                    Sign Out
+                    Выйти
                 </router-link>
             </b-dropdown-item>
         </b-nav-item-dropdown>

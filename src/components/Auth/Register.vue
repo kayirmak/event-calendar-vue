@@ -5,17 +5,17 @@
 		style="height: 100vh"
 	>
 		<b-form class="bg-light p-5 rounded" @submit.prevent="registerForm">
-			<h5 class="d-flex justify-content-center">Sign Up</h5>
+			<h5 class="d-flex justify-content-center">Регистрация</h5>
 			<b-form-group 
             id="input-group-1"
-            label="Email:"
+            label="Email адрес:"
             label-for="input-1"
       >
 				<b-form-input
                     id="input-1"
 					v-model="user.email"
 					type="text"
-					placeholder="Enter email"
+					placeholder="Введите почту"
                     autocomplete="off"
 					required
 				>
@@ -24,14 +24,14 @@
 
 			<b-form-group
         id="input-group-2"
-        label="Name:"
+        label="Имя:"
         label-for="input-2"
       >
 				<b-form-input
 					id="input-2"
 					v-model="user.name"
 					type="text"
-					placeholder="Enter name"
+					placeholder="Введите ваше имя"
 					required
 				>
 				</b-form-input>
@@ -39,25 +39,25 @@
 
 			<b-form-group
 				id="input-group-3"
-				label="Your Password:"
+				label="Пароль:"
 				label-for="input-3"
 			>
 				<b-form-input
 					id="input-3"
 					v-model="user.password"
 					type="password"
-					placeholder="Enter password"
+					placeholder="Введите ваш пароль"
 					required
 				>
           </b-form-input>
 			</b-form-group>
             <p class="errors" v-if="error">{{error}}</p>
             <p class="paths">
-                Already have an account? 
-                <router-link :to="{name: 'Login'}"> Login</router-link>
+                Уже зарегистрированы? 
+                <router-link :to="{name: 'Login'}"> Войти</router-link>
             </p>
 			<div class="d-flex justify-content-center align-items-center">
-			<b-button type="submit" variant="primary">Register</b-button>
+			<b-button type="submit" variant="primary">Зарегистрироваться</b-button>
       </div>
 		</b-form>
 	</BContainer>

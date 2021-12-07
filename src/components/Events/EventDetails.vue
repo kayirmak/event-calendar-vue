@@ -10,11 +10,11 @@
             </router-link>
           </div>
           <div class="mt-3">
-            <h5>Event Details</h5>
+            <h5>Детали мероприятия</h5>
           </div>
           <div class="mt-3">
-              <b-button variant="primary" @click="deleteEventBtn">Delete Event</b-button>
-              <b-button class="ml-3" variant="primary" @click="editEventBtn">Edit Event</b-button>
+              <b-button variant="primary" @click="deleteEventBtn">Удалить мероприятие</b-button>
+              <b-button class="ml-3" variant="primary" @click="editEventBtn">Редактировать мероприятие</b-button>
           </div>
       </div>
         <div class="d-flex justify-content-around align-items-center">
@@ -31,7 +31,7 @@
                         <b-icon icon="geo-alt-fill"></b-icon>
                     </div>
                     <div class="ml-3 d-flex flex-column align-items-center">
-                        <h5>Location</h5>
+                        <h5>Локация</h5>
                         <h6>Test Location</h6>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                         <b-icon icon="person-circle"></b-icon>
                     </div>
                     <div class="ml-3 d-flex flex-column align-items-center">
-                        <h5>Organizer</h5>
+                        <h5>Организатор</h5>
                         <h6>test@mail.ru</h6>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                         <b-icon icon="calendar"></b-icon>
                     </div>
                     <div class="ml-3 d-flex flex-column align-items-center">
-                        <h5>Date</h5>
+                        <h5>Дата проведения</h5>
                         <h6>{{EVENT_DETAILS.day}}</h6>
                     </div>
                 </div>
@@ -57,26 +57,26 @@
             <div></div>
         </div>
         <b-modal id="modalEdit" ref="modalEdit">
-            <p class="mt-2 mb-1">New event title: </p>
+            <p class="mt-2 mb-1">Новый заголовок мероприятия: </p>
             <b-form-input v-model="EVENT_DETAILS.name"></b-form-input>
-            <p class="mt-2 mb-1">New event description: </p>
+            <p class="mt-2 mb-1">Новое описание мероприятия: </p>
             <b-form-textarea
                 id="textarea"
-                placeholder="Enter something..."
+                placeholder="Описание"
                 rows="3"
                 max-rows="6"
             ></b-form-textarea>
             <template slot="modal-footer">
-                    <b-button variant="primary" class="mr-1" @click="addNewEditedEvent">Save</b-button>
-                    <b-button variant="secondary" @click="$bvModal.hide('modalEdit')">Cancel</b-button>
+                    <b-button variant="primary" class="mr-1" @click="addNewEditedEvent">Сохранить изменения</b-button>
+                    <b-button variant="secondary" @click="$bvModal.hide('modalEdit')">Выйти</b-button>
             </template>
         </b-modal>
-        <b-modal id="modalDelete" ref="modalDelete" centered title="Delete this event?">
-            Please confirm that you would like to delete this event 
+        <b-modal id="modalDelete" ref="modalDelete" centered title="Удалить мероприятие?">
+            Вы уверены, что хотите удалить это мероприятие
             <b>"{{EVENT_DETAILS.name}}"</b> ?
                 <template slot="modal-footer">
-                <b-button variant="primary" @click="deleteEventFromModal()" class="mr-1">Delete event</b-button>
-                <b-button variant="secondary" @click="$bvModal.hide('modalDelete')">Cancel</b-button>
+                <b-button variant="primary" @click="deleteEventFromModal()" class="mr-1">Удалить мероприятие</b-button>
+                <b-button variant="secondary" @click="$bvModal.hide('modalDelete')">Выйти</b-button>
             </template>
         </b-modal>
   </div>
