@@ -7,8 +7,25 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'home',
+    component: Home,
+    redirect: '/auth'
+  },
+  {
+    path: '/auth',
+    name: 'auth',
+    component: () => import('../components/Auth')
+  },
+  {
+    path: '/feed',
+    name: 'feed',
+    component: () => import('../views/Feed')
+  },
+  {
+    path: '/card-location/:id',
+    name: 'card-location',
+    props: true,
+    component: () => import('../views/CardLocation')
   },
   {
     path: '/about',
