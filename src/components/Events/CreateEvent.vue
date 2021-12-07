@@ -62,7 +62,8 @@ export default {
             eventData: {
                 name: '',
                 day: '',
-                description: ''
+                description: '',
+                location: ''
             },
         }
     },
