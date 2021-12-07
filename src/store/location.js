@@ -73,7 +73,7 @@ const actions = {
         }).then(({data}) => {
             commit("ACTION_LOCATION_SUCCESS")
             const dataLocations = data.insert_todos.returning[0].user.todos
-            commit("ALL_LOCATIONS", dataLocations)
+            commit("ALL_LOCATIONS_SUCCESS", dataLocations)
         })
         
     },
