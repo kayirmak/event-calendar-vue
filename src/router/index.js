@@ -1,20 +1,45 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Home from '../views/Home.vue';
+import CreateEvent from '../components/Events/CreateEvent.vue';
+import Login from '../components/Auth/Login.vue';
+import Register from '../components/Auth/Register.vue';
+import EventsList from '../components/Events/EventsList.vue';
+import EventDetails from '../components/Events/EventDetails.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home,
-    redirect: '/auth'
+    name: 'Home',
+    component: Home
   },
   {
-    path: '/auth',
-    name: 'auth',
-    component: () => import('../components/Auth')
+    path: '/create-event',
+    name: 'CreateEvent',
+    component: CreateEvent
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/events-list',
+    name: 'EventsList',
+    component: EventsList
+  },
+  {
+    path: '/event-details/:id?',
+    props: true,
+    name: 'EventDetails',
+    component: EventDetails
   },
   {
     path: '/locations',
@@ -26,7 +51,7 @@ const routes = [
     name: 'card-location',
     props: true,
     component: () => import('../views/CardLocation')
-  }
+  },
 ]
 
 const router = new VueRouter({

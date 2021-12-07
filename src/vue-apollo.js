@@ -6,37 +6,41 @@ import { createApolloClient, restartWebsockets } from 'vue-cli-plugin-apollo/gra
 Vue.use(VueApollo)
 
 // Name of the localStorage item
-export const AUTH_TOKEN = 'apollo-token'
+const AUTH_TOKEN = 'apollo-token'
+// import {
+//   setContext
+// } from 'apollo-link-context'
+
+// const authLink = setContext(async (_, {
+//   headers
+// }) => {
+//   const token = localStorage.getItem('apollo-token')
+//   return {
+//     headers: {
+//       ...headers,
+//       Authorization: token || ''
+//     }
+//   }
+// })
 
 // Http endpoint
-const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || 'https://hasura.io/learn/graphql'
-// Files URL root
-export const filesRoot = process.env.VUE_APP_FILES_ROOT || httpEndpoint.substr(0, httpEndpoint.indexOf('/graphql'))
-
-Vue.prototype.$filesRoot = filesRoot
+const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP ||  'https://hasura.io/learn/graphql/graphiql'
+// 'http://localhost:3000/graphql'
+// 
 
 // Config
 const defaultOptions = {
-  // You can use `https` for secure connection (recommended in production)
   httpEndpoint,
-  // You can use `wss` for secure connection (recommended in production)
-  // Use `null` to disable subscriptions
-  // wsEndpoint: process.env.VUE_APP_GRAPHQL_WS || 'ws://localhost:4000/graphql',
   wsEndpoint: null,
-  // LocalStorage token
   tokenName: AUTH_TOKEN,
-  // Enable Automatic Query persisting with Apollo Engine
   persisting: false,
-  // Use websockets for everything (no HTTP)
-  // You need to pass a `wsEndpoint` for this to work
   websocketsOnly: false,
-  // Is being rendered on the server?
   ssr: false,
 
   // Override default apollo link
   // note: don't override httpLink here, specify httpLink options in the
   // httpLinkOptions property of defaultOptions.
-  // link: myLink
+  // link: authLink
 
   // Override default cache
   // cache: myCache
@@ -51,7 +55,10 @@ const defaultOptions = {
   // clientState: { resolvers: { ... }, defaults: { ... } }
 }
 
-export const { apolloClient, wsClient } = createApolloClient({
+export const { 
+  apolloClient, 
+  wsClient 
+} = createApolloClient({
   ...defaultOptions,
 })
 
@@ -69,7 +76,7 @@ export function createProvider (options = {}) {
     defaultClient: apolloClient,
     defaultOptions: {
       $query: {
-        fetchPolicy: 'no-cache',
+        fetchPolicy: 'cache-and-network',
       },
     },
     errorHandler (error) {
@@ -85,7 +92,6 @@ export function createProvider (options = {}) {
 export async function onLogin (apolloClient, token) {
   if (typeof localStorage !== 'undefined' && token) {
     localStorage.setItem(AUTH_TOKEN, token)
-    
   }
   if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
   try {
