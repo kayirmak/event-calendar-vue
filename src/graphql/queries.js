@@ -32,6 +32,17 @@ query {
     }
 }
 `
+export const GET_EVENT_BY_ID = gql`
+query($id:String) {
+    event(_id:$id){
+      name
+      day
+      description
+      _id
+    }
+  }
+`
+
 export const TODOS = gql`
 query($name: String!)
 {

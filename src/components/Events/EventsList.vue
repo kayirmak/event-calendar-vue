@@ -18,8 +18,9 @@
                     <b-form-datepicker
                     id="datepicker1"
                     class="mb-2"
-                    locale="en-US"
+                    :min="min"
                     v-model="filterData.startDate"
+                    :date-disabled-fn="dateDisabled"
                     ></b-form-datepicker>
               </div>
               <div class="date-block">
@@ -27,8 +28,9 @@
                     <b-form-datepicker
                     id="datepicker2"
                     class="mb-2"
-                    locale="en-US"
+                    :max="max"
                     v-model="filterData.endDate"
+                    :date-disabled-fn="dateDisabled"
                     ></b-form-datepicker>
               </div>
               <div class="ml-3">
@@ -36,11 +38,20 @@
               </div>
           </div>
         <div class="d-flex justify-content-end mr-2">
-                <router-link :to="{name: 'CreateEvent'}">
+            <div>
+            <router-link :to="{name: 'feed'}">
+            <b-button variant="success">
+                Создать новую локацию
+            </b-button>
+            </router-link>
+            </div>
+            <div>
+            <router-link :to="{name: 'CreateEvent'}">
             <b-button class="ml-2" variant="success">
                 Создать новое мероприятие
             </b-button>
-                </router-link>
+            </router-link>
+            </div>
         </div>
       </div>
       <b-row cols="4" align-h="between">
@@ -65,7 +76,9 @@ export default {
             filterData: {
                 startDate: '',
                 endDate: ''
-            }
+            },
+            max: null,
+            min: null
         }
     },
     methods: {
@@ -81,6 +94,14 @@ export default {
         },
         filterDateBtn(){
             console.log(this.filterData);
+            console.log(this.min, this.max);
+        },
+        dateDisabled(ymd, date){
+            // console.log(ymd, date);
+            // const weekday = date.getDay()
+            // console.log(weekday);
+            // const day = date.getDate()
+            // console.log(day);
         }
     },
     computed: {

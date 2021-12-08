@@ -6,8 +6,8 @@
         <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
     </router-link>
     </div>
-    <div class="ml-5">
-    <h3 class="mt-2">Создать новое мероприятие</h3>
+    <div>
+    <h3 class="mt-2 ml-5">Создать новое мероприятие</h3>
     </div>
     <div>
         <router-link :to="{name: 'EventsList'}">
@@ -18,9 +18,9 @@
     </div>
     </div>
     <BContainer
-    class="d-flex justify-content-center align-items-center mt-4"
+    class="d-flex justify-content-center align-items-center mt-5"
     >
-    <b-form class="form-block bg-light rounded p-4" @submit="addEventBtn">
+    <b-form class="form-block bg-light rounded p-4 mr-5" @submit="addEventBtn">
       <b-form-group
         id="input-group-1"
         label="Название мероприятия:"
@@ -33,6 +33,12 @@
             v-model="eventData.name"
             required
         ></b-form-input>
+      </b-form-group>
+      <b-form-group
+      id="textarea"
+      label="Описание мероприятия:"
+      label-for="textarea"
+      >
         <b-form-textarea
             id="textarea"
             v-model="eventData.description"
@@ -42,11 +48,15 @@
             class="mt-3"
             required
         ></b-form-textarea>
+      </b-form-group>
+      <b-form-group
+        id="datepicker"
+      >
         <label class="mt-2" for="datepicker">Выберите дату проведения:</label>
-        <b-form-datepicker required id="datepicker" v-model="eventData.day" class="mb-2"></b-form-datepicker>
+        <b-form-datepicker type="date" required id="datepicker" v-model="eventData.day" class="mb-2"></b-form-datepicker>
         </b-form-group>
         <b-button type="submit" variant="success" class="mr-2">Добавить мероприятия</b-button>
-        <b-button type="reset" variant="danger">Очистить все</b-button>
+        <b-button type="reset" @click="resetAll" variant="danger">Очистить все</b-button>
     </b-form>
     </BContainer>
 </div>
@@ -74,21 +84,30 @@ export default {
         ]),
         addEventBtn(e){
             e.preventDefault();
+            if(this.eventData.day){
             this.addEvent(this.eventData)
             .then(data => {
                 console.log(data);
                 console.log(this.eventData, 'eventData');
-                this.$bvToast.toast('Your event successfully added', {
-                    title: 'Done!',
+                this.$bvToast.toast('Ваше мероприятие успешно добавлено!', {
+                    title: 'Поздравляем!',
                     variant: 'success',
                     solid: true,
-                    autoHideDelay: 770
+                    autoHideDelay: 700
                 })
                 this.eventData = {}
             })
             .catch(error => {
                 console.log(error);
             })
+            } else {
+                this.$bvToast.toast('Выберите обязательно дату мероприятия!', {
+                    title: 'Что-то пошло нет так!',
+                    variant: 'danger',
+                    solid: true,
+                    autoHideDelay: 600
+                })
+            }
         },
         getEvents(){
             this.$store.dispatch('getAllEvents')
@@ -98,6 +117,9 @@ export default {
             .catch(error => {
                 console.log(error);
             })
+        },
+        resetAll(){
+            this.eventData = {}
         }
     },
     computed: {

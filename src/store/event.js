@@ -9,7 +9,8 @@ const state = {
         day: '',
         description: ''
     },
-    eventDetails: {}
+    eventDetails: {},
+    notFound: false
 }
 
 const getters = {
@@ -18,6 +19,9 @@ const getters = {
     },
     EVENT_DETAILS(state){
     return state.eventDetails
+    },
+    NOT_FOUND(state){
+      return state.notFound
     }
 }
 
@@ -36,9 +40,12 @@ const mutations = {
     state.eventDetails = eventDetails
     },
     setEditEvent(state, payload){
-    state.eventDetails = {
-        name: payload
-    }
+      state.eventDetails.name = payload.name
+      state.eventDetails.description = payload.description
+      state.eventDetails.day = payload.day
+    },
+    setNotFound(state, payload){
+      state.notFound = payload
     }
 }
 
@@ -79,24 +86,26 @@ const actions = {
           ]
         })
         console.log(id, 'id');
-        console.log(response, 'response');
+        console.log(response.data, 'response');
         commit('setDeleteEvent', null)
+        commit('setNotFound', true)
       },
       async editEvent({commit}, eventObj){
         const response = await apolloClient.mutate({
           mutation: UPDATE_EVENT,
           variables: {
-            eventObj: {
               id: eventObj.id,
-              name: eventObj.name
-            }
+              name: eventObj.name,
+              description: eventObj.description,
+              day: eventObj.day
           },
           refetchQueries: [
             {query: GET_ALL_EVENTS}
           ]
         })
         console.log(response.data, 'edited data');
-        commit('setEditEvent')
+        // commit('setEditEvent', eventObj.name)
+        commit('setEditEvent', eventObj)
       },
       getEventDetails({commit}, eventDetails){
         commit('setEventDetails', eventDetails)

@@ -29,11 +29,10 @@ mutation($id: String){
 `
 
 export const UPDATE_EVENT = gql`
-mutation($id:String, $name:String){
-    updateEvent(_id:$id, name: $name)
+mutation($id: String, $name: String, $description: String, $day: String){
+    updateEvent(_id:$id, name: $name, description: $description, day: $day)
   }
 `
-
 export const REGISTER_USER = gql `
     mutation (
         $email: String!, 
