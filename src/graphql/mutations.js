@@ -1,12 +1,32 @@
 import gql from "graphql-tag";
 
-// export const ADD_EVENT = gql`
-// mutation($event: EventInput){
-//     createEvent(event: $event){
-//         name, description, day
-//     }
-// }
-// `
+
+export const REGISTER_USER = gql`
+mutation(
+    $username: String!
+    $email: String!
+    $password: String!
+  ) {
+    signup(
+      createUserInput: { username: $username, email: $email, password: $password }
+    ) {
+      id
+      username
+      password
+    }
+  }
+`
+
+
+export const LOGIN_USER = gql`
+mutation($email: String!, $password: String!) {
+    login(loginUserInput: { email: $email, password: $password }) {
+      access_token
+      userId
+    }
+  }
+  
+`
 
 
 export const ADD_EVENT = gql`
@@ -33,60 +53,15 @@ mutation($id: String, $name: String, $description: String, $day: String){
     updateEvent(_id:$id, name: $name, description: $description, day: $day)
   }
 `
-export const REGISTER_USER = gql `
-    mutation (
-        $email: String!, 
-        $name: String!,
-        $password: String!
-    ) {
-        registerUser(newUser: {
-            email: $email,
-            name: $name,
-            password: $password
-        }) {
-                user{
-                    id
-                    email
-                    name
-                    token
-                }
-            }
-    }
-`;
-
-export const LOGIN = gql`
-    mutation (
-        $email: String!,
-        $password: String!
-    ) {
-        loginUser(
-            email: $email,
-            password: $password
-        ) {
-            user {
-                id
-                email
-                name
-                token
-            }
-        }
-    }
-`;
 
 export const CREATE_LOCATION = gql`
-    mutation ($title: String!) {
-        insert_todos(objects: {title: $title}) {
-            returning {
-                user {
-                    todos {
-                        title
-                        id
-                    }
-                }
-            }
-        }
+mutation($address: String!){
+    createLocation(createLocationInput: {address: $address}){
+      id
+      address
     }
-`;
+  }
+`
 
 export const UPDATE_LOCATION = gql`
     mutation ($id: Int, $title: String!) {

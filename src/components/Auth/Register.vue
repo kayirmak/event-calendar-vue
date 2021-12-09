@@ -6,6 +6,21 @@
 	>
 		<b-form class="bg-light p-5 rounded" @submit.prevent="registerForm">
 			<h5 class="d-flex justify-content-center">Регистрация</h5>
+
+			<b-form-group
+        id="input-group-2"
+        label="Имя:"
+        label-for="input-2"
+      >
+				<b-form-input
+					id="input-2"
+					v-model="user.username"
+					type="text"
+					placeholder="Введите ваше имя"
+					required
+				>
+				</b-form-input>
+			</b-form-group>
 			<b-form-group 
             id="input-group-1"
             label="Email адрес:"
@@ -17,21 +32,6 @@
 					type="text"
 					placeholder="Введите почту"
                     autocomplete="off"
-					required
-				>
-				</b-form-input>
-			</b-form-group>
-
-			<b-form-group
-        id="input-group-2"
-        label="Имя:"
-        label-for="input-2"
-      >
-				<b-form-input
-					id="input-2"
-					v-model="user.name"
-					type="text"
-					placeholder="Введите ваше имя"
 					required
 				>
 				</b-form-input>
@@ -70,16 +70,26 @@ export default {
     data(){
         return {
 			user: {
+				username: '',
 				email: '',
-				name: '',
-				password: '',
+				password: ''
 			},
             error: ''
         }
     },
 	methods: {
 		registerForm(){
-			console.log(this.user);
+			this.$store.dispatch('registerUser', {
+				username: this.user.username,
+				email: this.user.email,
+				password: this.user.password
+			})
+			.then(() => {
+				// this.$router.push({name: 'Login'})
+			})
+			.catch(error => {
+				console.log(error);
+			})
 		}
 	}
 }

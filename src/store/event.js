@@ -15,10 +15,10 @@ const state = {
 
 const getters = {
     EVENTS(state){
-    return state.events
+      return state.events
     },
     EVENT_DETAILS(state){
-    return state.eventDetails
+      return state.eventDetails
     },
     NOT_FOUND(state){
       return state.notFound
@@ -27,17 +27,17 @@ const getters = {
 
 const mutations = {
     setAllEvents(state, events){
-        state.events = events;
+      state.events = events;
     },
     setAddEvent(state, events){
-    state.events = events
+      state.events = events
     },
     setDeleteEvent(state, payload){
-    state.eventDetails = payload
-    console.log(payload, 'payload');
+      state.eventDetails = payload
+      console.log(payload, 'payload');
     },
     setEventDetails(state, eventDetails){
-    state.eventDetails = eventDetails
+      state.eventDetails = eventDetails
     },
     setEditEvent(state, payload){
       state.eventDetails.name = payload.name
@@ -56,6 +56,7 @@ const actions = {
         });
         console.log(response.data, 'response');
         commit('setAllEvents', response.data)
+        commit('setNotFound', false)
       },
       async addEvent({commit}, event){
         console.log(event, 'event store');
@@ -104,7 +105,6 @@ const actions = {
           ]
         })
         console.log(response.data, 'edited data');
-        // commit('setEditEvent', eventObj.name)
         commit('setEditEvent', eventObj)
       },
       getEventDetails({commit}, eventDetails){

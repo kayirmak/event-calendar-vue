@@ -1,4 +1,5 @@
-
+import { apolloClient } from "../vue-apollo"
+import { REGISTER_USER, LOGIN_USER } from "../graphql/mutations"
 
 const state = {
     currentUser: null,
@@ -10,6 +11,9 @@ const state = {
 const getters = {
     USERS(state){
         return state.users
+    },
+    USER(state){
+      return state.user
     }
 }
 
@@ -17,14 +21,14 @@ const mutations = {
     // LOGIN_USER(state, userData) {
     //     state.currentUser = userData
     // }
-    registerSuccess(state, payload){
-        state.user = payload.user;
+      registerSuccess(state, payload){
+        state.user = payload;
       },
       loginSuccess(state, payload){
-        state.user = payload.user
+        state.user = payload
       },
       setToken(state, payload){
-        state.token = payload.token
+        state.token = payload
       },
 }
 
@@ -53,25 +57,31 @@ const actions = {
     //     commit('LOGIN_USER', res.data.user)
     // },
 
-    async registerUser({commit}, userData){
+    async registerUser({commit}, user){
         const response = await apolloClient.mutate({
           mutation: REGISTER_USER,
-          variables: userData,
+          variables: {
+              username: user.username,
+              email: user.email,
+              password: user.password
+          },
         });
-        console.log(userData, 'userData');
-        console.log(response.data, 'data');
-        commit('registerSuccess', response.data);
-        commit('setToken', response.data);
-        localStorage.setItem('apollo-token', response.data.token);
+        console.log(user, 'user');
+        console.log(response.data.signup, 'data');
+        commit('registerSuccess', response.data.signup);
       },
-      async loginUser({commit}, userData){
-        const response = await apolloClient.query({
-          query: LOGIN_USER,
-          variables: userData
+      async loginUser({commit}, user){
+        const response = await apolloClient.mutate({
+          mutation: LOGIN_USER,
+          variables: {
+            email: user.email,
+            password: user.password
+          }
         });
-        commit('loginSuccess', response.data)
-        commit('setToken', response.data)
-        localStorage.setItem('apollo-token', response.data.token)
+        console.log(response.data.login, 'responsedata');
+        commit('loginSuccess', response.data.login)
+        commit('setToken', response.data.login.access_token)
+        localStorage.setItem('apollo-token', response.data.login.access_token)
       },
 
 }

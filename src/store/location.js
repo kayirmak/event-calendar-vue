@@ -57,24 +57,15 @@ const actions = {
         console.log(todos);
     },
 
-    async createLocation({commit, dispatch}, title) {
+    async createLocation({commit}, title) {
         commit("ACTION_LOCATION_START")
-        await apolloClient.mutate({
+        const response = await apolloClient.mutate({
             mutation: CREATE_LOCATION,
-            variables: title,
-            refetchQueries: [
-                {
-                    query: TODOS,
-                    variables: {
-                        name: "dzhumabaev.kai"
-                    }
-                }
-            ]
-        }).then(({data}) => {
-            commit("ACTION_LOCATION_SUCCESS")
-            const dataLocations = data.insert_todos.returning[0].user.todos
-            commit("ALL_LOCATIONS", dataLocations)
+            variables: {
+                address : title.address
+            }
         })
+        console.log(response.data, 'created');
         
     },
     

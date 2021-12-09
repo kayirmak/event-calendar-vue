@@ -7,27 +7,22 @@ Vue.use(VueApollo)
 
 // Name of the localStorage item
 const AUTH_TOKEN = 'apollo-token'
-// import {
-//   setContext
-// } from 'apollo-link-context'
+import { setContext } from 'apollo-link-context'
 
-// const authLink = setContext(async (_, {
-//   headers
-// }) => {
-//   const token = localStorage.getItem('apollo-token')
-//   return {
-//     headers: {
-//       ...headers,
-//       Authorization: token || ''
-//     }
-//   }
-// })
+const authLink = setContext(async (_, {
+  headers
+}) => {
+  const token = localStorage.getItem('apollo-token')
+  return {
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${token}` : ''
+    }
+  }
+})
 
 // Http endpoint
 const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP ||  'http://localhost:3000/graphql'
-// 'https://hasura.io/learn/graphql'
-// 
-// 
 
 export const filesRoot = process.env.VUE_APP_FILES_ROOT || httpEndpoint.substr(0, httpEndpoint.indexOf('/graphql'))
 
@@ -41,11 +36,7 @@ const defaultOptions = {
   persisting: false,
   websocketsOnly: false,
   ssr: false,
-
-  // Override default apollo link
-  // note: don't override httpLink here, specify httpLink options in the
-  // httpLinkOptions property of defaultOptions.
-  // link: authLink
+  link: authLink
 
   // Override default cache
   // cache: myCache
@@ -81,7 +72,7 @@ export function createProvider (options = {}) {
     defaultClient: apolloClient,
     defaultOptions: {
       $query: {
-        fetchPolicy: 'no-cache',
+        fetchPolicy: 'cache-and-network',
       },
     },
     errorHandler (error) {

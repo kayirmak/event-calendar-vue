@@ -65,11 +65,14 @@ export default {
     },
     methods: {
         loginForm(){
-            this.$store.dispatch('loginUser', this.user)
+            this.$store.dispatch('loginUser', {
+                email: this.user.email,
+                password: this.user.password
+            })
             .then((res) => {
                 console.log(res);
             })
-            .catch(error => this.error = error)
+            .catch(error => console.log(error))
         }
     }
 }

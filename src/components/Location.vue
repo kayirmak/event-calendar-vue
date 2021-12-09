@@ -123,10 +123,11 @@ export default {
                 this.errors = 'Поле не заполнено'
                 return    
             }
-            this.$store.dispatch('createLocation', {title: this.title}).then(() => {
+            this.$store.dispatch('createLocation', {
+                address: this.title
+            }).then(() => {
                 this.makeToast('success', 'Добавление выполнено')
                 this.closeModal()
-            
             })
             
         },

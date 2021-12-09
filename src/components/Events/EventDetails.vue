@@ -117,9 +117,9 @@ export default {
     name: 'EventDetails',
     data(){
         return {
-                updatedName : '',
-                updatedDescription: '',
-                location: ''
+            updatedName : '',
+            updatedDescription: '',
+            location: ''
         }
     },
     methods: {

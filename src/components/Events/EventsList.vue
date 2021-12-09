@@ -85,13 +85,6 @@ export default {
         ...mapActions([
             'getAllEvents',
         ]),
-        deleteEventBtn(eventId){
-            console.log(eventId);
-            this.$store.dispatch('deleteEvent', eventId)
-        },
-        editEventBtn(eventTitle){
-            console.log(eventTitle);
-        },
         filterDateBtn(){
             console.log(this.filterData);
             console.log(this.min, this.max);

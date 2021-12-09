@@ -82,6 +82,14 @@ export default {
             'getAllEvents',
             'addEvent'
         ]),
+        makeToast(variant = null, title) {
+            this.$bvToast.toast(`body `, {
+                title: `${title || 'default'}`,
+                variant: variant,
+                solid: true,
+                autoHideDelay: 700
+            })
+        },
         addEventBtn(e){
             e.preventDefault();
             if(this.eventData.day){
@@ -89,24 +97,14 @@ export default {
             .then(data => {
                 console.log(data);
                 console.log(this.eventData, 'eventData');
-                this.$bvToast.toast('Ваше мероприятие успешно добавлено!', {
-                    title: 'Поздравляем!',
-                    variant: 'success',
-                    solid: true,
-                    autoHideDelay: 700
-                })
+                this.makeToast('success', 'Ваше мероприятие успешнно добавлено')
                 this.eventData = {}
             })
             .catch(error => {
                 console.log(error);
             })
             } else {
-                this.$bvToast.toast('Выберите обязательно дату мероприятия!', {
-                    title: 'Что-то пошло нет так!',
-                    variant: 'danger',
-                    solid: true,
-                    autoHideDelay: 600
-                })
+                this.makeToast('danger', 'Выберите дату для своего мероприятия')
             }
         },
         getEvents(){
