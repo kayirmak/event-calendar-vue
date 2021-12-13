@@ -31,10 +31,8 @@
             <b-dropdown-item href="#">
               Профиль
             </b-dropdown-item>
-            <b-dropdown-item href="#">
-                <router-link :to="{name: 'Login'}">
+            <b-dropdown-item @click="logoutBtn" href="#">
                     Выйти
-                </router-link>
             </b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -44,8 +42,30 @@
 </template>
 
 <script>
+import { mapActions, mapMutations } from 'vuex'
 export default {
-    name: 'Header'
+    name: 'Header',
+    data(){
+      return {
+
+      }
+    },
+    methods: {
+      ...mapActions([
+        'logoutUser'
+      ]),
+      ...mapMutations([
+        'clearEventStore'
+      ]),
+      logoutBtn(){
+        this.logoutUser()
+        .then(() => {
+          this.clearEventStore(null)
+          this.$router.push({name: 'Login'})
+        })
+      }
+    }
+    
 }
 </script>
 

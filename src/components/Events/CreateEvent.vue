@@ -6,8 +6,8 @@
         <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
     </router-link>
     </div>
-    <div class="ml-5">
-    <h3 class="mt-2">Создать новое мероприятие</h3>
+    <div>
+    <h3 class="mt-2 ml-5">Создать новое мероприятие</h3>
     </div>
     <div>
         <router-link :to="{name: 'EventsList'}">
@@ -18,9 +18,9 @@
     </div>
     </div>
     <BContainer
-    class="d-flex justify-content-center align-items-center mt-4"
+    class="d-flex justify-content-center align-items-center mt-5"
     >
-    <b-form class="form-block bg-light rounded p-4" @submit="addEventBtn">
+    <b-form class="form-block bg-light rounded p-4 mr-5" @submit.prevent="addEventBtn">
       <b-form-group
         id="input-group-1"
         label="Название мероприятия:"
@@ -33,6 +33,12 @@
             v-model="eventData.name"
             required
         ></b-form-input>
+      </b-form-group>
+      <b-form-group
+      id="textarea"
+      label="Описание мероприятия:"
+      label-for="textarea"
+      >
         <b-form-textarea
             id="textarea"
             v-model="eventData.description"
@@ -42,11 +48,44 @@
             class="mt-3"
             required
         ></b-form-textarea>
+      </b-form-group>
+      <b-form-group
+        id="datepicker"
+      >
         <label class="mt-2" for="datepicker">Выберите дату проведения:</label>
-        <b-form-datepicker required id="datepicker" v-model="eventData.day" class="mb-2"></b-form-datepicker>
+        <b-form-datepicker type="date" required id="datepicker" v-model="eventData.day" class="mb-2"></b-form-datepicker>
+        </b-form-group>
+        <b-form-group>
+
+            <!-- <b-form-input v-model="eventData.location" placeholder="Новая локация" list="my-list-id" class="mt-2"></b-form-input>
+                    <datalist id="my-list-id">
+                        <option
+                            v-for="locationItem in LOCATIONS"
+                            :key="locationItem.id"
+                            @mouseover="onclick(eventData.location)"
+                        >
+                            {{locationItem.address}}
+                        </option>
+                    </datalist> -->
+
+                    <!-- <b-form-select v-model="eventData.location">
+                            <b-form-select-option value="" v-for="locationItem in LOCATIONS" :key="locationItem.id">
+                                {{locationItem.address}}
+                            </b-form-select-option>
+                    </b-form-select> -->
+
+                      <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
+                        <b-dropdown-item 
+                        v-for="locationItem in LOCATIONS" 
+                        :key="locationItem.id"
+                        @click="selectLocationId(locationItem.id)"
+                        >
+                            {{locationItem.address}}
+                        </b-dropdown-item>
+                    </b-dropdown>
         </b-form-group>
         <b-button type="submit" variant="success" class="mr-2">Добавить мероприятия</b-button>
-        <b-button type="reset" variant="danger">Очистить все</b-button>
+        <b-button type="reset" @click="resetAll" variant="danger">Очистить все</b-button>
     </b-form>
     </BContainer>
 </div>
@@ -56,39 +95,52 @@
 import {mapActions, mapGetters} from 'vuex'
 
 export default {
-    name: "Test",
+    name: "CreateEvent",
     data(){
         return {
             eventData: {
                 name: '',
-                day: '',
                 description: '',
-                location: ''
+                day: '',
+                locationId: ''
             },
         }
     },
     methods: {
         ...mapActions([
             'getAllEvents',
-            'addEvent'
+            'addEvent',
+            'getAllLocations'
         ]),
-        addEventBtn(e){
-            e.preventDefault();
-            this.addEvent(this.eventData)
+        makeToast(variant = null, title) {
+            this.$bvToast.toast(`body `, {
+                title: `${title || 'default'}`,
+                variant: variant,
+                solid: true,
+                autoHideDelay: 700
+            })
+        },
+        addEventBtn(){
+            console.log(this.eventData.name);
+            if(this.eventData.day){
+            this.$store.dispatch('addEvent',{
+                name: this.eventData.name,
+                description: this.eventData.description,
+                day: this.eventData.day,
+                location: this.eventData.locationId
+            })
             .then(data => {
                 console.log(data);
                 console.log(this.eventData, 'eventData');
-                this.$bvToast.toast('Your event successfully added', {
-                    title: 'Done!',
-                    variant: 'success',
-                    solid: true,
-                    autoHideDelay: 770
-                })
+                this.makeToast('success', 'Ваше мероприятие успешнно добавлено')
                 this.eventData = {}
             })
             .catch(error => {
                 console.log(error);
             })
+            } else {
+                this.makeToast('danger', 'Выберите дату для своего мероприятия')
+            }
         },
         getEvents(){
             this.$store.dispatch('getAllEvents')
@@ -98,14 +150,24 @@ export default {
             .catch(error => {
                 console.log(error);
             })
+        },
+        resetAll(){
+            this.eventData = {}
+        },
+        selectLocationId(id) {
+            this.eventData.locationId = id
         }
     },
     computed: {
         ...mapGetters([
             'USERS',
-            'EVENTS'
+            'EVENTS',
+            'LOCATIONS'
         ])
     },
+    mounted(){
+        this.getAllLocations()
+    }
 }
 </script>
 
