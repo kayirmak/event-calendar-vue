@@ -3,7 +3,7 @@
         :title="currentEvent.name"
         tag="article"
         style="max-width: 20rem;"
-        class="mb-2 mt-3 ml-1"
+        class="mb-2 mt-3 ml-1 event-list__item"
     >
         <b-card-text>
             Локация : {{currentEvent.location.address}}
@@ -35,12 +35,11 @@ export default {
             'setEventDetails'
         ]),
         toEventDetails(){
-            // this.setEventDetails(this.currentEvent)
             console.log(this.currentEvent.id);
             this.getEventDetails(this.currentEvent.id)
             .then(() => {
                 // this.$router.push({name: 'EventDetails', params:{id: this.currentEvent.id, event: this.currentEvent}})
-                this.$router.push({name: 'EventDetails', params:{id: this.currentEvent.id, event: this.currentEvent}})
+                this.$router.push({name: 'EventDetails', params: {id: this.currentEvent.id, event: this.currentEvent}})
                 
             })
             .catch(error => console.log(error))
@@ -54,5 +53,14 @@ export default {
 </script>
 
 <style>
+.event-list__item{
+    transition: 0.2s ease-in-out;
+}
+.event-list__item:hover{
+    background: rgb(245, 245, 245);
+    transition: 0.2s ease-in-out;
+    transform: scale(1.02);
+    text-decoration: none;
+}
 
 </style>

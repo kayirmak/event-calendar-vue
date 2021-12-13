@@ -13,6 +13,7 @@ const authLink = setContext(async (_, {
   headers
 }) => {
   const token = localStorage.getItem('apollo-token')
+  // console.log(headers, 'headers');
   return {
     headers: {
       ...headers,
