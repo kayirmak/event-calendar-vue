@@ -45,7 +45,6 @@
                 <b-spinner variant="primary" type="grow" label="Spinning"></b-spinner>
                 <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
             </div>
-
             <ul class="location-list" id="list-id" v-else>
                 <li class="location-list__item" v-for="location in locations" :key="location.id">
                     <router-link :to="{name: 'card-location', params: {id: location.id, location: location}}">
@@ -141,7 +140,6 @@ export default {
             this.$store.dispatch('createLocation', this.title).then(() => {
                 this.makeToast('success', 'Добавление выполнено')
                 this.closeModal()
-            
             })
             
         },

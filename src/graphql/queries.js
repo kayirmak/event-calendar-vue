@@ -1,36 +1,22 @@
 import gql from 'graphql-tag'
 
-export const allUsers = gql`
-query getAllUsers {
-    getAllUsers  {
-        id, username, age
-    }
-}
-`
-
-// export const GET_ALL_EVENTS = gql`
-// query getAllEvents {
-//     getAllEvents {
-//         id, name, day, description
-//     }
-// }
-// `
-
-export const LOGIN_USER = gql`
-query loginUser {
-    loginUser {
-        email, password
-    }
-}
-`
 
 
 export const GET_ALL_EVENTS = gql`
-query {
-    events {
-        _id, name, description, day, createdAt
+query{
+    findActByUser{
+      id
+      name
+      description
+      day
+      location{
+        address
+      }
+      account{
+        username
+      }
     }
-}
+  }
 `
 export const LOCATIONS = gql`
 query {
@@ -44,24 +30,46 @@ query {
     },
   }
 `;
-
-export const AUTHENTICATED_USER = gql`
-    query {
-        authUser {
-            id
-            name
-            email
-        }
+export const GET_EVENT_BY_ID = gql`
+query($id: Int!){
+    findActOne(id: $id){
+      name
+      description
+      day
+      id
+      account{
+        username
+      }
+      location{
+        id
+        address
+      }
     }
+  }
+`
 
-`;
+export const GET_ALL_LOCATIONS = gql`
+query{
+    locations{
+        address
+        id
+    }
+}
+`
 
-export const LOCATION_BY_ID = gql`
-    query($id: Int!){
-        todos(where: {id: {_eq: $id}}) {
-        title
-        created_at
-        }
+
+export const GET_EVENTS_BY_DATES = gql`
+query($startDay: String!, $endDay: String!) {
+  dates(dateIntervalInput: { startDay: $startDay, endDay: $endDay }) {
+    name
+    day
+    id
+    description
+    location {
+      address
+    }
+    account {
+      username
     }
 `;
 
@@ -82,4 +90,6 @@ export const GET_ALL_EVENTS_FROM_LOCATION = gql`
             }
         }
     }
+  }
+}
 `

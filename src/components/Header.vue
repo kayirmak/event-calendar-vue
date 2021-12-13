@@ -9,12 +9,12 @@
       <b-navbar-nav v-if="isAuth">
         <b-nav-item>
         <router-link :to="{name: 'EventsList'}">
-            Events List
+            Список мероприятий
         </router-link>
         </b-nav-item>
         <b-nav-item>
         <router-link :to="{name: 'CreateEvent'}">
-            Create Event
+            Создать мероприятие
         </router-link>
         </b-nav-item>
       </b-navbar-nav>
@@ -42,12 +42,10 @@
             <!-- <em>User</em> -->
           </template>
             <b-dropdown-item href="#">
-              Profile
+              Профиль
             </b-dropdown-item>
-            <b-dropdown-item>
-                <router-link :to="{name: 'Login'}">
-                    Sign Out
-                </router-link>
+            <b-dropdown-item @click="logoutBtn" href="#">
+                    Выйти
             </b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -57,13 +55,33 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 export default {
     name: 'Header',
+    data(){
+      return {
+
+      }
+    },
     computed: {
       ...mapGetters({
         isAuth: 'isAuth'
       })
+    }
+    methods: {
+      ...mapActions([
+        'logoutUser'
+      ]),
+      ...mapMutations([
+        'clearEventStore'
+      ]),
+      logoutBtn(){
+        this.logoutUser()
+        .then(() => {
+          this.clearEventStore(null)
+          this.$router.push({name: 'Login'})
+        })
+      }
     }
 }
 </script>

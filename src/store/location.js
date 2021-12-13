@@ -1,5 +1,6 @@
 import { CREATE_LOCATION, DELETE_LOCATION, UPDATE_LOCATION } from "../graphql/mutations"
 import { LOCATIONS } from "../graphql/queries"
+import { GET_ALL_LOCATIONS } from "../graphql/queries"
 import { apolloClient } from "../vue-apollo"
 
 
@@ -10,7 +11,10 @@ const state = {
 }
 
 const getters = {
-    locations: state => state.locations,
+    // locations: state => state.locations,
+    LOCATIONS(state){
+        return state.locations
+    },
     isLoadingBtn: state => state.isLoadingBtn,
     isLoading: state => state.isLoading
 }
@@ -19,8 +23,8 @@ const mutations = {
     ALL_LOCATIONS_START(state) {
         state.isLoading = true
     },
-    ALL_LOCATIONS_SUCCESS(state, locations) {
-        state.locations = locations
+    ALL_LOCATIONS_SUCCESS(state, payload) {
+        state.locations = payload
         state.isLoading = false
     },
 
@@ -75,8 +79,12 @@ const actions = {
             console.log(res.data.createLocation);
             const location = res.data.createLocation
             commit("CREATE_LOCATION_SUCCESS", location)
+          
+        const response = await apolloClient.query({
+            query: GET_ALL_LOCATIONS
         })
-        
+        console.log(response.data, 'res');
+        commit("ALL_LOCATIONS_SUCCESS", response.data.locations)
     },
     
     async editLocation({commit, dispatch}, payload) {

@@ -5,17 +5,17 @@
     style="height: 100vh"
 	>
 		<b-form class="bg-light p-5 rounded" @submit.prevent="loginForm">
-        <h5 class="d-flex justify-content-center">Sign In</h5>
+        <h5 class="d-flex justify-content-center">Войти</h5>
         <b-form-group 
             id="input-group-1"
-            label="Email:"
+            label="Email адрес:"
             label-for="input-1"
         >
 		<b-form-input
             id="input-1"
             v-model="user.email"
             type="text"
-            placeholder="Enter email"
+            placeholder="Введите почту"
             autocomplete="off"
 			required
 		>
@@ -23,28 +23,28 @@
 		</b-form-group>
         <b-form-group
             id="input-group-3"
-            label="Your Password:"
+            label="Ваш пароль:"
             label-for="input-3"
         >
             <b-form-input
                 id="input-3"
                 v-model="user.password"
                 type="password"
-                placeholder="Enter password"
+                placeholder="Введите пароль"
                 required
             >
           </b-form-input>
 			</b-form-group>
                 <p class="errors" v-if="error">{{ error }}</p>
                 <p class="paths">
-                    Don't have an account?
-                    <router-link :to="{name: 'Register'}">Register</router-link>
+                    Не зарегистрированы?
+                    <router-link :to="{name: 'Register'}">Регистрация</router-link>
                 </p>
                 <p>
-                    <router-link :to="{}"> Forgot your password? </router-link>
+                    <router-link :to="{}"> Забыли пароль? </router-link>
                 </p>
 			<div class="d-flex justify-content-center align-items-center">
-			<b-button type="submit" variant="primary">Login </b-button>
+			<b-button type="submit" variant="primary">Войти </b-button>
             </div>
 		</b-form>
 	</BContainer>
@@ -65,11 +65,15 @@ export default {
     },
     methods: {
         loginForm(){
-            this.$store.dispatch('loginUser', this.user)
+            this.$store.dispatch('loginUser', {
+                email: this.user.email,
+                password: this.user.password
+            })
             .then((res) => {
                 console.log(res);
+                this.$router.push({name: 'EventsList'})
             })
-            .catch(error => this.error = error)
+            .catch(error => console.log(error))
         }
     }
 }
