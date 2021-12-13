@@ -71,6 +71,7 @@ export default {
             })
             .then((res) => {
                 console.log(res);
+                this.$router.push({name: 'EventsList'})
             })
             .catch(error => console.log(error))
         }

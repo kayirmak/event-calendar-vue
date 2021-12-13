@@ -30,28 +30,60 @@ mutation($email: String!, $password: String!) {
 
 
 export const ADD_EVENT = gql`
-mutation($event: EventType) {
-    createEvent(event: $event ){
-        name
-        day
-        description
+mutation($name:String!, $description: String!, $day: String!, $location: Float!){
+    createActivity(createActivityInput: {
+      name: $name,
+      description: $description,
+      day: $day,
+      location: $location
+    }){
+      id,
+      day,
+      name,
+      description,
+      location{
+        id
+        address
+      }
+      account{
+        id
+        email
+      }
     }
   }
 `
 
 export const DELETE_EVENT = gql`
-mutation($id: String){
-    deleteEvent(_id: $id){
-        _id,
-        name
-    }
+mutation($id: Int!){
+  removeActivity(id: $id){
+    id
+    name
+    description
+  }
 }
 `
 
 export const UPDATE_EVENT = gql`
-mutation($id: String, $name: String, $description: String, $day: String){
-    updateEvent(_id:$id, name: $name, description: $description, day: $day)
+mutation(
+  $day: String!
+  $description: String!
+  $id: Int!
+  $location: Float!
+  $name: String!
+) {
+  updateActivity(updateActivityInput: {
+    day: $day,
+    description: $description,
+    id: $id,
+    location: $location,
+    name: $name
+  }) {
+    id
+    name
+    description
   }
+}
+
 `
 
 export const CREATE_LOCATION = gql`
@@ -76,7 +108,7 @@ export const UPDATE_LOCATION = gql`
             }
         }
     }
-`;
+`
 
 export const DELETE_LOCATION = gql`
     mutation ($id: Int!) {

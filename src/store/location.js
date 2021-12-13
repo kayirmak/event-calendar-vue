@@ -1,5 +1,5 @@
 import { CREATE_LOCATION, DELETE_LOCATION, UPDATE_LOCATION } from "../graphql/mutations"
-import { TODOS } from "../graphql/queries"
+import { GET_ALL_LOCATIONS } from "../graphql/queries"
 import { apolloClient } from "../vue-apollo"
 
 const state = {
@@ -9,7 +9,10 @@ const state = {
 }
 
 const getters = {
-    locations: state => state.locations,
+    // locations: state => state.locations,
+    LOCATIONS(state){
+        return state.locations
+    },
     isLoadingBtn: state => state.isLoadingBtn,
     isLoading: state => state.isLoading
 }
@@ -18,8 +21,8 @@ const mutations = {
     ALL_LOCATIONS_START(state) {
         state.isLoading = true
     },
-    ALL_LOCATIONS_SUCCESS(state, locations) {
-        state.locations = locations
+    ALL_LOCATIONS_SUCCESS(state, payload) {
+        state.locations = payload
         state.isLoading = false
     },
 
@@ -44,17 +47,11 @@ const mutations = {
 const actions = {
     async getAllLocations({commit}) {
         commit("ALL_LOCATIONS_START")
-        const {data: {todos}} = await apolloClient.query({
-            query: TODOS,
-            variables: {
-                name: "dzhumabaev.kai"
-            }
+        const response = await apolloClient.query({
+            query: GET_ALL_LOCATIONS
         })
-        const todosMap = todos.map(obj => {
-            return {id: obj.id, title: obj.title}
-        })
-        commit("ALL_LOCATIONS_SUCCESS", todosMap)
-        console.log(todos);
+        console.log(response.data, 'res');
+        commit("ALL_LOCATIONS_SUCCESS", response.data.locations)
     },
 
     async createLocation({commit}, title) {

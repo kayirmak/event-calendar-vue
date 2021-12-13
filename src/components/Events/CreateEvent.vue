@@ -20,7 +20,7 @@
     <BContainer
     class="d-flex justify-content-center align-items-center mt-5"
     >
-    <b-form class="form-block bg-light rounded p-4 mr-5" @submit="addEventBtn">
+    <b-form class="form-block bg-light rounded p-4 mr-5" @submit.prevent="addEventBtn">
       <b-form-group
         id="input-group-1"
         label="Название мероприятия:"
@@ -55,6 +55,35 @@
         <label class="mt-2" for="datepicker">Выберите дату проведения:</label>
         <b-form-datepicker type="date" required id="datepicker" v-model="eventData.day" class="mb-2"></b-form-datepicker>
         </b-form-group>
+        <b-form-group>
+
+            <!-- <b-form-input v-model="eventData.location" placeholder="Новая локация" list="my-list-id" class="mt-2"></b-form-input>
+                    <datalist id="my-list-id">
+                        <option
+                            v-for="locationItem in LOCATIONS"
+                            :key="locationItem.id"
+                            @mouseover="onclick(eventData.location)"
+                        >
+                            {{locationItem.address}}
+                        </option>
+                    </datalist> -->
+
+                    <!-- <b-form-select v-model="eventData.location">
+                            <b-form-select-option value="" v-for="locationItem in LOCATIONS" :key="locationItem.id">
+                                {{locationItem.address}}
+                            </b-form-select-option>
+                    </b-form-select> -->
+
+                      <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
+                        <b-dropdown-item 
+                        v-for="locationItem in LOCATIONS" 
+                        :key="locationItem.id"
+                        @click="selectLocationId(locationItem.id)"
+                        >
+                            {{locationItem.address}}
+                        </b-dropdown-item>
+                    </b-dropdown>
+        </b-form-group>
         <b-button type="submit" variant="success" class="mr-2">Добавить мероприятия</b-button>
         <b-button type="reset" @click="resetAll" variant="danger">Очистить все</b-button>
     </b-form>
@@ -66,21 +95,22 @@
 import {mapActions, mapGetters} from 'vuex'
 
 export default {
-    name: "Test",
+    name: "CreateEvent",
     data(){
         return {
             eventData: {
                 name: '',
-                day: '',
                 description: '',
-                location: ''
+                day: '',
+                locationId: ''
             },
         }
     },
     methods: {
         ...mapActions([
             'getAllEvents',
-            'addEvent'
+            'addEvent',
+            'getAllLocations'
         ]),
         makeToast(variant = null, title) {
             this.$bvToast.toast(`body `, {
@@ -90,10 +120,15 @@ export default {
                 autoHideDelay: 700
             })
         },
-        addEventBtn(e){
-            e.preventDefault();
+        addEventBtn(){
+            console.log(this.eventData.name);
             if(this.eventData.day){
-            this.addEvent(this.eventData)
+            this.$store.dispatch('addEvent',{
+                name: this.eventData.name,
+                description: this.eventData.description,
+                day: this.eventData.day,
+                location: this.eventData.locationId
+            })
             .then(data => {
                 console.log(data);
                 console.log(this.eventData, 'eventData');
@@ -118,14 +153,21 @@ export default {
         },
         resetAll(){
             this.eventData = {}
+        },
+        selectLocationId(id) {
+            this.eventData.locationId = id
         }
     },
     computed: {
         ...mapGetters([
             'USERS',
-            'EVENTS'
+            'EVENTS',
+            'LOCATIONS'
         ])
     },
+    mounted(){
+        this.getAllLocations()
+    }
 }
 </script>
 

@@ -85,10 +85,10 @@ export default {
 				password: this.user.password
 			})
 			.then(() => {
-				// this.$router.push({name: 'Login'})
+				this.$router.push({name: 'Login'})
 			})
 			.catch(error => {
-				console.log(error);
+				console.log(error, 'error');
 			})
 		}
 	}

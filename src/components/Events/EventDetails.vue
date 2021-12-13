@@ -32,10 +32,10 @@
             </div>
             <div class="d-flex flex-column align-content-center">
                 <div class="mt-5 d-flex justify-content-center name-details">
-                <h4>{{this.EVENT_DETAILS.name}}</h4>
+                <h4>{{EVENT_DETAILS.name}}</h4>
                 </div>
                 <div class="description-details">
-                    <p class="mt-2">{{this.EVENT_DETAILS.description}}</p>
+                    <p class="mt-2">{{EVENT_DETAILS.description}}</p>
                 </div>
                 <div class="mt-5 d-flex justify-content-center align-items-center">
                     <div>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="ml-3 d-flex flex-column align-items-center">
                         <h5>Локация</h5>
-                        <h6>Test Location</h6>
+                        <h6>{{EVENT_DETAILS.location.address}}</h6>
                     </div>
                 </div>
                 <div class="mt-4 d-flex justify-content-center align-items-center">
@@ -52,7 +52,7 @@
                     </div>
                     <div class="ml-3 d-flex flex-column align-items-center">
                         <h5>Организатор</h5>
-                        <h6>test@mail.ru</h6>
+                        <h6>{{EVENT_DETAILS.account.username}}</h6>
                     </div>
                 </div>
                 <div class="mt-4 d-flex justify-content-center align-items-center">
@@ -61,7 +61,7 @@
                     </div>
                     <div class="ml-3 d-flex flex-column align-items-center">
                         <h5>Дата проведения</h5>
-                        <h6>{{EVENT_DETAILS.day}}</h6>
+                        <h6>{{EVENT_DETAILS.day.slice(0,10)}}</h6>
                     </div>
                 </div>
             </div>
@@ -81,18 +81,16 @@
             <p class="mt-2 mb-1">Новая дата мероприятия: </p>
             <b-form-datepicker v-model="EVENT_DETAILS.day" class="mt-2"></b-form-datepicker>
             <p class="mt-2 mb-1">Новая локация мероприятия: </p>
-            <b-form-input v-model="location" placeholder="Новая локация" list="my-list-id" class="mt-2"></b-form-input>
-                    <datalist id="my-list-id">
-                        <option>
-                            Location1
-                        </option>
-                          <option>
-                            Location2
-                        </option>
-                          <option>
-                            Location3
-                        </option>
-                    </datalist>
+            <b-form-input v-model="updatedAddress"  placeholder="Новая локация" list="my-list-id" class="mt-2"></b-form-input>
+                    <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
+                        <b-dropdown-item 
+                        v-for="locationItem in LOCATIONS" 
+                        :key="locationItem.id"
+                        @click="selectLocationId(locationItem.id, locationItem.address)"
+                        >
+                            {{locationItem.address}}
+                        </b-dropdown-item>
+                    </b-dropdown>
             <template slot="modal-footer">
                     <b-button variant="primary" class="mr-1" @click="addNewEditedEvent">Сохранить изменения</b-button>
                     <b-button variant="secondary" @click="$bvModal.hide('modalEdit')">Выйти</b-button>
@@ -117,9 +115,9 @@ export default {
     name: 'EventDetails',
     data(){
         return {
-            updatedName : '',
+            updatedAddress : '',
             updatedDescription: '',
-            location: ''
+            updatedLocationId: ''
         }
     },
     methods: {
@@ -128,13 +126,14 @@ export default {
         ]),
         ...mapActions([
             'editEvent',
-            'deleteEvent'
+            'deleteEvent',
+            'getAllLocations'
         ]),
         deleteEventBtn(){
             this.$refs['modalDelete'].show()
         },
         deleteEventFromModal(){
-            this.deleteEvent(this.EVENT_DETAILS._id)
+            this.deleteEvent(this.EVENT_DETAILS.id)
             .then((res) => {
                 console.log(res);
                 this.$refs['modalDelete'].hide();
@@ -151,14 +150,17 @@ export default {
         },
         editEventBtn(){
             this.$refs['modalEdit'].show()
+            this.getAllLocations()
         },
         addNewEditedEvent(e){
             e.preventDefault();
             this.$store.dispatch('editEvent', {
-                id: this.EVENT_DETAILS._id,
-                name: this.EVENT_DETAILS.name,
+                day: this.EVENT_DETAILS.day,
                 description: this.EVENT_DETAILS.description,
-                day: this.EVENT_DETAILS.day
+                id: this.EVENT_DETAILS.id,
+                location: this.updatedLocationId,
+                name: this.EVENT_DETAILS.name,
+                address: this.updatedAddress
             })
             .then((res) => {
                 this.$refs['modalEdit'].hide()
@@ -167,13 +169,18 @@ export default {
             .catch(error => {
                 console.log(error);
             })
+        },
+        selectLocationId(id, address){
+            this.updatedLocationId = id
+            this.updatedAddress = address
         }
     },
     computed: {
         ...mapGetters([
             'EVENTS',
             'EVENT_DETAILS',
-            'NOT_FOUND'
+            'NOT_FOUND',
+            'LOCATIONS'
         ])
     },
     created(){

@@ -18,8 +18,8 @@
                     <b-form-datepicker
                     id="datepicker1"
                     class="mb-2"
-                    :min="min"
-                    v-model="filterData.startDate"
+                    
+                    v-model="filterData.startDay"
                     :date-disabled-fn="dateDisabled"
                     ></b-form-datepicker>
               </div>
@@ -28,13 +28,14 @@
                     <b-form-datepicker
                     id="datepicker2"
                     class="mb-2"
-                    :max="max"
-                    v-model="filterData.endDate"
+                    
+                    v-model="filterData.endDay"
                     :date-disabled-fn="dateDisabled"
                     ></b-form-datepicker>
               </div>
               <div class="ml-3">
                  <b-button @click="filterDateBtn" variant="primary">Искать</b-button>
+                 <b-button class="ml-4" @click="resetFilter" variant="danger">Очистить</b-button>
               </div>
           </div>
         <div class="d-flex justify-content-end mr-2">
@@ -54,13 +55,18 @@
             </div>
         </div>
       </div>
-      <b-row cols="4" align-h="between">
-        <b-card-group v-for="event in this.EVENTS.events" :key="event.id">
+        <div v-if="this.EVENTS.length === 0" class="mt-4">
+          <h3>У вас нет мероприятий...</h3>
+      </div>
+      <div v-else>
+      <b-row  cols="4" align-h="between">
+        <b-card-group v-for="event in this.EVENTS" :key="event.id">
             <EventCard
             :currentEvent="event"
             />
         </b-card-group>
       </b-row>
+      </div>
   </div>
 </template>
 
@@ -74,11 +80,9 @@ export default {
         return {
             events: [],
             filterData: {
-                startDate: '',
-                endDate: ''
-            },
-            max: null,
-            min: null
+                startDay: '',
+                endDay: ''
+            }
         }
     },
     methods: {
@@ -86,8 +90,18 @@ export default {
             'getAllEvents',
         ]),
         filterDateBtn(){
-            console.log(this.filterData);
-            console.log(this.min, this.max);
+            this.$store.dispatch('getEventsByDates', {
+                startDay: this.filterData.startDay,
+                endDay: this.filterData.endDay
+            })
+            .then((res) => {
+                console.log(res, 'success');
+            })
+            .catch(error => console.log(error))
+        },
+        resetFilter(){
+            this.filterData = {};
+            this.getAllEvents()
         },
         dateDisabled(ymd, date){
             // console.log(ymd, date);
@@ -104,6 +118,7 @@ export default {
     },
     created(){
         this.getAllEvents()
+        console.log(this.EVENTS.length, 'length');
     }
 }
 </script>

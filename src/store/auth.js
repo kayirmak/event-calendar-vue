@@ -30,6 +30,10 @@ const mutations = {
       setToken(state, payload){
         state.token = payload
       },
+      setLogoutUser(state, payload){
+        state.user = payload
+        state.token = payload
+      }
 }
 
 const actions = {
@@ -64,9 +68,9 @@ const actions = {
               username: user.username,
               email: user.email,
               password: user.password
-          },
+          }
         });
-        console.log(user, 'user');
+        // console.log(user, 'user');
         console.log(response.data.signup, 'data');
         commit('registerSuccess', response.data.signup);
       },
@@ -83,6 +87,10 @@ const actions = {
         commit('setToken', response.data.login.access_token)
         localStorage.setItem('apollo-token', response.data.login.access_token)
       },
+      logoutUser({commit}){
+        localStorage.removeItem('apollo-token')
+        commit('setLogoutUser', null)
+      }
 
 }
 
