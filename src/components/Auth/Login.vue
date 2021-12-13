@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
     name: "Login",
     data(){
@@ -64,6 +65,9 @@ export default {
         }
     },
     methods: {
+        ...mapActions([
+            'getAllEvents'
+        ]),
         loginForm(){
             this.$store.dispatch('loginUser', {
                 email: this.user.email,

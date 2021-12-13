@@ -78,7 +78,7 @@ export default {
       logoutBtn(){
         this.logoutUser()
         .then(() => {
-          this.clearEventStore(null)
+          this.$store.dispatch('clearEventStore', null)
           this.$router.push({name: 'Login'})
         })
       }
