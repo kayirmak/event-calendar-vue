@@ -11,10 +11,7 @@ const state = {
 }
 
 const getters = {
-    // locations: state => state.locations,
-    LOCATIONS(state){
-        return state.locations
-    },
+    locations: state => state.locations,
     isLoadingBtn: state => state.isLoadingBtn,
     isLoading: state => state.isLoading
 }

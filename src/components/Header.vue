@@ -8,14 +8,19 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav v-if="isAuth">
         <b-nav-item>
-        <router-link :to="{name: 'EventsList'}">
-            Список мероприятий
-        </router-link>
+          <router-link :to="{name: 'EventsList'}">
+              Список мероприятий
+          </router-link>
         </b-nav-item>
         <b-nav-item>
-        <router-link :to="{name: 'CreateEvent'}">
-            Создать мероприятие
-        </router-link>
+          <router-link :to="{name: 'CreateEvent'}">
+              Создать мероприятие
+          </router-link>
+        </b-nav-item>
+        <b-nav-item>
+          <router-link :to="{name: 'locations'}">
+              Локации
+          </router-link>
         </b-nav-item>
       </b-navbar-nav>
 

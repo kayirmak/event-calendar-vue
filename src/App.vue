@@ -16,6 +16,11 @@ export default {
     ...mapGetters({
       isAuth: 'isAuth'
     })
+  },
+  created() {
+    if(localStorage.getItem('apollo-token')) {
+      this.$store.dispatch('getCurrentUser')
+    }
   }
 }
 </script>

@@ -37,13 +37,13 @@ export default {
         toEventDetails(){
             // this.setEventDetails(this.currentEvent)
             console.log(this.currentEvent.id);
-            this.getEventDetails(this.currentEvent.id)
-            .then(() => {
+            // this.getEventDetails(this.currentEvent.id)
+            // .then(() => {
                 // this.$router.push({name: 'EventDetails', params:{id: this.currentEvent.id, event: this.currentEvent}})
                 this.$router.push({name: 'EventDetails', params:{id: this.currentEvent.id, event: this.currentEvent}})
                 
-            })
-            .catch(error => console.log(error))
+            // })
+            // .catch(error => console.log(error))
         }
     },
     computed: {},

@@ -47,10 +47,6 @@ export default {
         })
     },
 
-    updated() {
-    
-    },
-
     created() {
         console.log(this.$route.params);
         this.$store.dispatch('getAllEventsFromLocation', parseInt(this.$route.params.id))

@@ -20,7 +20,6 @@
                     class="mb-2"
                     
                     v-model="filterData.startDay"
-                    :date-disabled-fn="dateDisabled"
                     ></b-form-datepicker>
               </div>
               <div class="date-block">
@@ -29,7 +28,7 @@
                     id="datepicker2"
                     class="mb-2"
                     v-model="filterData.endDay"
-                    :date-disabled-fn="dateDisabled"
+                    :date-disabled-fn="disabledDate"
                     ></b-form-datepicker>
               </div>
               <div class="ml-3">
@@ -54,15 +53,28 @@
             </div>
         </div>
       </div>
-        <div v-if="this.EVENTS.length === 0" class="mt-4">
+        <div v-if="!this.EVENTS.length" class="mt-4">
           <h3>У вас нет мероприятий...</h3>
       </div>
       <div v-else>
       <b-row  cols="4" align-h="between">
-        <b-card-group v-for="event in this.EVENTS" :key="event.id">
-            <EventCard
+        <b-card-group v-for="eventItem in this.EVENTS" :key="eventItem.id">
+            <!-- <EventCard
             :currentEvent="event"
-            />
+            /> -->
+        <b-card
+            :title="eventItem.name"
+            tag="article"
+            style="max-width: 20rem;"
+            class="mb-2 mt-3 ml-1"
+        >
+        <b-card-text>
+            Локация : {{eventItem.location.address}}
+        </b-card-text>
+            <b-button @click="toEventDetails(eventItem)" variant="primary">
+                Детали мероприятия
+            </b-button>
+        </b-card>
         </b-card-group>
       </b-row>
       </div>
@@ -88,13 +100,14 @@ export default {
         disabledDate(ymd, date) {
             // console.log('ymd: ', ymd);
             // console.log('date: ', date);
-            console.log('start date: ', this.filterData.startDate)
-            if(this.filterData.startDate > this.filterData.endDate) {
-                this.filterData.endDate = this.filterData.startDate
+            console.log('start date: ', this.filterData.startDay)
+            if(this.filterData.startDay > this.filterData.endDay) {
+                this.filterData.endDay = this.filterData.startDay
             }
         },
         ...mapActions([
             'getAllEvents',
+            'getEventDetails'
         ]),
         filterDateBtn(){
             this.$store.dispatch('getEventsByDates', {
@@ -110,22 +123,28 @@ export default {
             this.filterData = {};
             this.getAllEvents()
         },
-        dateDisabled(ymd, date){
-            // console.log(ymd, date);
-            // const weekday = date.getDay()
-            // console.log(weekday);
-            // const day = date.getDate()
-            // console.log(day);
-        }
+          toEventDetails(eventItem){
+            console.log(eventItem);
+            this.getEventDetails(eventItem.id)
+            .then(() => {
+                // this.$router.push({name: 'EventDetails', params:{id: this.currentEvent.id, event: this.currentEvent}})
+                this.$router.push({name: 'EventDetails', params:{id: eventItem.id, event: eventItem}})
+                
+            })
+            .catch(error => console.log(error))
+          }
     },
     computed: {
         ...mapGetters([
             'EVENTS'
         ])
     },
-    created(){
-        this.getAllEvents()
+    beforeUpdate() {
         console.log(this.EVENTS.length, 'length');
+    },
+    created() {
+        this.getAllEvents()
+
     }
 }
 </script>
