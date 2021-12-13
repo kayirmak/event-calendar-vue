@@ -30,6 +30,7 @@ query {
     },
   }
 `;
+
 export const GET_EVENT_BY_ID = gql`
 query($id: Int!){
     findActOne(id: $id){
@@ -71,6 +72,8 @@ query($startDay: String!, $endDay: String!) {
     account {
       username
     }
+  }
+}
 `;
 
 export const GET_ALL_EVENTS_FROM_LOCATION = gql`
@@ -90,6 +93,4 @@ export const GET_ALL_EVENTS_FROM_LOCATION = gql`
             }
         }
     }
-  }
-}
 `

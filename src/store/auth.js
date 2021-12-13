@@ -5,13 +5,13 @@ const state = {
     currentUser: null,
     user: {},
     token: localStorage.getItem('apollo-token') || null,
-    isAuth: true
+    isAuth: false
 
 }
 
 const getters = {
     USERS(state){
-        return state.users
+      return state.users
     },
     isAuth: state => state.isAuth,
     USER(state){
