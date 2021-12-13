@@ -1,10 +1,10 @@
 import { apolloClient, onLogout } from "../vue-apollo"
 import { REGISTER_USER, LOGIN_USER } from "../graphql/mutations"
+import { GET_CURRENT_USER } from "../graphql/queries"
 
 
 const state = {
     currentUser: null,
-    user: {},
     token: localStorage.getItem('apollo-token') || null,
     isAuth: true
 
@@ -16,21 +16,29 @@ const getters = {
     },
     isAuth: state => state.isAuth,
     USER(state){
-      return state.user
+      return state.currentUser
     }
 }
 
 const mutations = {
       registerSuccess(state, payload){
-        state.user = payload.user;
+        state.currentUser = payload;
         state.isAuth = true
       },
       loginSuccess(state, payload){
-        state.user = payload.user
+        state.currentUser = payload
         state.isAuth = true
       },
       setToken(state, payload){
         state.token = payload
+      },
+//       setLogoutUser(state){
+//         state.currentUser = null
+//         state.isAuth = false
+//       },
+      getCurrentUserSuccess(state, payload) {
+        state.currentUser = payload
+        state.isAuth = true
       },
       setLogoutUser(state, payload){
         state.user = payload
@@ -65,6 +73,17 @@ const actions = {
         commit('loginSuccess', response.data.login)
         commit('setToken', response.data.login.access_token)
         localStorage.setItem('apollo-token', response.data.login.access_token)
+      },
+      async getCurrentUser({commit}) {
+        const token = localStorage.getItem('apollo-token')
+        await apolloClient.query({
+          query: GET_CURRENT_USER
+        }).then((res) => {
+          console.log(res);
+            commit('getCurrentUserSuccess', {...res.data.getInfo, access_token: token})
+        })
+        
+
       },
       logoutUser({commit}){
         onLogout(apolloClient)

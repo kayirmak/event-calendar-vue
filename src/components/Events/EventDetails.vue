@@ -1,6 +1,6 @@
 <template>
   <div>
-        <div class="d-flex justify-content-between mt-3" v-if="this.NOT_FOUND">
+        <div class="d-flex justify-content-between mt-3" v-if="!EVENT_DETAILS">
             <div class="ml-2">
                 <router-link :to="{name: 'EventsList'}">
                 <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
@@ -12,20 +12,20 @@
           <div></div>
         </div>
         <div v-else>
-        <div class="d-flex justify-content-between align-items-center p-3">
-          <div>
-            <router-link :to="{name: 'EventsList'}">
-            <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
-            </router-link>
-          </div>
-          <div class="mt-3">
-            <h5>Детали мероприятия</h5>
-          </div>
-          <div class="mt-3">
-              <b-button variant="primary" @click="deleteEventBtn">Удалить мероприятие</b-button>
-              <b-button class="ml-3" variant="primary" @click="editEventBtn">Редактировать мероприятие</b-button>
-          </div>
-        </div>
+            <div class="d-flex justify-content-between align-items-center p-3">
+                <div>
+                    <router-link :to="{name: 'EventsList'}">
+                    <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
+                    </router-link>
+                </div>
+                <div class="mt-3">
+                    <h5>Детали мероприятия</h5>
+                </div>
+                <div class="mt-3">
+                    <b-button variant="primary" @click="deleteEventBtn">Удалить мероприятие</b-button>
+                    <b-button class="ml-3" variant="primary" @click="editEventBtn">Редактировать мероприятие</b-button>
+                </div>
+            </div>
         <div class="d-flex justify-content-around align-items-center">
             <div>
                 <img class="img-details" src="http://owen.tuzitio.com/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png" alt="img">
@@ -84,7 +84,7 @@
             <b-form-input v-model="updatedAddress"  placeholder="Новая локация" list="my-list-id" class="mt-2"></b-form-input>
                     <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
                         <b-dropdown-item 
-                        v-for="locationItem in locations"
+                        v-for="locationItem in locations" 
                         :key="locationItem.id"
                         @click="selectLocationId(locationItem.id, locationItem.address)"
                         >
@@ -174,7 +174,10 @@ export default {
         selectLocationId(id, address){
             this.updatedLocationId = id
             this.updatedAddress = address
-        }
+        },
+        // getEventDetailsById() {
+        //     this.$store.dispatch('getEventDetails', parseInt(this.$route.params.id))
+        // }
     },
     computed: {
         ...mapGetters([
@@ -185,10 +188,9 @@ export default {
             'ERRORS'
         ])
     },
-    mounted(){
-        this.getEventDetails(this.EVENT_DETAILS.id)
-        console.log(this.EVENT_DETAILS.id, 'eventdetails');
-    }
+    created(){
+        this.$store.dispatch('getEventDetails', parseInt(this.$route.params.id))
+    },
 }
 </script>
 

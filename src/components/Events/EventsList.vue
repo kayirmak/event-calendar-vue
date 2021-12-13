@@ -56,7 +56,7 @@
             </div>
         </div>
       </div>
-        <div v-if="this.EVENTS.length == 0" class="mt-4">
+        <div v-if="!this.EVENTS.length" class="mt-4">
           <h3>У вас нет мероприятий...</h3>
       </div>
       <div v-else>
@@ -65,19 +65,19 @@
             <!-- <EventCard
             :currentEvent="event"
             /> -->
-            <b-card
-                :title="eventItem.name"
-                tag="article"
-                style="max-width: 20rem;"
-                class="mb-2 mt-3 ml-1 event-list__item"
-            >
-                <b-card-text>
-                    Локация : {{eventItem.location.address}}
-                </b-card-text>
-                    <b-button @click="toEventDetails(eventItem)" variant="primary">
-                        Детали мероприятия
-                    </b-button>
-            </b-card>
+        <b-card
+            :title="eventItem.name"
+            tag="article"
+            style="max-width: 20rem;"
+            class="mb-2 mt-3 ml-1"
+        >
+        <b-card-text>
+            Локация : {{eventItem.location.address}}
+        </b-card-text>
+            <b-button @click="toEventDetails(eventItem)" variant="primary">
+                Детали мероприятия
+            </b-button>
+        </b-card>
         </b-card-group>
       </b-row>
       </div>
@@ -131,16 +131,16 @@ export default {
             this.filterData = {};
             this.getAllEvents()
         },
-        toEventDetails(eventItem){
-            console.log(eventItem, 'eventItem');
+          toEventDetails(eventItem){
+            console.log(eventItem);
             this.getEventDetails(eventItem.id)
             .then(() => {
                 // this.$router.push({name: 'EventDetails', params:{id: this.currentEvent.id, event: this.currentEvent}})
-                this.$router.push({name: 'EventDetails', params: {id: eventItem.id, event: eventItem}})
+                this.$router.push({name: 'EventDetails', params:{id: eventItem.id, event: eventItem}})
                 
             })
             .catch(error => console.log(error))
-        }
+          }
     },
     computed: {
         ...mapGetters([
@@ -150,6 +150,10 @@ export default {
     mounted(){
         this.getAllEvents()
         console.log(this.EVENTS.length, 'length');
+    },
+    created() {
+        this.getAllEvents()
+
     }
 }
 </script>

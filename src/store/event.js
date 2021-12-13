@@ -9,7 +9,7 @@ const state = {
       day: '',
       description: ''
     },
-    eventDetails: {},
+    eventDetails: null,
     eventsFromLocation: [],
     notFound: false,
     errors: ''
@@ -35,6 +35,7 @@ const getters = {
 
 const mutations = {
     setAllEvents(state, events){
+      console.log('events', events);
       state.events = events;
     },
     setAddEvent(state, payload){
@@ -74,6 +75,10 @@ const actions = {
       async getAllEvents({commit}){
         await apolloClient.query({
           query: GET_ALL_EVENTS
+        });
+//         console.log('response.data.findActByUser', 'response');
+//         commit('setAllEvents', response.data.findActByUser)
+        // commit('setNotFound', false)
         })
         .then((res) => {
           console.log(res.data.findActByUser, 'response');
@@ -142,24 +147,24 @@ const actions = {
         })
 
       },
-      async getAllEventsFromLocation({commit}, id) {
-        console.log(id);
-        await apolloClient.query({
-          query: GET_ALL_EVENTS_FROM_LOCATION,
-          variables: {id: id}
-        }).then((res) => {
-          const events = res.data.findAllActivityFromLocationId
-          commit('setEventsFromLocation', events)          
-        })
-      },
+      // async getAllEventsFromLocation({commit}, id) {
+      //   console.log(id);
+      //   await apolloClient.query({
+      //     query: GET_ALL_EVENTS_FROM_LOCATION,
+      //     variables: {id: id}
+      //   }).then((res) => {
+      //     const events = res.data.findAllActivityFromLocationId
+      //     commit('setEventsFromLocation', events)          
+      //   })
+      // },
       async getEventDetails({commit}, eventId){
+        console.log(eventId, 'resp')
         const response = await apolloClient.query({
           query: GET_EVENT_BY_ID,
           variables: {
             id: eventId
           }
         })
-        console.log(response.data.findActOne, 'resp')
         commit('setEventDetails', response.data.findActOne)
       },
       async getEventsByDates({commit}, dateObj){

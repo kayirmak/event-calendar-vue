@@ -64,10 +64,10 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if(to.name !== 'Login' && !isAuth.state.isAuth) {
+  if(to.name !== 'Login' && to.name !== 'Register' && !isAuth.state.isAuth) {
     next({name: 'Login'})
   }
   next()
-
 })
+
 export default router
