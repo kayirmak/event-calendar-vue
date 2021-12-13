@@ -127,7 +127,8 @@ const actions = {
         }).then((res) => {
           const events = res.data.findAllActivityFromLocationId
           commit('setEventsFromLocation', events)          
-        }),
+        })
+      },
       async getEventDetails({commit}, eventId){
         const response = await apolloClient.query({
           query: GET_EVENT_BY_ID,
@@ -135,7 +136,7 @@ const actions = {
             id: eventId
           }
         })
-        console.log(response.data.findActOne, 'resp');
+        console.log(response.data.findActOne, 'resp')
         commit('setEventDetails', response.data.findActOne)
       },
       async getEventsByDates({commit}, dateObj){
@@ -149,8 +150,7 @@ const actions = {
         console.log(response.data.dates, 'response dates');
         commit('setEventsByDates', response.data.dates)
       }
-
-}
+    }
 
 export default {
     state, getters, actions, mutations
