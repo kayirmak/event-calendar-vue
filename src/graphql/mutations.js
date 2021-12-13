@@ -83,16 +83,14 @@ mutation(
     description
   }
 }
-
 `
 
 export const CREATE_LOCATION = gql`
-    mutation($address: String!) {
-        createLocation(createLocationInput: {address: $address}) {
-            id
-            address
+  mutation($address: String!) {
+      createLocation(createLocationInput: {address: $address}) {
+          id
+          address
         }
-    }
   }
 `
 

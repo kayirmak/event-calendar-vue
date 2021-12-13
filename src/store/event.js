@@ -1,6 +1,5 @@
 import { DELETE_EVENT, ADD_EVENT, UPDATE_EVENT } from "../graphql/mutations"
-import { GET_ALL_EVENTS, GET_ALL_EVENTS_FROM_LOCATION } from "../graphql/queries"
-import { GET_ALL_EVENTS, GET_EVENTS_BY_DATES, GET_EVENT_BY_ID } from "../graphql/queries"
+import { GET_ALL_EVENTS, GET_ALL_EVENTS_FROM_LOCATION,  GET_EVENTS_BY_DATES, GET_EVENT_BY_ID } from "../graphql/queries"
 import { apolloClient } from "../vue-apollo"
 
 const state = {

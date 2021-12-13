@@ -79,14 +79,8 @@ const actions = {
             console.log(res.data.createLocation);
             const location = res.data.createLocation
             commit("CREATE_LOCATION_SUCCESS", location)
-          
-        const response = await apolloClient.query({
-            query: GET_ALL_LOCATIONS
         })
-        console.log(response.data, 'res');
-        commit("ALL_LOCATIONS_SUCCESS", response.data.locations)
     },
-    
     async editLocation({commit, dispatch}, payload) {
         commit("EDIT_LOCATION_START")
         console.log(payload);

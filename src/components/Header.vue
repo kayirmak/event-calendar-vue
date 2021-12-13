@@ -67,7 +67,7 @@ export default {
       ...mapGetters({
         isAuth: 'isAuth'
       })
-    }
+    },
     methods: {
       ...mapActions([
         'logoutUser'
