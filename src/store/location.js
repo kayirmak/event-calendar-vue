@@ -1,6 +1,7 @@
 import { CREATE_LOCATION, DELETE_LOCATION, UPDATE_LOCATION } from "../graphql/mutations"
-import { TODOS } from "../graphql/queries"
+import { LOCATIONS } from "../graphql/queries"
 import { apolloClient } from "../vue-apollo"
+
 
 const state = {
     locations: [],
@@ -23,94 +24,86 @@ const mutations = {
         state.isLoading = false
     },
 
-    ACTION_LOCATION_START(state) {
+
+    CREATE_LOCATION_START(state) {
         state.isLoadingBtn = true
     },
-    ACTION_LOCATION_SUCCESS(state) {
+    CREATE_LOCATION_SUCCESS(state, payload) {
+        state.isLoadingBtn = false
+        state.locations.push(payload)
+    },
+    CREATE_LOCATION_FAILURE(state) {
         state.isLoadingBtn = false
     },
-    ACTION_LOCATION_FAILURE(state) {
+
+
+    EDIT_LOCATION_START(state) {
+        state.isLoadingBtn = true
+    },
+    EDIT_LOCATION_SUCCESS(state) {
+        state.isLoadingBtn = false
+    },
+    EDIT_LOCATION_FAILURE(state) {
         state.isLoadingBtn = false
     },
 
     DELETE_LOCATION_START(state, id) {
         state.isLoadingBtn = id
     },
-    DELETE_LOCATION_SUCCESS(state) {
+    DELETE_LOCATION_SUCCESS(state, id) {
         state.isLoadingBtn = false
+        state.locations = state.locations.filter(item => item.id !== id)
     }
 }
 
 const actions = {
     async getAllLocations({commit}) {
         commit("ALL_LOCATIONS_START")
-        const {data: {todos}} = await apolloClient.query({
-            query: TODOS,
-            variables: {
-                name: "dzhumabaev.kai"
-            }
+        const data = await apolloClient.query({
+            query: LOCATIONS
         })
-        const todosMap = todos.map(obj => {
-            return {id: obj.id, title: obj.title}
-        })
-        commit("ALL_LOCATIONS_SUCCESS", todosMap)
-        console.log(todos);
+        commit("ALL_LOCATIONS_SUCCESS", data.data.locations)
+        console.log(data);
     },
 
-    async createLocation({commit, dispatch}, title) {
-        commit("ACTION_LOCATION_START")
+    async createLocation({commit, dispatch}, address) {
+        commit("CREATE_LOCATION_START")
         await apolloClient.mutate({
             mutation: CREATE_LOCATION,
-            variables: title,
-            refetchQueries: [
-                {
-                    query: TODOS,
-                    variables: {
-                        name: "dzhumabaev.kai"
-                    }
-                }
-            ]
-        }).then(({data}) => {
-            commit("ACTION_LOCATION_SUCCESS")
-            const dataLocations = data.insert_todos.returning[0].user.todos
-            commit("ALL_LOCATIONS_SUCCESS", dataLocations)
+            variables: {address: address}
+        }).then((res) => {
+            console.log(res.data.createLocation);
+            const location = res.data.createLocation
+            commit("CREATE_LOCATION_SUCCESS", location)
         })
         
     },
     
     async editLocation({commit, dispatch}, payload) {
-        commit("ACTION_LOCATION_START")
+        commit("EDIT_LOCATION_START")
         console.log(payload);
         await apolloClient.mutate({
                 mutation: UPDATE_LOCATION,
                 variables: {
                     id: payload.id,
-                    title: payload.title
+                    address: payload.title
                 }
-            }).then(({data}) => {
-                commit("ACTION_LOCATION_SUCCESS")
-                const dataLocations = data.update_todos.returning[0].user.todos
-                commit("ALL_LOCATIONS_SUCCESS", dataLocations)
+            }).then((data) => {
+                console.log(data);
+                dispatch('getAllLocations')
+                commit("EDIT_LOCATION_SUCCESS")
             })
-    },
+        },
 
     async deleteLocation({commit, dispatch}, id) {
         commit("DELETE_LOCATION_START", id)
         await apolloClient.mutate({
             mutation: DELETE_LOCATION,
             variables: {id: id},
-            refetchQueries: [
-                {
-                    query: TODOS,
-                    variables: {
-                        name: "dzhumabaev.kai"
-                    }
-                }
-            ]
-        }).then(({data}) => {
-            commit("DELETE_LOCATION_SUCCESS")
-            const dataLocations = data.delete_todos.returning[0].user.todos
-            commit("ALL_LOCATIONS_SUCCESS", dataLocations)
+        }).then((res) => {
+            console.log(res);
+            const removedLocation = res.data.removeLocation.id
+            commit("DELETE_LOCATION_SUCCESS", removedLocation)
         })
     },
 }

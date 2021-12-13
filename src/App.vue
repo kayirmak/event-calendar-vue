@@ -1,15 +1,21 @@
 <template>
   <div id="app">
     <Header/>
-   <router-view />
+    <router-view />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Header from './components/Header.vue'
 export default {
   components: {
     Header
+  },
+  computed: {
+    ...mapGetters({
+      isAuth: 'isAuth'
+    })
   }
 }
 </script>

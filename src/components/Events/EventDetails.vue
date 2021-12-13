@@ -144,7 +144,8 @@ export default {
             'EVENT_DETAILS'
         ])
     },
-    created(){
+    mounted(){
+        console.log(this.$route.params);
     }
 }
 </script>

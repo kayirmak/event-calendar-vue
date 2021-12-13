@@ -49,7 +49,7 @@
             <ul class="location-list" id="list-id" v-else>
                 <li class="location-list__item" v-for="location in locations" :key="location.id">
                     <router-link :to="{name: 'card-location', params: {id: location.id, location: location}}">
-                        <h4>{{location.title}}</h4>
+                        <h4>{{location.address}}</h4>
                     </router-link>
 
                     <div>
@@ -138,20 +138,20 @@ export default {
                 this.errors = 'Поле не заполнено'
                 return    
             }
-            this.$store.dispatch('createLocation', {title: this.title}).then(() => {
+            this.$store.dispatch('createLocation', this.title).then(() => {
                 this.makeToast('success', 'Добавление выполнено')
                 this.closeModal()
             
             })
             
         },
-        editLocation(id) {
+        editLocation(locationId) {
             if(!this.title) {
                 this.errors = 'Поле не заполнено'
                 return    
             }
             this.$store.dispatch('editLocation', {
-                id, title: this.title
+                id: locationId, title: this.title
             }).then(() => {
                     this.makeToast('success', 'Изменение выполнено')
                     this.closeModal()

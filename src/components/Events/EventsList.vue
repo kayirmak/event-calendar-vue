@@ -29,6 +29,7 @@
                     class="mb-2"
                     locale="en-US"
                     v-model="filterData.endDate"
+                    :date-disabled-fn="disabledDate"
                     ></b-form-datepicker>
               </div>
               <div class="ml-3">
@@ -69,6 +70,14 @@ export default {
         }
     },
     methods: {
+        disabledDate(ymd, date) {
+            // console.log('ymd: ', ymd);
+            // console.log('date: ', date);
+            console.log('start date: ', this.filterData.startDate)
+            if(this.filterData.startDate > this.filterData.endDate) {
+                this.filterData.endDate = this.filterData.startDate
+            }
+        },
         ...mapActions([
             'getAllEvents',
         ]),

@@ -1,5 +1,5 @@
 import { DELETE_EVENT, ADD_EVENT, UPDATE_EVENT } from "../graphql/mutations"
-import { GET_ALL_EVENTS } from "../graphql/queries"
+import { GET_ALL_EVENTS, GET_ALL_EVENTS_FROM_LOCATION } from "../graphql/queries"
 import { apolloClient } from "../vue-apollo"
 
 const state = {
@@ -9,15 +9,19 @@ const state = {
         day: '',
         description: ''
     },
-    eventDetails: {}
+    eventDetails: {},
+    eventsFromLocation: []
 }
 
 const getters = {
     EVENTS(state){
-    return state.events
+      return state.events
     },
     EVENT_DETAILS(state){
-    return state.eventDetails
+      return state.eventDetails
+    },
+    EVENTS_FROM_LOCATION(state){
+      return state.eventsFromLocation
     }
 }
 
@@ -39,7 +43,12 @@ const mutations = {
     state.eventDetails = {
         name: payload
     }
+    },
+
+    setEventsFromLocation(state, payload) {
+      state.eventsFromLocation = payload
     }
+
 }
 
 const actions = {
@@ -100,7 +109,19 @@ const actions = {
       },
       getEventDetails({commit}, eventDetails){
         commit('setEventDetails', eventDetails)
+      },
+
+      async getAllEventsFromLocation({commit}, id) {
+        console.log(id);
+        await apolloClient.query({
+          query: GET_ALL_EVENTS_FROM_LOCATION,
+          variables: {id: id}
+        }).then((res) => {
+          const events = res.data.findAllActivityFromLocationId
+          commit('setEventsFromLocation', events)          
+        })
       }
+
 }
 
 export default {

@@ -32,14 +32,17 @@ query {
     }
 }
 `
-export const TODOS = gql`
-query($name: String!)
-{
-  todos(where: {user: {name: {_like: $name}}}) {
-    title
-    id
+export const LOCATIONS = gql`
+query {
+    locations{
+      id,
+      address,
+      account{
+        id,
+        email
+      }
+    },
   }
-}
 `;
 
 export const AUTHENTICATED_USER = gql`
@@ -58,6 +61,25 @@ export const LOCATION_BY_ID = gql`
         todos(where: {id: {_eq: $id}}) {
         title
         created_at
+        }
+    }
+`;
+
+export const GET_ALL_EVENTS_FROM_LOCATION = gql`
+    query($id: Int!){
+        findAllActivityFromLocationId(id:$id){
+            name
+            description
+            day
+            id
+            account{
+                id
+                email
+            }
+            location{
+                id
+                address
+            }
         }
     }
 `
