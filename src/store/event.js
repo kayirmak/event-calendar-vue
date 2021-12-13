@@ -75,9 +75,8 @@ const actions = {
       async getAllEvents({commit}){
         await apolloClient.query({
           query: GET_ALL_EVENTS
-        });
-//         console.log('response.data.findActByUser', 'response');
-//         commit('setAllEvents', response.data.findActByUser)
+        //console.log('response.data.findActByUser', 'response');
+        //commit('setAllEvents', response.data.findActByUser)
         // commit('setNotFound', false)
         })
         .then((res) => {
@@ -145,7 +144,6 @@ const actions = {
           console.log(error);
           commit('setErrors', error)
         })
-
       },
       // async getAllEventsFromLocation({commit}, id) {
       //   console.log(id);
