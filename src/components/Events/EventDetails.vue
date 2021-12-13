@@ -183,7 +183,8 @@ export default {
             'LOCATIONS'
         ])
     },
-    created(){
+    mounted(){
+        console.log(this.$route.params);
     }
 }
 </script>

@@ -4,7 +4,8 @@ import { REGISTER_USER, LOGIN_USER } from "../graphql/mutations"
 const state = {
     currentUser: null,
     user: {},
-    token: localStorage.getItem('apollo-token') || null
+    token: localStorage.getItem('apollo-token') || null,
+    isAuth: true
 
 }
 
@@ -12,20 +13,20 @@ const getters = {
     USERS(state){
         return state.users
     },
+    isAuth: state => state.isAuth,
     USER(state){
       return state.user
     }
 }
 
 const mutations = {
-    // LOGIN_USER(state, userData) {
-    //     state.currentUser = userData
-    // }
       registerSuccess(state, payload){
-        state.user = payload;
+        state.user = payload.user;
+        state.isAuth = true
       },
       loginSuccess(state, payload){
-        state.user = payload
+        state.user = payload.user
+        state.isAuth = true
       },
       setToken(state, payload){
         state.token = payload

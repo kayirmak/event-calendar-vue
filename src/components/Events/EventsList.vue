@@ -28,7 +28,6 @@
                     <b-form-datepicker
                     id="datepicker2"
                     class="mb-2"
-                    
                     v-model="filterData.endDay"
                     :date-disabled-fn="dateDisabled"
                     ></b-form-datepicker>
@@ -86,6 +85,14 @@ export default {
         }
     },
     methods: {
+        disabledDate(ymd, date) {
+            // console.log('ymd: ', ymd);
+            // console.log('date: ', date);
+            console.log('start date: ', this.filterData.startDate)
+            if(this.filterData.startDate > this.filterData.endDate) {
+                this.filterData.endDate = this.filterData.startDate
+            }
+        },
         ...mapActions([
             'getAllEvents',
         ]),

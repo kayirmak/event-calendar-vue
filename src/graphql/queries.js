@@ -18,6 +18,18 @@ query{
     }
   }
 `
+export const LOCATIONS = gql`
+query {
+    locations{
+      id,
+      address,
+      account{
+        id,
+        email
+      }
+    },
+  }
+`;
 export const GET_EVENT_BY_ID = gql`
 query($id: Int!){
     findActOne(id: $id){
@@ -58,6 +70,25 @@ query($startDay: String!, $endDay: String!) {
     }
     account {
       username
+    }
+`;
+
+export const GET_ALL_EVENTS_FROM_LOCATION = gql`
+    query($id: Int!){
+        findAllActivityFromLocationId(id:$id){
+            name
+            description
+            day
+            id
+            account{
+                id
+                email
+            }
+            location{
+                id
+                address
+            }
+        }
     }
   }
 }

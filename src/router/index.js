@@ -6,6 +6,7 @@ import Login from '../components/Auth/Login.vue';
 import Register from '../components/Auth/Register.vue';
 import EventsList from '../components/Events/EventsList.vue';
 import EventDetails from '../components/Events/EventDetails.vue'
+import isAuth from '../store/auth'
 
 Vue.use(VueRouter)
 
@@ -13,7 +14,8 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    redirect: {name: 'Login'}
   },
   {
     path: '/create-event',
@@ -28,7 +30,8 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta:{ requiresHeader: true }
   },
   {
     path: '/events-list',
@@ -42,9 +45,9 @@ const routes = [
     component: EventDetails
   },
   {
-    path: '/feed',
-    name: 'feed',
-    component: () => import('../views/Feed')
+    path: '/locations',
+    name: 'locations',
+    component: () => import('../views/Locations')
   },
   {
     path: '/card-location/:id',
@@ -60,4 +63,11 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  if(to.name !== 'Login' && !isAuth.state.isAuth) {
+    next({name: 'Login'})
+  }
+  next()
+
+})
 export default router

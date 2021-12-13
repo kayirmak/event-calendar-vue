@@ -23,6 +23,8 @@ const authLink = setContext(async (_, {
 
 // Http endpoint
 const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP ||  'http://localhost:3000/graphql'
+// 'http://localhost:3000/graphql'
+// 
 
 export const filesRoot = process.env.VUE_APP_FILES_ROOT || httpEndpoint.substr(0, httpEndpoint.indexOf('/graphql'))
 

@@ -87,40 +87,28 @@ mutation(
 `
 
 export const CREATE_LOCATION = gql`
-mutation($address: String!){
-    createLocation(createLocationInput: {address: $address}){
-      id
-      address
+    mutation($address: String!) {
+        createLocation(createLocationInput: {address: $address}) {
+            id
+            address
+        }
     }
   }
 `
 
 export const UPDATE_LOCATION = gql`
-    mutation ($id: Int, $title: String!) {
-        update_todos(_set: {title: $title}, where: {id: {_eq: $id}}) {
-            returning {
-                user {
-                    todos {
-                        title
-                        id
-                    }
-                }
-            }
-        }
+mutation($id: Int!, $address: String!) {
+    updateLocation(updateLocationInput: {id:$id, address:$address}) {
+      address
+      id
     }
-`
+  }
+`;
 
 export const DELETE_LOCATION = gql`
-    mutation ($id: Int!) {
-        delete_todos(where: {id: {_eq: $id}}) {
-            returning {
-                user {
-                    todos {
-                        title
-                        id
-                    }
-                }
-            }
+    mutation($id: Int!){
+        removeLocation(id:$id){
+            id
         }
     }
-`
+`;
