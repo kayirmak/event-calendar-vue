@@ -57,8 +57,6 @@ export const DELETE_EVENT = gql`
 mutation($id: Int!){
   removeActivity(id: $id){
     id
-    name
-    description
   }
 }
 `
@@ -71,18 +69,30 @@ mutation(
   $location: Float!
   $name: String!
 ) {
-  updateActivity(updateActivityInput: {
-    day: $day,
-    description: $description,
-    id: $id,
-    location: $location,
-    name: $name
-  }) {
-    id
+  updateActivity(
+    updateActivityInput: {
+      day: $day
+      description: $description
+      id: $id
+      location: $location
+      name: $name
+    }
+  ) {
     name
     description
+    id
+    day
+    location {
+      id
+      address
+    }
+    account {
+      id
+      username
+    }
   }
 }
+
 `
 
 export const CREATE_LOCATION = gql`

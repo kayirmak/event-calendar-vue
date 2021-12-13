@@ -2,7 +2,7 @@
 <div>
     <div class="d-flex justify-content-between align-items-center mt-2">
     <div class="ml-2">
-    <router-link :to="{name: 'Home'}">
+    <router-link :to="{name: 'EventsList'}">
         <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
     </router-link>
     </div>
@@ -67,13 +67,6 @@
                             {{locationItem.address}}
                         </option>
                     </datalist> -->
-
-                    <!-- <b-form-select v-model="eventData.location">
-                            <b-form-select-option value="" v-for="locationItem in LOCATIONS" :key="locationItem.id">
-                                {{locationItem.address}}
-                            </b-form-select-option>
-                    </b-form-select> -->
-
                       <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
                         <b-dropdown-item 
                         v-for="locationItem in LOCATIONS" 
@@ -84,7 +77,7 @@
                         </b-dropdown-item>
                     </b-dropdown>
         </b-form-group>
-        <b-button type="submit" variant="success" class="mr-2">Добавить мероприятия</b-button>
+        <b-button type="submit" variant="success" class="mr-2">Добавить мероприятие</b-button>
         <b-button type="reset" @click="resetAll" variant="danger">Очистить все</b-button>
     </b-form>
     </BContainer>
@@ -121,7 +114,6 @@ export default {
             })
         },
         addEventBtn(){
-            console.log(this.eventData.name);
             if(this.eventData.day){
             this.$store.dispatch('addEvent',{
                 name: this.eventData.name,
@@ -129,14 +121,14 @@ export default {
                 day: this.eventData.day,
                 location: this.eventData.locationId
             })
-            .then(data => {
-                console.log(data);
-                console.log(this.eventData, 'eventData');
-                this.makeToast('success', 'Ваше мероприятие успешнно добавлено')
+            .then(() => {
+                this.makeToast('success', 'Ваше мероприятие успешно добавлено')
                 this.eventData = {}
             })
             .catch(error => {
-                console.log(error);
+                console.log(error.message, 'error component');
+                // this.makeToast('danger', this.ERRORS)
+                this.makeToast('danger', error.message)
             })
             } else {
                 this.makeToast('danger', 'Выберите дату для своего мероприятия')
@@ -162,7 +154,8 @@ export default {
         ...mapGetters([
             'USERS',
             'EVENTS',
-            'LOCATIONS'
+            'LOCATIONS',
+            'ERRORS'
         ])
     },
     mounted(){

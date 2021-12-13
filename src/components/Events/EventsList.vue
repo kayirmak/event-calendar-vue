@@ -18,7 +18,8 @@
                     <b-form-datepicker
                     id="datepicker1"
                     class="mb-2"
-                    
+                    :min="minStartDay"
+                    :max="maxStartDay"
                     v-model="filterData.startDay"
                     ></b-form-datepicker>
               </div>
@@ -27,6 +28,8 @@
                     <b-form-datepicker
                     id="datepicker2"
                     class="mb-2"
+                    :min="minEndDay"
+                    :max="maxEndDay"
                     v-model="filterData.endDay"
                     :date-disabled-fn="disabledDate"
                     ></b-form-datepicker>
@@ -83,9 +86,9 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import EventCard from './EventCard.vue';
+// import EventCard from './EventCard.vue';
 export default {
-  components: { EventCard },
+//   components: { EventCard },
     name: 'EventsList',
     data(){
         return {
@@ -93,16 +96,21 @@ export default {
             filterData: {
                 startDay: '',
                 endDay: ''
-            }
+            },
+            minStartDay: '',
+            maxStartDay: '',
+            minEndDay: '',
+            maxEndDay: ''
         }
     },
     methods: {
         disabledDate(ymd, date) {
-            // console.log('ymd: ', ymd);
+            console.log('ymd: ', ymd);
             // console.log('date: ', date);
             console.log('start date: ', this.filterData.startDay)
             if(this.filterData.startDay > this.filterData.endDay) {
                 this.filterData.endDay = this.filterData.startDay
+                this.minEndDay = this.filterData.startDay
             }
         },
         ...mapActions([
@@ -139,7 +147,8 @@ export default {
             'EVENTS'
         ])
     },
-    beforeUpdate() {
+    mounted(){
+        this.getAllEvents()
         console.log(this.EVENTS.length, 'length');
     },
     created() {

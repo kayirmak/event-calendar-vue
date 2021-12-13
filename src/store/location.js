@@ -1,6 +1,5 @@
 import { CREATE_LOCATION, DELETE_LOCATION, UPDATE_LOCATION } from "../graphql/mutations"
 import { LOCATIONS } from "../graphql/queries"
-import { GET_ALL_LOCATIONS } from "../graphql/queries"
 import { apolloClient } from "../vue-apollo"
 
 

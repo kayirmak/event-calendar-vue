@@ -5,13 +5,14 @@ import { apolloClient } from "../vue-apollo"
 const state = {
     events: [],
     eventState: {
-        name: '',
-        day: '',
-        description: ''
+      name: '',
+      day: '',
+      description: ''
     },
     eventDetails: null,
     eventsFromLocation: [],
-    notFound: false
+    notFound: false,
+    errors: ''
 }
 
 const getters = {
@@ -26,6 +27,9 @@ const getters = {
     },
     NOT_FOUND(state){
       return state.notFound
+    },
+    ERRORS(state){
+      return state.errors
     }
 }
 
@@ -45,9 +49,7 @@ const mutations = {
       state.eventDetails = eventDetails
     },
     setEditEvent(state, payload){
-    state.eventDetails = {
-        name: payload
-    }
+      state.eventDetails = payload
     },
     setEventsFromLocation(state, payload) {
       state.eventsFromLocation = payload
@@ -59,24 +61,38 @@ const mutations = {
     setEventsByDates(state, payload){
       state.events = payload
     },
-    clearEventStore(state, payload){
+    setClearEventStore(state, payload){
       state.events = payload
+      state.eventDetails = payload
+    },
+    setErrors(state, payload){
+      state.errors = payload
     }
 
 }
 
 const actions = {
       async getAllEvents({commit}){
-        const response = await apolloClient.query({
+        await apolloClient.query({
           query: GET_ALL_EVENTS
         });
-        console.log('response.data.findActByUser', 'response');
-        commit('setAllEvents', response.data.findActByUser)
+//         console.log('response.data.findActByUser', 'response');
+//         commit('setAllEvents', response.data.findActByUser)
         // commit('setNotFound', false)
+        })
+        .then((res) => {
+          console.log(res.data.findActByUser, 'response');
+          commit('setAllEvents', res.data.findActByUser)
+          commit('setNotFound', false)
+        })
+        .catch((error) => {
+          console.log(error);
+          commit('setNotFound', true)
+        })
       },
       async addEvent({commit}, event){
         console.log(event, 'event store');
-        const response = await apolloClient.mutate({
+        const res = await apolloClient.mutate({
           mutation: ADD_EVENT,
           variables: {
               name: event.name,
@@ -84,9 +100,15 @@ const actions = {
               description: event.description,
               location: event.location
           }
-        });
-        console.log(response.data.createActivity, 'response');
-        commit('setAddEvent', response.data.createActivity)
+        })
+        .then((res) => {
+          console.log(res.data.createActivity, 'response store');
+          commit('setAddEvent', res.data.createActivity)
+        })
+        // .catch(error => {
+        //   console.log(error, 'error store');
+        //   commit('setErrors', error)
+        // })
       },
       async deleteEvent({commit}, id){
         const response = await apolloClient.mutate({
@@ -103,7 +125,7 @@ const actions = {
         commit('setDeleteEvent', null)
         commit('setNotFound', true)
       },
-      async editEvent({commit, dispatch}, eventObj){
+      async editEvent({commit}, eventObj){
         await apolloClient.mutate({
           mutation: UPDATE_EVENT,
           variables: {
@@ -113,11 +135,17 @@ const actions = {
               location: eventObj.location,
               name: eventObj.name
           }
-        }).then((response) => {
-          dispatch('getAllEvents')
-          console.log(eventObj, 'edited data');
-          commit('setEditEvent', eventObj)
         })
+        .then((res) => {
+          console.log(res.data.updateActivity, 'res edit');
+          commit('setEventDetails', res.data.updateActivity)
+          commit('setErrors', null)
+        })
+        .catch(error => {
+          console.log(error);
+          commit('setErrors', error)
+        })
+
       },
       // async getAllEventsFromLocation({commit}, id) {
       //   console.log(id);
@@ -149,6 +177,9 @@ const actions = {
         })
         console.log(response.data.dates, 'response dates');
         commit('setEventsByDates', response.data.dates)
+      },
+      clearEventStore({commit}, credentials){
+        commit('setClearEventStore', credentials)
       }
     }
 

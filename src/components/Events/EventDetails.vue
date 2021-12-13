@@ -7,7 +7,7 @@
                 </router-link>
             </div>
         <div>
-            <h3>Детали мероприятия не найдены...</h3>
+            <h3>Детали мероприятия не найдены или были удалены...</h3>
         </div>
           <div></div>
         </div>
@@ -115,9 +115,8 @@ export default {
     name: 'EventDetails',
     data(){
         return {
-            updatedAddress : '',
-            updatedDescription: '',
-            updatedLocationId: ''
+            updatedLocationId: '',
+            updatedAddress: ''
         }
     },
     methods: {
@@ -130,20 +129,22 @@ export default {
             'getAllLocations',
             'getEventDetails'
         ]),
+        makeToast(variant = null, title) {
+            this.$bvToast.toast(`body `, {
+                title: `${title || 'default'}`,
+                variant: variant,
+                solid: true,
+                autoHideDelay: 700
+            })
+        },
         deleteEventBtn(){
             this.$refs['modalDelete'].show()
         },
         deleteEventFromModal(){
             this.deleteEvent(this.EVENT_DETAILS.id)
-            .then((res) => {
-                console.log(res);
+            .then(() => {
                 this.$refs['modalDelete'].hide();
-                this.$bvToast.toast('Ваше мероприятие успешно удалено!', {
-                    title: 'Отлично!',
-                    variant: 'success',
-                    solid: true,
-                    autoHideDelay: 700
-                })
+                this.makeToast('success', 'Ваше мероприятие успешно удалено')
             })
             .catch(error => {
                 console.log(error);
@@ -160,12 +161,11 @@ export default {
                 description: this.EVENT_DETAILS.description,
                 id: this.EVENT_DETAILS.id,
                 location: this.updatedLocationId,
-                name: this.EVENT_DETAILS.name,
-                address: this.updatedAddress
+                name: this.EVENT_DETAILS.name
             })
-            .then((res) => {
-                this.$refs['modalEdit'].hide()
-                console.log(res,'success');
+            .then(() => {
+                this.$refs['modalEdit'].hide();
+                this.makeToast('success', 'Детали мероприятия были успешно изменены')
             })
             .catch(error => {
                 console.log(error);
@@ -184,7 +184,8 @@ export default {
             'EVENTS',
             'EVENT_DETAILS',
             'NOT_FOUND',
-            'locations'
+            'locations',
+            'ERRORS'
         ])
     },
     created(){
