@@ -108,7 +108,8 @@ export default {
         ...mapGetters({
             locations: 'locations',
             isLoadingBtn: 'isLoadingBtn',
-            isLoading: 'isLoading'
+            isLoading: 'isLoading',
+            error: 'error'
         }),
         pages() {
             const pagesCount = Math.ceil(this.total / this.limit)
@@ -153,11 +154,19 @@ export default {
             }).then(() => {
                     this.makeToast('success', 'Изменение выполнено')
                     this.closeModal()
+                }).catch(error => {
+                    this.makeToast('danger', error.message.split(':')[1])
+                    this.$store.commit('EDIT_LOCATION_FAILURE')
                 })
         },
         deleteLocation(id) {  
             this.$store.dispatch('deleteLocation', id).then(() => {
                 this.makeToast('success', 'Удаление выполнено')
+            })
+            .catch(error => {
+                this.makeToast('danger', error.message.split(':')[1])
+                this.$store.commit('DELETE_LOCATION_FAILURE', error.message)
+                console.log(error.message);
             })
         },
         showModal(key, id) {

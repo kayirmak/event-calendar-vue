@@ -154,7 +154,7 @@ const actions = {
           commit('setEventsFromLocation', events)          
         })
       },
-
+  
       async getEventDetails({commit}, eventId){
         console.log(eventId, 'resp')
         const response = await apolloClient.query({

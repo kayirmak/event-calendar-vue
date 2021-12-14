@@ -10,13 +10,15 @@ import { apolloClient } from "../vue-apollo"
 const state = {
     locations: [],
     isLoadingBtn: false,
-    isLoading: false
+    isLoading: false,
+    errors: []
 }
 
 const getters = {
     locations: state => state.locations,
     isLoadingBtn: state => state.isLoadingBtn,
-    isLoading: state => state.isLoading
+    isLoading: state => state.isLoading,
+    error: state => state.error
 }
 
 const mutations = {
@@ -50,13 +52,18 @@ const mutations = {
     EDIT_LOCATION_FAILURE(state) {
         state.isLoadingBtn = false
     },
-
+    
     DELETE_LOCATION_START(state, id) {
         state.isLoadingBtn = id
     },
     DELETE_LOCATION_SUCCESS(state, id) {
         state.isLoadingBtn = false
         state.locations = state.locations.filter(item => item.id !== id)
+    },
+    DELETE_LOCATION_FAILURE(state, errors) {
+        console.log(errors);
+        state.errors = errors
+        state.isLoadingBtn = false
     }
 }
 
@@ -83,7 +90,6 @@ const actions = {
     },
     async editLocation({commit, dispatch}, payload) {
         commit("EDIT_LOCATION_START")
-        console.log(payload);
         await apolloClient.mutate({
                 mutation: UPDATE_LOCATION,
                 variables: {
@@ -91,7 +97,6 @@ const actions = {
                     address: payload.title
                 }
             }).then((data) => {
-                console.log(data);
                 dispatch('getAllLocations')
                 commit("EDIT_LOCATION_SUCCESS")
             })
@@ -103,7 +108,6 @@ const actions = {
             mutation: DELETE_LOCATION,
             variables: {id: id},
         }).then((res) => {
-            console.log(res);
             const removedLocation = res.data.removeLocation.id
             commit("DELETE_LOCATION_SUCCESS", removedLocation)
         })

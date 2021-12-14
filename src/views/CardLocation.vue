@@ -3,29 +3,28 @@
         <!-- <b-list-group>
             <b-list-group-item v-for="event in eventsFrom" :key="event.id">{{event.name}}</b-list-group-item>
         </b-list-group> -->
-
-
         <ul class="card-list">
-            <router-link :to="{name: 'EventDetails', params: {id: event.id, event: event}}" class="card-list__item" 
-                    v-for="event in eventsFrom"
-                    :key="event.id" >
                 <li 
+                    v-for="event in eventsFrom"
+                    :key="event.id"
+                    class="card-list__item"
                 >
                     
                     <h4>{{event.name}}</h4>  
+                    <p>{{event.description}}</p>
                     <p>{{(new Date(event.day)).toLocaleDateString()}}</p>
+                    <span>Организатор: <strong>{{event.account.username}}</strong></span>
 
                     <div>
-                        <b-button
+                        <!-- <b-button
                             variant="primary"
                             class="btn-edit__card btn-no-style"
                         >
                             <i class="fas fa-edit"></i>
-                        </b-button>
+                        </b-button> -->
                     </div>
                     
                 </li>
-             </router-link> 
         </ul>
 
 
@@ -45,6 +44,9 @@ export default {
         ...mapGetters({
             eventsFrom: 'EVENTS_FROM_LOCATION'
         })
+    },
+    updated() {
+        console.log(this.eventsFrom);
     },
 
     created() {

@@ -6,24 +6,17 @@ import { GET_CURRENT_USER } from "../graphql/queries"
 const state = {
     currentUser: null,
     token: localStorage.getItem('apollo-token') || null,
-    isAuth: false
-
+    isAuth: localStorage.getItem('apollo-token') ? true : false
 }
 
 const getters = {
-    USERS(state){
-      return state.users
-    },
     isAuth: state => state.isAuth,
-    USER(state){
-      return state.currentUser
-    }
+    USER: state => state.currentUser
 }
 
 const mutations = {
       registerSuccess(state, payload){
-        state.currentUser = payload;
-        state.isAuth = true
+        // state.currentUser = payload;
       },
       loginSuccess(state, payload){
         state.currentUser = payload
@@ -56,7 +49,7 @@ const actions = {
         });
         // console.log(user, 'user');
         console.log(response.data.signup, 'data');
-        commit('registerSuccess', response.data.signup);
+        // commit('registerSuccess', response.data.signup);
       },
       async loginUser({commit}, user){
         const response = await apolloClient.mutate({

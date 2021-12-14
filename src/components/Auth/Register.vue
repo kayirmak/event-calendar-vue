@@ -97,6 +97,7 @@ export default {
 			})
 			.then(() => {
 				this.$router.push({name: 'Login'})
+				this.makeToast('success', 'Успешно зарегистрирован')
 			})
 			.catch(error => {
 				console.log(error, 'error');
