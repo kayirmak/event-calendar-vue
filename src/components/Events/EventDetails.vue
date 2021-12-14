@@ -27,8 +27,7 @@
                 </div>
             </div>
         <div class="d-flex justify-content-around align-items-center">
-            <div>
-                <img class="img-details" src="http://owen.tuzitio.com/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png" alt="img">
+            <div class="img-details">
             </div>
             <div class="d-flex flex-column align-content-center">
                 <div class="mt-5 d-flex justify-content-center name-details">
@@ -61,7 +60,7 @@
                     </div>
                     <div class="ml-3 d-flex flex-column align-items-center">
                         <h5>Дата проведения</h5>
-                        <h6>{{EVENT_DETAILS.day.slice(0,10)}}</h6>
+                        <h6>{{new Date(EVENT_DETAILS.day).toLocaleDateString()}}</h6>
                     </div>
                 </div>
             </div>
@@ -69,7 +68,7 @@
         </div>
         <b-modal id="modalEdit" ref="modalEdit" centered title="Редактирование мероприятия">
             <p class="mt-2 mb-1">Новый заголовок мероприятия: </p>
-            <b-form-input v-model="EVENT_DETAILS.name"></b-form-input>
+            <b-form-input required v-model="EVENT_DETAILS.name"></b-form-input>
             <p class="mt-2 mb-1">Новое описание мероприятия: </p>
             <b-form-textarea
                 id="textarea"
@@ -77,11 +76,12 @@
                 rows="3"
                 max-rows="6"
                 v-model="EVENT_DETAILS.description"
+                required
             ></b-form-textarea>
             <p class="mt-2 mb-1">Новая дата мероприятия: </p>
             <b-form-datepicker v-model="EVENT_DETAILS.day" class="mt-2"></b-form-datepicker>
             <p class="mt-2 mb-1">Новая локация мероприятия: </p>
-            <b-form-input v-model="updatedAddress"  placeholder="Новая локация" list="my-list-id" class="mt-2"></b-form-input>
+            <b-form-input placeholder="Новая локация" v-model="updatedAddress" class="mt-2"></b-form-input>
                     <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
                         <b-dropdown-item 
                         v-for="locationItem in locations" 
@@ -127,7 +127,8 @@ export default {
             'editEvent',
             'deleteEvent',
             'getAllLocations',
-            'getEventDetails'
+            'getEventDetails',
+            'getAllEvents'
         ]),
         makeToast(variant = null, title) {
             this.$bvToast.toast(`body `, {
@@ -148,14 +149,15 @@ export default {
             })
             .catch(error => {
                 console.log(error);
+                // this.makeToast('danger', error.message.split(':')[1])
             })
         },
         editEventBtn(){
             this.$refs['modalEdit'].show()
             this.getAllLocations()
         },
-        addNewEditedEvent(e){
-            e.preventDefault();
+        addNewEditedEvent(){
+            if(this.EVENT_DETAILS.name && this.EVENT_DETAILS.description  && this.updatedAddress) { 
             this.$store.dispatch('editEvent', {
                 day: this.EVENT_DETAILS.day,
                 description: this.EVENT_DETAILS.description,
@@ -169,15 +171,16 @@ export default {
             })
             .catch(error => {
                 console.log(error);
+                this.makeToast('danger', error.message.split(':')[1])
             })
+            } else {
+                this.makeToast('danger', 'Заполните поля')
+            }
         },
         selectLocationId(id, address){
             this.updatedLocationId = id
             this.updatedAddress = address
-        },
-        // getEventDetailsById() {
-        //     this.$store.dispatch('getEventDetails', parseInt(this.$route.params.id))
-        // }
+        }
     },
     computed: {
         ...mapGetters([

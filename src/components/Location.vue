@@ -48,7 +48,7 @@
             <ul class="location-list" id="list-id" v-else>
                 <li class="location-list__item" v-for="location in locations" :key="location.id">
                     <router-link :to="{name: 'card-location', params: {id: location.id, location: location}}">
-                        <h4>{{location.address}}</h4>
+                        <h4 >{{location.address}}</h4>
                     </router-link>
 
                     <div>
@@ -210,5 +210,12 @@ a {
 }
 .location-add {
     margin-top: 15px;
+}
+.card-location{
+    text-decoration: underline;
+    cursor: pointer;
+}
+.card-location:hover{
+    color: blue;
 }
 </style>

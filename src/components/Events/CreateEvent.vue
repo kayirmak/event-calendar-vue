@@ -1,24 +1,29 @@
 <template>
 <div>
-    <div class="d-flex justify-content-between align-items-center mt-2">
+    <div class="d-flex justify-content-around align-items-center mt-2">
     <div class="ml-2">
-    <router-link :to="{name: 'EventsList'}">
-        <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
-    </router-link>
+        <router-link :to="{name: 'EventsList'}">
+            <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
+        </router-link>
     </div>
-    <div>
-    <h3 class="mt-2 ml-5">Создать новое мероприятие</h3>
+    <div  class="event-title">
+        <h5>Создать новое мероприятие</h5>
     </div>
     <div>
         <router-link :to="{name: 'EventsList'}">
-        <b-button class="mr-2" variant="success">
-            Список всех мероприятий
-        </b-button>
+            <b-button class="mr-2" variant="success">
+                Список всех мероприятий
+            </b-button>
+        </router-link>
+        <router-link :to="{name: 'locations'}">
+            <b-button class="ml-2 mr-2" variant="success">
+                Список всех локаций
+            </b-button>
         </router-link>
     </div>
     </div>
     <BContainer
-    class="d-flex justify-content-center align-items-center mt-5"
+        class="d-flex justify-content-center align-items-center mt-5"
     >
     <b-form class="form-block bg-light rounded p-4 mr-5" @submit.prevent="addEventBtn">
       <b-form-group
@@ -35,9 +40,9 @@
         ></b-form-input>
       </b-form-group>
       <b-form-group
-      id="textarea"
-      label="Описание мероприятия:"
-      label-for="textarea"
+        id="textarea"
+        label="Описание мероприятия:"
+        label-for="textarea"
       >
         <b-form-textarea
             id="textarea"
@@ -52,30 +57,27 @@
       <b-form-group
         id="datepicker"
       >
-        <label class="mt-2" for="datepicker">Выберите дату проведения:</label>
-        <b-form-datepicker type="date" required id="datepicker" v-model="eventData.day" class="mb-2"></b-form-datepicker>
+            <label class="mt-2" for="datepicker">Выберите дату проведения:</label>
+            <b-form-datepicker 
+            type="date" 
+            required 
+            id="datepicker" 
+            v-model="eventData.day" 
+            class="mb-2"
+            >
+            </b-form-datepicker>
         </b-form-group>
         <b-form-group>
-
-            <!-- <b-form-input v-model="eventData.location" placeholder="Новая локация" list="my-list-id" class="mt-2"></b-form-input>
-                    <datalist id="my-list-id">
-                        <option
-                            v-for="locationItem in LOCATIONS"
-                            :key="locationItem.id"
-                            @mouseover="onclick(eventData.location)"
-                        >
-                            {{locationItem.address}}
-                        </option>
-                    </datalist> -->
-                      <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
-                        <b-dropdown-item 
-                        v-for="locationItem in LOCATIONS" 
-                        :key="locationItem.id"
-                        @click="selectLocationId(locationItem.id)"
-                        >
-                            {{locationItem.address}}
-                        </b-dropdown-item>
-                    </b-dropdown>
+            <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
+                <b-dropdown-item 
+                    v-for="locationItem in locations" 
+                    :key="locationItem.id"
+                    @click="selectLocationId(locationItem.id, locationItem.address)"
+                >
+                    {{locationItem.address}}
+                </b-dropdown-item>
+            </b-dropdown>
+        <b-input readonly placeholder="Ваша локация" v-model="this.selectedAddress">{{this.selectedAddress}}</b-input>
         </b-form-group>
         <b-button type="submit" variant="success" class="mr-2">Добавить мероприятие</b-button>
         <b-button type="reset" @click="resetAll" variant="danger">Очистить все</b-button>
@@ -97,6 +99,7 @@ export default {
                 day: '',
                 locationId: ''
             },
+            selectedAddress: ''
         }
     },
     methods: {
@@ -114,7 +117,7 @@ export default {
             })
         },
         addEventBtn(){
-            if(this.eventData.day){
+            if(this.eventData.day && this.selectedAddress){
             this.$store.dispatch('addEvent',{
                 name: this.eventData.name,
                 description: this.eventData.description,
@@ -122,16 +125,17 @@ export default {
                 location: this.eventData.locationId
             })
             .then(() => {
-                this.makeToast('success', 'Ваше мероприятие успешно добавлено')
-                this.eventData = {}
+                this.makeToast('success', 'Ваше мероприятие успешно добавлено');
+                this.eventData = {};
+                this.selectedAddress = '';
+                this.$router.push({name: 'EventsList'})
             })
             .catch(error => {
                 console.log(error.message, 'error component');
-                // this.makeToast('danger', this.ERRORS)
-                this.makeToast('danger', error.message)
+                this.makeToast('danger', error.message.split(':')[1]);
             })
             } else {
-                this.makeToast('danger', 'Выберите дату для своего мероприятия')
+                this.makeToast('danger', 'Выберите дату или локацию для своего мероприятия');
             }
         },
         getEvents(){
@@ -146,15 +150,16 @@ export default {
         resetAll(){
             this.eventData = {}
         },
-        selectLocationId(id) {
+        selectLocationId(id, address) {
             this.eventData.locationId = id
+            this.selectedAddress = address
         }
     },
     computed: {
         ...mapGetters([
             'USERS',
             'EVENTS',
-            'LOCATIONS',
+            'locations',
             'ERRORS'
         ])
     },
@@ -167,6 +172,10 @@ export default {
 <style>
 .form-block{
     width: 450px;
+}
+.event-title{
+    margin-left: 285px;
+    margin-top: 20px;
 }
 
 </style>
