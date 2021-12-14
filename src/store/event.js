@@ -12,7 +12,8 @@ const state = {
     eventDetails: null,
     eventsFromLocation: [],
     notFound: false,
-    showBtnDetails: true
+    showBtnDetails: true,
+    errors: ''
 }
 
 const getters = {
@@ -33,6 +34,9 @@ const getters = {
     },
     SHOW_BTN_DETAILS(state){
       return state.showBtnDetails
+    },
+    ERRORS(state){
+      return state.errors
     }
 }
 
@@ -72,6 +76,9 @@ const mutations = {
     },
     setShowBtnDetails(state, payload){
       state.showBtnDetails = payload
+    },
+    setErrors(state, payload){
+      state.errors = payload
     }
 
 }
@@ -151,7 +158,12 @@ const actions = {
           variables: {id: id}
         }).then((res) => {
           const events = res.data.findAllActivityFromLocationId
-          commit('setEventsFromLocation', events)          
+          commit('setEventsFromLocation', events) 
+          commit('setErrors', null)
+        }).catch((error) => {
+          console.log(error);
+          commit('setEventsFromLocation', null)
+          commit('setErrors', error.message.split(':')[1])
         })
       },
   
