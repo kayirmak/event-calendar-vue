@@ -17,7 +17,7 @@
         </div>
           <div class="d-flex justify-content-start align-items-center mb-5 ml-2">
               <div class="date-block mr-2">
-                <label for="datepicker1">Начало даты (ГГ/MM/ДД)</label>
+                <label for="datepicker1">Начало даты (ДД/ММ/ГГ)</label>
                     <b-form-datepicker
                     id="datepicker1"
                     class="mb-2"
@@ -27,7 +27,7 @@
                     ></b-form-datepicker>
               </div>
               <div class="date-block">
-                <label for="datepicker2">Конец даты (ГГ/MM/ДД)</label>
+                <label for="datepicker2">Конец даты (ДД/ММ/ГГ))</label>
                     <b-form-datepicker
                     id="datepicker2"
                     class="mb-2"
@@ -59,12 +59,12 @@
             </div>
         </div>
       </div>
-        <div v-if="!EVENTS.length" class="mt-4">
+        <div v-if="!EVENTS" class="mt-4">
           <h3>У вас нет мероприятий...</h3>
       </div>
       <div v-else>
       <b-row class="p-4" cols="4" align-h="between">
-        <b-card-group v-for="eventItem in this.EVENTS" :key="eventItem.id">
+        <b-card-group v-for="eventItem in EVENTS" :key="eventItem.id">
         <b-card
             :title="eventItem.name"
             tag="article"
