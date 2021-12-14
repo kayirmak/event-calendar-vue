@@ -3,8 +3,11 @@
         <!-- <b-list-group>
             <b-list-group-item v-for="event in eventsFrom" :key="event.id">{{event.name}}</b-list-group-item>
         </b-list-group> -->
-        <ul class="card-list">
+        <h3 v-if="errors">{{errors}}</h3>
+
+        <ul v-else class="card-list">
                 <li 
+                
                     v-for="event in eventsFrom"
                     :key="event.id"
                     class="card-list__item"
@@ -26,6 +29,7 @@
                     
                 </li>
         </ul>
+        
 
 
     </div>
@@ -40,18 +44,35 @@ export default {
        
     },
 
+    methods: {
+        makeToast(variant = null, title) {
+            this.$bvToast.toast(`body `, {
+                title: `${title || 'default'}`,
+                variant: variant,
+                solid: true,
+                autoHideDelay: 700
+            })
+        }
+    },
+
     computed: {
         ...mapGetters({
-            eventsFrom: 'EVENTS_FROM_LOCATION'
+            eventsFrom: 'EVENTS_FROM_LOCATION',
+            errors: 'ERRORS'
         })
     },
     updated() {
-        console.log(this.eventsFrom);
+        // console.log(this.eventsFrom);
+        // console.log(this.errors, 'errors')
+
     },
 
     created() {
-        console.log(this.$route.params);
+        // console.log(this.$route.params);
         this.$store.dispatch('getAllEventsFromLocation', parseInt(this.$route.params.id))
+        .then(res => {
+            console.log(res);
+        })
     }
 }
 </script>

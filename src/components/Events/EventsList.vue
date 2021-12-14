@@ -75,10 +75,9 @@
             Локация : {{eventItem.location.address}}
         </b-card-text>
             <div v-if="!SHOW_BTN_DETAILS">
-            <p>Дата: {{new Date(eventItem.day).toLocaleDateString()}}</p>
-            <p>Организатор: {{eventItem.account.username}}</p>
+                <p>Дата: {{new Date(eventItem.day).toLocaleDateString()}}</p>
+                <p>Организатор: {{eventItem.account.username}}</p>
             </div>
-
             <b-button v-else @click="toEventDetails(eventItem)" variant="primary">
                 Детали мероприятия
             </b-button>
@@ -107,6 +106,14 @@ export default {
         }
     },
     methods: {
+        makeToast(variant = null, title) {
+            this.$bvToast.toast(`body `, {
+                title: `${title || 'default'}`,
+                variant: variant,
+                solid: true,
+                autoHideDelay: 700
+            })
+        },
         disabledDate() {
             if(this.filterData.startDay > this.filterData.endDay) {
                 this.filterData.endDay = this.filterData.startDay
@@ -118,6 +125,7 @@ export default {
             'getEventDetails'
         ]),
         filterDateBtn(){
+            if(this.filterData.startDay && this.filterData.endDay){
             this.$store.dispatch('getEventsByDates', {
                 startDay: this.filterData.startDay,
                 endDay: this.filterData.endDay
@@ -126,6 +134,10 @@ export default {
                 console.log(res, 'success');
             })
             .catch(error => console.log(error))
+            } else {
+                this.makeToast('danger', 'Заполните поля')
+            }
+
         },
         resetFilter(){
             this.filterData = {};
