@@ -1,18 +1,18 @@
 import { DELETE_EVENT, ADD_EVENT, UPDATE_EVENT } from "../graphql/mutations"
-import { GET_ALL_EVENTS, GET_ALL_EVENTS_FROM_LOCATION,  GET_EVENTS_BY_DATES, GET_EVENT_BY_ID } from "../graphql/queries"
+import { 
+  GET_ALL_EVENTS, 
+  GET_ALL_EVENTS_FROM_LOCATION,  
+  GET_EVENTS_BY_DATES, 
+  GET_EVENT_BY_ID 
+} from "../graphql/queries"
 import { apolloClient } from "../vue-apollo"
 
 const state = {
     events: [],
-    eventState: {
-      name: '',
-      day: '',
-      description: ''
-    },
     eventDetails: null,
     eventsFromLocation: [],
     notFound: false,
-    errors: ''
+    showBtnDetails: true
 }
 
 const getters = {
@@ -30,20 +30,21 @@ const getters = {
     },
     ERRORS(state){
       return state.errors
+    },
+    SHOW_BTN_DETAILS(state){
+      return state.showBtnDetails
     }
 }
 
 const mutations = {
     setAllEvents(state, events){
-      console.log('events', events);
-      state.events = events;
+      state.events = events
     },
     setAddEvent(state, payload){
       state.events.push(payload)
     },
     setDeleteEvent(state, payload){
       state.eventDetails = payload
-      console.log(payload, 'payload');
     },
     setEventDetails(state, eventDetails){
       state.eventDetails = eventDetails
@@ -60,6 +61,7 @@ const mutations = {
     },
     setEventsByDates(state, payload){
       state.events = payload
+      state.showBtnDetails = false
     },
     setClearEventStore(state, payload){
       state.events = payload
@@ -67,48 +69,47 @@ const mutations = {
     },
     setErrors(state, payload){
       state.errors = payload
+    },
+    setShowBtnDetails(state, payload){
+      state.showBtnDetails = payload
     }
 
 }
 
 const actions = {
+
       async getAllEvents({commit}){
         await apolloClient.query({
           query: GET_ALL_EVENTS
-        //console.log('response.data.findActByUser', 'response');
-        //commit('setAllEvents', response.data.findActByUser)
-        // commit('setNotFound', false)
         })
         .then((res) => {
           console.log(res.data.findActByUser, 'response');
           commit('setAllEvents', res.data.findActByUser)
           commit('setNotFound', false)
+          commit('setShowBtnDetails', true)
         })
         .catch((error) => {
           console.log(error);
           commit('setNotFound', true)
         })
       },
-      async addEvent({commit}, event){
-        console.log(event, 'event store');
+
+      async addEvent({commit}, eventObj){
         const res = await apolloClient.mutate({
           mutation: ADD_EVENT,
           variables: {
-              name: event.name,
-              day: event.day,
-              description: event.description,
-              location: event.location
+              name: eventObj.name,
+              day: eventObj.day,
+              description: eventObj.description,
+              location: eventObj.location
           }
         })
         .then((res) => {
           console.log(res.data.createActivity, 'response store');
           commit('setAddEvent', res.data.createActivity)
         })
-        // .catch(error => {
-        //   console.log(error, 'error store');
-        //   commit('setErrors', error)
-        // })
       },
+
       async deleteEvent({commit}, id){
         const response = await apolloClient.mutate({
           mutation: DELETE_EVENT,
@@ -124,6 +125,7 @@ const actions = {
         commit('setDeleteEvent', null)
         commit('setNotFound', true)
       },
+
       async editEvent({commit}, eventObj){
         await apolloClient.mutate({
           mutation: UPDATE_EVENT,
@@ -140,21 +142,19 @@ const actions = {
           commit('setEventDetails', res.data.updateActivity)
           commit('setErrors', null)
         })
-        .catch(error => {
-          console.log(error);
-          commit('setErrors', error)
+      },
+
+      async getAllEventsFromLocation({commit}, id) {
+        console.log(id);
+        await apolloClient.query({
+          query: GET_ALL_EVENTS_FROM_LOCATION,
+          variables: {id: id}
+        }).then((res) => {
+          const events = res.data.findAllActivityFromLocationId
+          commit('setEventsFromLocation', events)          
         })
       },
-      // async getAllEventsFromLocation({commit}, id) {
-      //   console.log(id);
-      //   await apolloClient.query({
-      //     query: GET_ALL_EVENTS_FROM_LOCATION,
-      //     variables: {id: id}
-      //   }).then((res) => {
-      //     const events = res.data.findAllActivityFromLocationId
-      //     commit('setEventsFromLocation', events)          
-      //   })
-      // },
+
       async getEventDetails({commit}, eventId){
         console.log(eventId, 'resp')
         const response = await apolloClient.query({
@@ -165,6 +165,7 @@ const actions = {
         })
         commit('setEventDetails', response.data.findActOne)
       },
+
       async getEventsByDates({commit}, dateObj){
         const response = await apolloClient.query({
           query: GET_EVENTS_BY_DATES,
@@ -175,7 +176,9 @@ const actions = {
         })
         console.log(response.data.dates, 'response dates');
         commit('setEventsByDates', response.data.dates)
+        commit('setShowBtnDetails', false)
       },
+
       clearEventStore({commit}, credentials){
         commit('setClearEventStore', credentials)
       }

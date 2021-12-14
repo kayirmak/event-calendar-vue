@@ -6,7 +6,7 @@ import { GET_CURRENT_USER } from "../graphql/queries"
 const state = {
     currentUser: null,
     token: localStorage.getItem('apollo-token') || null,
-    isAuth: true
+    isAuth: false
 
 }
 
@@ -32,10 +32,6 @@ const mutations = {
       setToken(state, payload){
         state.token = payload
       },
-//       setLogoutUser(state){
-//         state.currentUser = null
-//         state.isAuth = false
-//       },
       getCurrentUserSuccess(state, payload) {
         state.currentUser = payload
         state.isAuth = true
@@ -44,6 +40,7 @@ const mutations = {
         state.user = payload
         state.token = payload
         state.isAuth = false
+        state.currentUser = null
       }
 }
 

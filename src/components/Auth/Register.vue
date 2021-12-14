@@ -9,7 +9,7 @@
 
 			<b-form-group
         id="input-group-2"
-        label="Имя:"
+        label="Имя пользователя:"
         label-for="input-2"
       >
 				<b-form-input
@@ -78,7 +78,18 @@ export default {
         }
     },
 	methods: {
+		makeToast(variant = null, title) {
+            this.$bvToast.toast(`body `, {
+                title: `${title || 'default'}`,
+                variant: variant,
+                solid: true,
+                autoHideDelay: 700
+            })
+		},
 		registerForm(){
+			const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			const checkEmail = regex.test(this.user.email)
+			if(checkEmail){
 			this.$store.dispatch('registerUser', {
 				username: this.user.username,
 				email: this.user.email,
@@ -89,7 +100,13 @@ export default {
 			})
 			.catch(error => {
 				console.log(error, 'error');
+				this.makeToast('danger', error.message.split(':')[1])
+
 			})
+			} else {
+				this.makeToast('danger', 'Введите адрес эл.почты корректно')
+			}
+
 		}
 	}
 }

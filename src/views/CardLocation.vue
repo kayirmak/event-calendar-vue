@@ -6,7 +6,7 @@
 
 
         <ul class="card-list">
-            <router-link :to="{name: 'EventDetails', params: {id: event.id, event}}" class="card-list__item" 
+            <router-link :to="{name: 'EventDetails', params: {id: event.id, event: event}}" class="card-list__item" 
                     v-for="event in eventsFrom"
                     :key="event.id" >
                 <li 
