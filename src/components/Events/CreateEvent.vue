@@ -69,7 +69,7 @@
                     </datalist> -->
                       <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
                         <b-dropdown-item 
-                        v-for="locationItem in LOCATIONS" 
+                        v-for="locationItem in locations" 
                         :key="locationItem.id"
                         @click="selectLocationId(locationItem.id)"
                         >
@@ -154,7 +154,7 @@ export default {
         ...mapGetters([
             'USERS',
             'EVENTS',
-            'LOCATIONS',
+            'locations',
             'ERRORS'
         ])
     },

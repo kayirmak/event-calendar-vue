@@ -145,16 +145,16 @@ const actions = {
           commit('setErrors', error)
         })
       },
-      // async getAllEventsFromLocation({commit}, id) {
-      //   console.log(id);
-      //   await apolloClient.query({
-      //     query: GET_ALL_EVENTS_FROM_LOCATION,
-      //     variables: {id: id}
-      //   }).then((res) => {
-      //     const events = res.data.findAllActivityFromLocationId
-      //     commit('setEventsFromLocation', events)          
-      //   })
-      // },
+      async getAllEventsFromLocation({commit}, id) {
+        console.log(id);
+        await apolloClient.query({
+          query: GET_ALL_EVENTS_FROM_LOCATION,
+          variables: {id: id}
+        }).then((res) => {
+          const events = res.data.findAllActivityFromLocationId
+          commit('setEventsFromLocation', events)          
+        })
+      },
       async getEventDetails({commit}, eventId){
         console.log(eventId, 'resp')
         const response = await apolloClient.query({

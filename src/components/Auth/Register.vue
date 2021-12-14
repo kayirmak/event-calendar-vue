@@ -78,6 +78,13 @@ export default {
         }
     },
 	methods: {
+		makeToast(variant = null, title) {
+            this.$bvToast.toast(`body `, {
+                title: `${title || 'default'}`,
+                variant: variant,
+                solid: true,
+            })
+        },
 		registerForm(){
 			this.$store.dispatch('registerUser', {
 				username: this.user.username,
@@ -86,6 +93,7 @@ export default {
 			})
 			.then(() => {
 				this.$router.push({name: 'Login'})
+				this.makeToast('success', 'Успешно зарегистрирован')
 			})
 			.catch(error => {
 				console.log(error, 'error');

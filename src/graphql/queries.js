@@ -4,8 +4,8 @@ import gql from 'graphql-tag'
 export const GET_CURRENT_USER = gql`
     query{
         getInfo{
-        username
-        id
+            username
+            id
         }
     }
 `
@@ -19,9 +19,11 @@ query{
       description
       day
       location{
+        id
         address
       }
       account{
+        id
         username
       }
     }
@@ -48,6 +50,7 @@ query($id: Int!){
       day
       id
       account{
+        id
         username
       }
       location{
@@ -76,10 +79,12 @@ query($startDay: String!, $endDay: String!) {
     id
     description
     location {
-      address
+        id
+        address
     }
     account {
-      username
+        id
+        username
     }
   }
 }
@@ -95,6 +100,7 @@ export const GET_ALL_EVENTS_FROM_LOCATION = gql`
             account{
                 id
                 email
+                username
             }
             location{
                 id
