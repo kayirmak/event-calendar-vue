@@ -157,7 +157,6 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'USERS',
             'EVENTS',
             'locations',
             'ERRORS'

@@ -204,7 +204,6 @@ a {
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
 }
 .location-list__item {
     width: 18%;

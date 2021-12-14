@@ -46,8 +46,13 @@ const mutations = {
     EDIT_LOCATION_START(state) {
         state.isLoadingBtn = true
     },
-    EDIT_LOCATION_SUCCESS(state) {
+    EDIT_LOCATION_SUCCESS(state, payload) {
         state.isLoadingBtn = false
+        state.locations.map(item => {
+            if(item.id === payload.id) {
+                item.address = payload.address
+            }
+        })
     },
     EDIT_LOCATION_FAILURE(state) {
         state.isLoadingBtn = false
@@ -96,9 +101,10 @@ const actions = {
                     id: payload.id,
                     address: payload.title
                 }
-            }).then((data) => {
-                dispatch('getAllLocations')
-                commit("EDIT_LOCATION_SUCCESS")
+            }).then((res) => {
+                console.log(res.data.updateLocation);
+                // dispatch('getAllLocations')
+                commit("EDIT_LOCATION_SUCCESS", res.data.updateLocation)
             })
         },
 
