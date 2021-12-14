@@ -68,16 +68,31 @@ export default {
         ...mapActions([
             'getAllEvents'
         ]),
+        makeToast(variant = null, title) {
+            this.$bvToast.toast(`body `, {
+                title: `${title || 'default'}`,
+                variant: variant,
+                solid: true,
+                autoHideDelay: 700
+            })
+        },
         loginForm(){
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			const checkEmail = regex.test(this.user.email);
+            if(checkEmail){
             this.$store.dispatch('loginUser', {
                 email: this.user.email,
                 password: this.user.password
             })
-            .then((res) => {
-                console.log(res);
+            .then(() => {
                 this.$router.push({name: 'EventsList'})
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+                this.makeToast('danger', error.message.split(':')[1])
+            })
+            } else {
+				this.makeToast('danger', 'Введите адрес эл.почты корректно')
+            }
         }
     }
 }

@@ -3,10 +3,7 @@
         <!-- <b-list-group>
             <b-list-group-item v-for="event in eventsFrom" :key="event.id">{{event.name}}</b-list-group-item>
         </b-list-group> -->
-
-
         <ul class="card-list">
-                    
                 <li 
                     v-for="event in eventsFrom"
                     :key="event.id"

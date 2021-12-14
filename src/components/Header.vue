@@ -46,9 +46,6 @@
             <b-icon icon="person-circle"></b-icon>
             <!-- <em>User</em> -->
           </template>
-            <b-dropdown-item href="#">
-              Профиль
-            </b-dropdown-item>
             <b-dropdown-item @click="logoutBtn" href="#">
                     Выйти
             </b-dropdown-item>

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueApollo from 'vue-apollo'
 import { createApolloClient, restartWebsockets } from 'vue-cli-plugin-apollo/graphql-client'
+// import { InMemoryCache } from 'apollo-cache-inmemory'
 
 // Install the vue plugin
 Vue.use(VueApollo)
@@ -39,10 +40,10 @@ const defaultOptions = {
   persisting: false,
   websocketsOnly: false,
   ssr: false,
-  link: authLink
+  link: authLink,
 
   // Override default cache
-  // cache: myCache
+  // cache: new InMemoryCache()
 
   // Override the way the Authorization header is set
   // getAuth: (tokenName) => ...
@@ -53,6 +54,8 @@ const defaultOptions = {
   // Client local data (see apollo-link-state)
   // clientState: { resolvers: { ... }, defaults: { ... } }
 }
+
+// console.log(defaultOptions.cache, 'cache');
 
 export const { 
   apolloClient, 

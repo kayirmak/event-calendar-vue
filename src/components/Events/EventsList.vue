@@ -2,8 +2,8 @@
   <div>
       <div class="d-flex justify-content-between mt-2">
       <div class="ml-2">
-        <router-link :to="{name: 'Home'}">
-        <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
+        <router-link :to="{}">
+        <!-- <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon> -->
         </router-link>
       </div>
       <div>
@@ -12,7 +12,10 @@
       <div></div>
       </div>
       <div>
-          <div class="d-flex justify-content-start align-items-center mt-3 mb-5 ml-2">
+        <div class="d-flex justify-content-start ml-2">
+            <p>Фильтрация всех мероприятий по интервалу дат</p>
+        </div>
+          <div class="d-flex justify-content-start align-items-center mb-5 ml-2">
               <div class="date-block mr-2">
                 <label for="datepicker1">Начало даты (ГГ/MM/ДД)</label>
                     <b-form-datepicker
@@ -41,7 +44,7 @@
           </div>
         <div class="d-flex justify-content-end mr-2">
             <div>
-            <router-link :to="{name: 'feed'}">
+            <router-link :to="{name: 'locations'}">
             <b-button variant="success">
                 Создать новую локацию
             </b-button>
@@ -56,25 +59,27 @@
             </div>
         </div>
       </div>
-        <div v-if="!this.EVENTS.length" class="mt-4">
+        <div v-if="!EVENTS.length" class="mt-4">
           <h3>У вас нет мероприятий...</h3>
       </div>
       <div v-else>
-      <b-row  cols="4" align-h="between">
+      <b-row class="p-4" cols="4" align-h="between">
         <b-card-group v-for="eventItem in this.EVENTS" :key="eventItem.id">
-            <!-- <EventCard
-            :currentEvent="event"
-            /> -->
         <b-card
             :title="eventItem.name"
             tag="article"
             style="max-width: 20rem;"
-            class="mb-2 mt-3 ml-1"
+            class="mb-2 mt-3 ml-1 event-list__item"
         >
         <b-card-text>
             Локация : {{eventItem.location.address}}
         </b-card-text>
-            <b-button @click="toEventDetails(eventItem)" variant="primary">
+            <div v-if="!SHOW_BTN_DETAILS">
+            <p>Дата: {{new Date(eventItem.day).toLocaleDateString()}}</p>
+            <p>Организатор: {{eventItem.account.username}}</p>
+            </div>
+
+            <b-button v-else @click="toEventDetails(eventItem)" variant="primary">
                 Детали мероприятия
             </b-button>
         </b-card>
@@ -86,9 +91,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-// import EventCard from './EventCard.vue';
 export default {
-//   components: { EventCard },
     name: 'EventsList',
     data(){
         return {
@@ -104,10 +107,7 @@ export default {
         }
     },
     methods: {
-        disabledDate(ymd, date) {
-            console.log('ymd: ', ymd);
-            // console.log('date: ', date);
-            console.log('start date: ', this.filterData.startDay)
+        disabledDate() {
             if(this.filterData.startDay > this.filterData.endDay) {
                 this.filterData.endDay = this.filterData.startDay
                 this.minEndDay = this.filterData.startDay
@@ -135,7 +135,6 @@ export default {
             console.log(eventItem);
             this.getEventDetails(eventItem.id)
             .then(() => {
-                // this.$router.push({name: 'EventDetails', params:{id: this.currentEvent.id, event: this.currentEvent}})
                 this.$router.push({name: 'EventDetails', params:{id: eventItem.id, event: eventItem}})
                 
             })
@@ -144,16 +143,12 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'EVENTS'
+            'EVENTS',
+            'SHOW_BTN_DETAILS'
         ])
     },
     mounted(){
         this.getAllEvents()
-        console.log(this.EVENTS.length, 'length');
-    },
-    created() {
-        this.getAllEvents()
-
     }
 }
 </script>
@@ -166,6 +161,15 @@ export default {
 .date-block{
     width: 200px;
     height: 100px;
+}
+.event-list__item{
+    transition: 0.2s ease-in-out;
+}
+.event-list__item:hover{
+    background: rgb(245, 245, 245);
+    transition: 0.2s ease-in-out;
+    transform: scale(1.02);
+    text-decoration: none;
 }
 
 </style>

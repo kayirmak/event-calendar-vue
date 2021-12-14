@@ -7,11 +7,9 @@ const state = {
     currentUser: null,
     token: localStorage.getItem('apollo-token') || null,
     isAuth: localStorage.getItem('apollo-token') ? true : false
-
 }
 
 const getters = {
-    USERS: state => state.users,
     isAuth: state => state.isAuth,
     USER: state => state.currentUser
 }
@@ -27,10 +25,6 @@ const mutations = {
       setToken(state, payload){
         state.token = payload
       },
-//       setLogoutUser(state){
-//         state.currentUser = null
-//         state.isAuth = false
-//       },
       getCurrentUserSuccess(state, payload) {
         state.currentUser = payload
         state.isAuth = true
@@ -39,6 +33,7 @@ const mutations = {
         state.user = payload
         state.token = payload
         state.isAuth = false
+        state.currentUser = null
       }
 }
 
