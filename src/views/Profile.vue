@@ -51,9 +51,9 @@
                 </router-link>
             </div>
             <div class="prodile-data__link">
-                <router-link :to="{name: 'EventsList'}">
+                <router-link :to="{name: 'My-Locations'}">
                     Мои локации
-                    <b-badge variant="primary">{{user.locations.length > 99 ? '99+' : user.locations.length}}</b-badge>
+                    <b-badge variant="primary">{{locationsByUser.length > 99 ? '99+' : locationsByUser.length}}</b-badge>
                 </router-link>
             </div>
         </div>
@@ -107,6 +107,7 @@ export default {
     computed: {
         ...mapGetters({
             user: 'USER',
+            locationsByUser: 'locationsByUser',
             isLoadingBtn: 'isLoadingBtn',
             errorsChangePassword: 'errorsChangePassword'
         })

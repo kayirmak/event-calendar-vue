@@ -62,6 +62,12 @@ const routes = [
     component: () => import('../views/Profile')
   },
   {
+    path: '/my-locations',
+    name: 'My-Locations',
+    props: true,
+    component: () => import('../components/MyLocations')
+  },
+  {
     path: '*',
     name: 'Error',
     props: true,

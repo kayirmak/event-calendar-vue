@@ -4,7 +4,7 @@ import { GET_CURRENT_USER } from "../graphql/queries"
 
 
 const state = {
-    currentUser: null,
+    currentUser: {},
     token: localStorage.getItem('apollo-token') || null,
     isAuth: localStorage.getItem('apollo-token') ? true : false,
     errorsChangePassword: null
@@ -13,7 +13,8 @@ const state = {
 const getters = {
     isAuth: state => state.isAuth,
     errorsChangePassword: state => state.errorsChangePassword,
-    USER: state => state.currentUser
+    USER: state => state.currentUser,
+    // myLocations: state => state.currentUser.locations
 }
 
 const mutations = {
@@ -21,7 +22,7 @@ const mutations = {
         // state.currentUser = payload;
       },
       loginSuccess(state, payload){
-        state.currentUser = payload
+        // state.currentUser = payload
         state.isAuth = true
       },
       setToken(state, payload){
@@ -59,7 +60,7 @@ const actions = {
         console.log(response.data.signup, 'data');
         // commit('registerSuccess', response.data.signup);
       },
-      async loginUser({commit}, user){
+      async loginUser({commit, dispatch}, user){
         const response = await apolloClient.mutate({
           mutation: LOGIN_USER,
           variables: {
@@ -68,13 +69,15 @@ const actions = {
           }
         });
         console.log(response.data.login, 'responsedata');
-        commit('loginSuccess', response.data.login)
+        commit('loginSuccess')
+        dispatch('getCurrentUser')
+        dispatch('getAllLocationsByUser')
         commit('setToken', response.data.login.access_token)
         localStorage.setItem('apollo-token', response.data.login.access_token)
       },
-      async getCurrentUser({commit}) {
+      getCurrentUser({commit}) {
         const token = localStorage.getItem('apollo-token')
-        await apolloClient.query({
+        apolloClient.query({
           query: GET_CURRENT_USER
         }).then((res) => {
           console.log(res);

@@ -43,10 +43,20 @@ query {
       account{
         id,
         email
+        username
       }
     },
   }
 `;
+
+export const LOCATIONS_BY_USER = gql`
+    query {
+        locationsByUser {
+            id
+            address
+        }
+    }
+`
 
 export const GET_EVENT_BY_ID = gql`
 query($id: Int!){
