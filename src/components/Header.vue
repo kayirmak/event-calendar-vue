@@ -1,39 +1,30 @@
 <template>
 <div>
     <b-navbar toggleable="lg" type="dark" variant="success">
-    <b-navbar-brand href="#">EVENTS ONLINE</b-navbar-brand>
-
+    <b-navbar-brand :to="{name: 'EventsList'}">
+      EVENTS ONLINE
+    </b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav v-if="isAuth">
-        <b-nav-item>
-          <router-link :to="{name: 'EventsList'}">
+        <b-nav-item active :to="{name: 'EventsList'}">
               Список мероприятий
-          </router-link>
         </b-nav-item>
-        <b-nav-item>
-          <router-link :to="{name: 'CreateEvent'}">
+        <b-nav-item active :to="{name: 'CreateEvent'}">
               Создать мероприятие
-          </router-link>
         </b-nav-item>
-        <b-nav-item>
-          <router-link :to="{name: 'locations'}">
+        <b-nav-item active :to="{name: 'locations'}">
               Локации
-          </router-link>
         </b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav v-else>
-        <b-nav-item>
-        <router-link :to="{name: 'Login'}">
+        <b-nav-item active :to="{name: 'Login'}">
             Sign In
-        </router-link>
         </b-nav-item>
-        <b-nav-item>
-        <router-link :to="{name: 'Register'}">
+        <b-nav-item active :to="{name: 'Register'}">
             Sign Up
-        </router-link>
         </b-nav-item>
       </b-navbar-nav>
 
@@ -46,7 +37,10 @@
             <b-icon icon="person-circle"></b-icon>
             <!-- <em>User</em> -->
           </template>
-            <b-dropdown-item @click="logoutBtn" href="#">
+           <b-dropdown-item>
+                    Профиль
+            </b-dropdown-item>
+            <b-dropdown-item @click="logoutBtn">
                     Выйти
             </b-dropdown-item>
         </b-nav-item-dropdown>

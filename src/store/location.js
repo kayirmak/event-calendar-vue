@@ -3,12 +3,13 @@ import {
     DELETE_LOCATION, 
     UPDATE_LOCATION 
 } from "../graphql/mutations"
-import { LOCATIONS } from "../graphql/queries"
+import { GET_MY_LOCATIONS, LOCATIONS } from "../graphql/queries"
 import { apolloClient } from "../vue-apollo"
 
 
 const state = {
     locations: [],
+    myLocations: [],
     isLoadingBtn: false,
     isLoading: false,
     errors: []
@@ -18,7 +19,8 @@ const getters = {
     locations: state => state.locations,
     isLoadingBtn: state => state.isLoadingBtn,
     isLoading: state => state.isLoading,
-    error: state => state.error
+    error: state => state.error,
+    myLocations: state => state.myLocations
 }
 
 const mutations = {
@@ -29,7 +31,9 @@ const mutations = {
         state.locations = payload
         state.isLoading = false
     },
-
+    ALL_MY_LOCATIONS(state, payload){
+        state.myLocations = payload
+    },
 
     CREATE_LOCATION_START(state) {
         state.isLoadingBtn = true
@@ -37,6 +41,7 @@ const mutations = {
     CREATE_LOCATION_SUCCESS(state, payload) {
         state.isLoadingBtn = false
         state.locations.push(payload)
+        state.myLocations.push(payload)
     },
     CREATE_LOCATION_FAILURE(state) {
         state.isLoadingBtn = false
@@ -75,6 +80,19 @@ const actions = {
         })
         commit("ALL_LOCATIONS_SUCCESS", data.data.locations)
         console.log(data);
+    },
+
+    async getMyLocations({commit}){
+        await apolloClient.query({
+            query: GET_MY_LOCATIONS
+        })
+        .then((res) => {
+        console.log(res.data.locationsByUser, 'my locat');
+        commit('ALL_MY_LOCATIONS', res.data.locationsByUser)
+        })
+        .catch(error => {
+            console.log(error);
+        })
     },
 
     async createLocation({commit, dispatch}, address) {

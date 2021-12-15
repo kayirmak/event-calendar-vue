@@ -50,20 +50,23 @@
             placeholder="Введите описание вашего мероприятия"
             rows="3"
             max-rows="6"
-            class="mt-3"
+            class="mt-2"
             required
         ></b-form-textarea>
       </b-form-group>
       <b-form-group
         id="datepicker"
+        label="Дата проведения мероприятия:"
+        label-for="datepicker"
       >
-            <label class="mt-2" for="datepicker">Выберите дату проведения:</label>
             <b-form-datepicker 
             type="date" 
             required 
             id="datepicker" 
             v-model="eventData.day" 
             class="mb-2"
+            :hide-header="true"
+            placeholder="Выберите дату для вашего мероприятия"
             >
             </b-form-datepicker>
         </b-form-group>
@@ -99,7 +102,9 @@ export default {
                 day: '',
                 locationId: ''
             },
-            selectedAddress: ''
+            selectedAddress: '',
+            minDay: '',
+            maxDay: ''
         }
     },
     methods: {
@@ -108,9 +113,17 @@ export default {
             'addEvent',
             'getAllLocations'
         ]),
-        makeToast(variant = null, title) {
-            this.$bvToast.toast(`body `, {
-                title: `${title || 'default'}`,
+        toastError(variant = null, body){
+            this.$bvToast.toast(`${body}`, {
+                title: `Ошибка!`,
+                variant: variant,
+                solid: true,
+                autoHideDelay: 700
+            })
+        },
+        toastSuccess(variant = null, body){
+            this.$bvToast.toast(`${body}`, {
+                title: `Отлично!`,
                 variant: variant,
                 solid: true,
                 autoHideDelay: 700
@@ -125,17 +138,17 @@ export default {
                 location: this.eventData.locationId
             })
             .then(() => {
-                this.makeToast('success', 'Ваше мероприятие успешно добавлено');
+                this.toastSuccess('success', 'Ваше мероприятие успешно добавлено');
                 this.eventData = {};
                 this.selectedAddress = '';
                 this.$router.push({name: 'EventsList'})
             })
             .catch(error => {
                 console.log(error.message, 'error component');
-                this.makeToast('danger', error.message.split(':')[1]);
+                this.toastError('danger', error.message.split(':')[1]);
             })
             } else {
-                this.makeToast('danger', 'Выберите дату или локацию для своего мероприятия');
+                this.toastError('danger', 'Выберите дату или локацию для своего мероприятия');
             }
         },
         getEvents(){

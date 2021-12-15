@@ -45,14 +45,6 @@ export default {
     },
 
     methods: {
-        makeToast(variant = null, title) {
-            this.$bvToast.toast(`body `, {
-                title: `${title || 'default'}`,
-                variant: variant,
-                solid: true,
-                autoHideDelay: 700
-            })
-        }
     },
 
     computed: {

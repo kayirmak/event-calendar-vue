@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 
 export const GET_CURRENT_USER = gql`
     query{
-        getInfo{
+        profile{
             username
             id
         }
@@ -11,7 +11,7 @@ export const GET_CURRENT_USER = gql`
 `
 
 
-export const GET_ALL_EVENTS = gql`
+export const GET_MY_EVENTS = gql`
 query{
     findActByUser{
       id
@@ -29,6 +29,26 @@ query{
     }
   }
 `
+
+export const GET_ALL_EVENTS = gql`
+query{
+  findAllActivities{
+    id
+    name
+    description
+    day
+    location{
+      id
+      address
+    }
+    account{
+      id
+      username
+    }
+  }
+}
+`
+
 export const LOCATIONS = gql`
 query {
     locations{
@@ -41,6 +61,19 @@ query {
     },
   }
 `;
+
+export const GET_MY_LOCATIONS = gql`
+query{
+  locationsByUser{
+    id
+    address
+    account{
+      id
+      username
+    }
+  }
+}
+`
 
 export const GET_EVENT_BY_ID = gql`
 query($id: Int!){
