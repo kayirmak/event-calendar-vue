@@ -1,14 +1,14 @@
 <template>
   <div>
       <div class="d-flex justify-content-between mt-2">
-      <div class="ml-2">
-        <router-link :to="{}">
-        <!-- <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon> -->
-        </router-link>
-      </div>
-      <div>
-          <h3 class="mt-2">Список всех мероприятий</h3>
-      </div>
+        <div class="ml-2">
+            <router-link :to="{}">
+            <!-- <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon> -->
+            </router-link>
+        </div>
+        <div>
+            <h3 class="mt-2">Список всех мероприятий</h3>
+        </div>
       <div></div>
       </div>
       <div>
@@ -19,6 +19,7 @@
               <div class="date-block mr-2">
                 <label for="datepicker1">Начало даты (ГГ/MM/ДД)</label>
                     <b-form-datepicker
+                    placeholder="дата не выбрана"
                     id="datepicker1"
                     class="mb-2"
                     :min="minStartDay"
@@ -29,6 +30,7 @@
               <div class="date-block">
                 <label for="datepicker2">Конец даты (ГГ/MM/ДД)</label>
                     <b-form-datepicker
+                    placeholder="дата не выбрана"
                     id="datepicker2"
                     class="mb-2"
                     :min="minEndDay"
@@ -59,11 +61,11 @@
             </div>
         </div>
       </div>
-        <div v-if="!EVENTS.length" class="mt-4">
+        <div v-if="!EVENTS" class="mt-4">
           <h3>У вас нет мероприятий...</h3>
       </div>
       <div v-else>
-      <b-row class="p-4" cols="4" align-h="between">
+      <b-row class="p-4" cols="4">
         <b-card-group v-for="eventItem in this.EVENTS" :key="eventItem.id">
         <b-card
             :title="eventItem.name"
@@ -183,5 +185,7 @@ export default {
     transform: scale(1.02);
     text-decoration: none;
 }
-
+.b-calendar-header {
+    display: none;
+}
 </style>

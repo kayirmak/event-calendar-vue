@@ -3,12 +3,13 @@ import {
     DELETE_LOCATION, 
     UPDATE_LOCATION 
 } from "../graphql/mutations"
-import { LOCATIONS } from "../graphql/queries"
+import { LOCATIONS, LOCATIONS_BY_USER } from "../graphql/queries"
 import { apolloClient } from "../vue-apollo"
 
 
 const state = {
     locations: [],
+    locationsByUser: [],
     isLoadingBtn: false,
     isLoading: false,
     errors: []
@@ -16,6 +17,7 @@ const state = {
 
 const getters = {
     locations: state => state.locations,
+    locationsByUser: state => state.locationsByUser,
     isLoadingBtn: state => state.isLoadingBtn,
     isLoading: state => state.isLoading,
     error: state => state.error
@@ -30,13 +32,21 @@ const mutations = {
         state.isLoading = false
     },
 
+    ALL_LOCATIONS_BY_USER_START(state) {
+        state.isLoading = true
+    },
+    ALL_LOCATIONS_BY_USER_SUCCESS(state, payload) {
+        state.locationsByUser = payload
+        state.isLoading = false
+    },
+
 
     CREATE_LOCATION_START(state) {
         state.isLoadingBtn = true
     },
     CREATE_LOCATION_SUCCESS(state, payload) {
         state.isLoadingBtn = false
-        state.locations.push(payload)
+        state.locationsByUser.push(payload)
     },
     CREATE_LOCATION_FAILURE(state) {
         state.isLoadingBtn = false
@@ -46,8 +56,13 @@ const mutations = {
     EDIT_LOCATION_START(state) {
         state.isLoadingBtn = true
     },
-    EDIT_LOCATION_SUCCESS(state) {
+    EDIT_LOCATION_SUCCESS(state, payload) {
         state.isLoadingBtn = false
+        state.locationsByUser.map(item => {
+            if(item.id === payload.id) {
+                item.address = payload.address
+            }
+        })
     },
     EDIT_LOCATION_FAILURE(state) {
         state.isLoadingBtn = false
@@ -58,7 +73,7 @@ const mutations = {
     },
     DELETE_LOCATION_SUCCESS(state, id) {
         state.isLoadingBtn = false
-        state.locations = state.locations.filter(item => item.id !== id)
+        state.locationsByUser = state.locationsByUser.filter(item => item.id !== id)
     },
     DELETE_LOCATION_FAILURE(state, errors) {
         console.log(errors);
@@ -75,6 +90,16 @@ const actions = {
         })
         commit("ALL_LOCATIONS_SUCCESS", data.data.locations)
         console.log(data);
+    },
+
+    getAllLocationsByUser({commit}) {
+        commit("ALL_LOCATIONS_BY_USER_START")
+        apolloClient.query({
+            query: LOCATIONS_BY_USER
+        }).then(res => {
+            commit("ALL_LOCATIONS_BY_USER_SUCCESS", res.data.locationsByUser)
+            console.log(res);
+        })
     },
 
     async createLocation({commit, dispatch}, address) {
@@ -96,9 +121,10 @@ const actions = {
                     id: payload.id,
                     address: payload.title
                 }
-            }).then((data) => {
-                dispatch('getAllLocations')
-                commit("EDIT_LOCATION_SUCCESS")
+            }).then((res) => {
+                console.log(res.data.updateLocation);
+                // dispatch('getAllLocations')
+                commit("EDIT_LOCATION_SUCCESS", res.data.updateLocation)
             })
         },
 

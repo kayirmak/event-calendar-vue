@@ -1,6 +1,6 @@
 <template>
     <div class="location">
-        <!-- <Modal 
+        <Modal 
             v-if="isVisibleLocation === 'CREATE'"
             @closeModal="closeModal"
             @btnMethod="createLocation"
@@ -10,9 +10,9 @@
             :isLoadingBtn="isLoadingBtn"
         >
             <b-input v-model="title"></b-input>
-        </Modal> -->
+        </Modal>
 
-        <!-- <Modal 
+        <Modal 
             v-if="isVisibleLocation === 'EDIT'"
             @closeModal="closeModal"
             @btnMethod="editLocation"
@@ -23,22 +23,23 @@
             :isLoadingBtn="isLoadingBtn"
         >
             <b-input v-model="title"></b-input>
-        </Modal> -->
+        </Modal>
 
+        <div class="location-header">
+            <h3 class="location-table__title">Мои локации</h3>
+            <b-button
+                class="location-add"
+                variant="success"
+                @click="showModal('CREATE')"
+                v-b-modal.modal-prevent-closing
+            >
+                Добавить местоположение
+            </b-button>
 
+        </div>
         
-        <!-- <b-button
-            class="location-add"
-            variant="success"
-            @click="showModal('CREATE')"
-            v-b-modal.modal-prevent-closing
-        >
-            Добавить местоположение
-        </b-button> -->
-
         <div class="location-table"></div>
         <div>
-            <h3 class="location-table__title">Все локации</h3>
 
             <div v-if="isLoading" class="spinner">
                 <b-spinner type="grow" label="Spinning"></b-spinner>
@@ -46,13 +47,13 @@
                 <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
             </div>
             <ul class="location-list" id="list-id" v-else>
-                <li class="location-list__item" v-for="location in locations" :key="location.id">
+                <li class="location-list__item" v-for="location in locationsByUser" :key="location.id">
                     <router-link :to="{name: 'card-location', params: {id: location.id, location: location}}">
                         <h4 >{{location.address}}</h4>
                     </router-link>
+
                     <div>
-                        <span>Автор: <strong>{{location.account.username}}</strong></span>
-                        <!-- <b-button
+                        <b-button
                             variant="success"
                             class="btn-edit__location btn-no-style"
                             v-b-modal.modal-prevent-closing @click="showModal('EDIT', location.id)"
@@ -76,7 +77,7 @@
                             v-else
                         >
                             <i class="fa fa-trash"></i>
-                        </b-button> -->
+                        </b-button>
                     </div>
                 </li>
             </ul>
@@ -106,7 +107,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            locations: 'locations',
+            locationsByUser: 'locationsByUser',
             isLoadingBtn: 'isLoadingBtn',
             isLoading: 'isLoading',
             error: 'error'
@@ -123,15 +124,15 @@ export default {
         if(this.title) this.errors = ''
     },
     methods: {
-        makeToast(variant = null, title) {
-            this.$bvToast.toast(`body `, {
+        makeToast(variant = null, title, body) {
+            this.$bvToast.toast(`${body} `, {
                 title: `${title || 'default'}`,
                 variant: variant,
                 solid: true,
             })
         },
-        getAllLocations() {
-            this.$store.dispatch('getAllLocations')
+        getAllLocationsByUser() {
+            this.$store.dispatch('getAllLocationsByUser')
         },
         createLocation() {
             if(!this.title) {
@@ -139,7 +140,7 @@ export default {
                 return    
             }
             this.$store.dispatch('createLocation', this.title).then(() => {
-                this.makeToast('success', 'Добавление выполнено')
+                this.makeToast('success', 'Успешно', 'Добавление выполнено')
                 this.closeModal()
             })
             
@@ -152,19 +153,19 @@ export default {
             this.$store.dispatch('editLocation', {
                 id: locationId, title: this.title
             }).then(() => {
-                    this.makeToast('success', 'Изменение выполнено')
+                    this.makeToast('success', 'Успешно', 'Изменение выполнено')
                     this.closeModal()
                 }).catch(error => {
-                    this.makeToast('danger', error.message.split(':')[1])
+                    this.makeToast('danger', 'Ошибка', error.message.split(':')[1])
                     this.$store.commit('EDIT_LOCATION_FAILURE')
                 })
         },
         deleteLocation(id) {  
             this.$store.dispatch('deleteLocation', id).then(() => {
-                this.makeToast('success', 'Удаление выполнено')
+                this.makeToast('success', 'Успешно', 'Удаление выполнено')
             })
             .catch(error => {
-                this.makeToast('danger', error.message.split(':')[1])
+                this.makeToast('danger', 'Ошибка', error.message.split(':')[1])
                 this.$store.commit('DELETE_LOCATION_FAILURE', error.message)
                 console.log(error.message);
             })
@@ -183,9 +184,6 @@ export default {
         
     },
         
-    mounted() {
-        this.getAllLocations()
-    }
     
 }
 </script>
@@ -200,9 +198,12 @@ a {
 .location-table {
     width: 100%;
 }
-.location-table__title {
-    text-align: left;
-    margin: 10px;
+.location-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 95%;
+    margin: 15px auto 0;
 }
 .location-list {
     padding: 0;
@@ -220,9 +221,7 @@ a {
 .btn-location {
     margin: 5px;
 }
-.location-add {
-    margin-top: 15px;
-}
+
 .card-location{
     text-decoration: underline;
     cursor: pointer;
