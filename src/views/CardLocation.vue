@@ -84,7 +84,6 @@ a {
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
 }
 .card-list__item {
     width: 18%;

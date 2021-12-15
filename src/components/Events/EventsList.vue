@@ -1,14 +1,14 @@
 <template>
   <div>
       <div class="d-flex justify-content-between mt-2">
-      <div class="ml-2">
-        <router-link :to="{}">
-        <!-- <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon> -->
-        </router-link>
-      </div>
-      <div>
-          <h3 class="mt-2">Список всех мероприятий</h3>
-      </div>
+        <div class="ml-2">
+            <router-link :to="{}">
+            <!-- <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon> -->
+            </router-link>
+        </div>
+        <div>
+            <h3 class="mt-2">Список всех мероприятий</h3>
+        </div>
       <div></div>
       </div>
       <div>
@@ -20,6 +20,7 @@
                 <div class="date-block">
                 <label for="datepicker1">Начало даты (ДД/ММ/ГГ)</label>
                     <b-form-datepicker
+                    placeholder="дата не выбрана"
                     id="datepicker1"
                     :min="minStartDay"
                     :max="maxStartDay"
@@ -31,6 +32,7 @@
                 <div class="ml-3 date-block">
                 <label for="datepicker2">Конец даты (ДД/ММ/ГГ)</label>
                     <b-form-datepicker
+                    placeholder="дата не выбрана"
                     id="datepicker2"
                     :min="minEndDay"
                     :max="maxEndDay"
@@ -199,8 +201,5 @@ ul,li {
     transition: 0.2s ease-in-out;
     transform: scale(1.02);
     text-decoration: none;
-}
-.filter-title{
-    margin-left: 100px;
 }
 </style>

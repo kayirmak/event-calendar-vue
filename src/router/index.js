@@ -61,6 +61,24 @@ const routes = [
     props: true,
     component: () => import('../views/CardLocation')
   },
+  {
+    path: '/profile',
+    name: 'Profile',
+    props: true,
+    component: () => import('../views/Profile')
+  },
+  {
+    path: '/my-locations',
+    name: 'My-Locations',
+    props: true,
+    component: () => import('../components/MyLocations')
+  },
+  {
+    path: '*',
+    name: 'Error',
+    props: true,
+    component: () => import('../components/404')
+  },
 ]
 
 const router = new VueRouter({
@@ -73,7 +91,11 @@ router.beforeEach((to, from, next) => {
   if(to.name !== 'Login' && to.name !== 'Register' && !isAuth.state.isAuth) {
     next({name: 'Login'})
   }
-  next()
+  else next()
+  if(isAuth.state.isAuth && to.name === 'Login' || isAuth.state.isAuth && to.name === 'Register') {
+    next({name: 'EventsList'})
+  }
+  else next()
 })
 
 export default router

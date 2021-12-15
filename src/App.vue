@@ -20,8 +20,15 @@ export default {
   created() {
     if(localStorage.getItem('apollo-token')) {
       this.$store.dispatch('getCurrentUser')
+      this.$store.dispatch('getAllLocationsByUser')
     }
-  }
+  },
+  // updated() {
+  //   if(localStorage.getItem('apollo-token')) {
+  //     this.$store.dispatch('getCurrentUser')
+  //   }
+  // }
+
 }
 </script>
 

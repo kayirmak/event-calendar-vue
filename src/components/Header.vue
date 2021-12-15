@@ -20,11 +20,15 @@
       </b-navbar-nav>
 
       <b-navbar-nav v-else>
-        <b-nav-item active :to="{name: 'Login'}">
-            Sign In
+        <b-nav-item>
+        <router-link :to="{name: 'Login'}">
+            Войти
+        </router-link>
         </b-nav-item>
-        <b-nav-item active :to="{name: 'Register'}">
-            Sign Up
+        <b-nav-item>
+        <router-link :to="{name: 'Register'}">
+            Зарегистрироваться
+        </router-link>
         </b-nav-item>
       </b-navbar-nav>
 
@@ -37,10 +41,10 @@
             <b-icon icon="person-circle"></b-icon>
             <!-- <em>User</em> -->
           </template>
-           <b-dropdown-item>
+          <b-dropdown-item @click="toProfile">
                     Профиль
             </b-dropdown-item>
-            <b-dropdown-item @click="logoutBtn">
+            <b-dropdown-item @click="logoutBtn" href="#">
                     Выйти
             </b-dropdown-item>
         </b-nav-item-dropdown>
@@ -71,6 +75,9 @@ export default {
       ...mapMutations([
         'clearEventStore'
       ]),
+      toProfile() {
+        this.$router.push({name: 'Profile'})
+      },
       logoutBtn(){
         this.logoutUser()
         .then(() => {

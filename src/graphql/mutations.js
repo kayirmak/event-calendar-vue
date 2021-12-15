@@ -17,6 +17,20 @@ mutation(
   }
 `
 
+export const CHANGE_PASSWORD = gql`
+    mutation($old_password: String!, $new_password: String!, $confirm_password: String!){
+        changePassword(changePassword:{
+        old_password: $old_password
+        new_password: $new_password
+        confirm_password: $confirm_password
+        }){
+        id
+        username
+        email
+        }
+    }
+`
+
 
 export const LOGIN_USER = gql`
 mutation($email: String!, $password: String!) {
