@@ -1,11 +1,29 @@
 <template>
 <div>
-    <div v-if="!MY_EVENTS">
-        <h3>У вас нет мероприятий</h3>
+    <div class="d-flex justify-content-between mt-4" v-if="MY_EVENTS.length == 0">
+        <div class="ml-2">
+            <router-link :to="{}">
+                <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
+            </router-link>
+        </div>
+        <div>
+            <h3>У вас нет мероприятий</h3>
+        </div>
+        <div></div>
     </div>
     <div v-else>
-
-    <ul class="event-list" id="event-id">
+    <div class="d-flex justify-content-between mt-4">
+    <div class="ml-2">
+        <router-link :to="{}">
+            <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
+        </router-link>
+    </div>
+    <div>
+        <h3>Список ваших мероприятий</h3>
+    </div>
+    <div></div>
+    </div>
+    <ul class="event-list mt-5" id="event-id">
                 <li class="event-list__item" v-for="eventItem in MY_EVENTS" :key="eventItem.id">
                     <h4 >{{eventItem.name}}</h4>
                     <div>
@@ -36,7 +54,8 @@ export default {
     methods: {
         ...mapActions([
             'getMyEvents',
-            'getEventDetails'
+            'getEventDetails',
+            'getAllEvents'
         ]),
         toEventDetails(eventItem){
             console.log(eventItem, 'eventitem');

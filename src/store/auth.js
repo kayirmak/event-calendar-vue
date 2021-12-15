@@ -69,7 +69,6 @@ const actions = {
         await apolloClient.query({
           query: GET_CURRENT_USER
         }).then((res) => {
-          console.log(res);
             commit('getCurrentUserSuccess', {...res.data.getInfo, access_token: token})
         })
         

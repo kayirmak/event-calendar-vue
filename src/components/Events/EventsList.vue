@@ -68,39 +68,15 @@
           <h3>Мероприятия не найдены</h3>
       </div>
       <div v-else>
-      <!-- <b-row class="p-4" cols="4">
-        <b-card-group v-for="eventItem in EVENTS" :key="eventItem.id">
-        <b-card
-            :title="eventItem.name"
-            tag="article"
-            style="max-width: 20rem;"
-            class="mb-2 mt-3 ml-1 event-list__item"
-        >
-        <b-card-text>
-            Локация : {{eventItem.location.address}}
-        </b-card-text>
-            <div v-if="!SHOW_BTN_DETAILS">
-                <p>Дата: {{new Date(eventItem.day).toLocaleDateString()}}</p>
-                <p>Организатор: {{eventItem.account.username}}</p>
-            </div>
-            <b-button v-else @click="toEventDetails(eventItem)" variant="primary">
-                Детали мероприятия
-            </b-button>
-        </b-card>
-        </b-card-group>
-      </b-row> -->
       <ul class="event-list" id="event-id">
-                <li class="event-list__item" v-for="eventItem in EVENTS" :key="eventItem.id">
-                    <h4 >{{eventItem.name}}</h4>
+                <li class="event-list__item" v-for="item in EVENTS" :key="item.id">
+                    <h4 >{{item.name}}</h4>
                     <div>
-                        Локация: {{eventItem.location.address}}
+                        Локация: {{item.location.address}}
                         <div class="mt-2">
-                            <p class="mb-1">Дата: {{new Date(eventItem.day).toLocaleDateString()}} </p>
-                            <p>Организатор: {{eventItem.account.username}}</p>     
+                            <p class="mb-1">Дата: {{new Date(item.day).toLocaleDateString()}} </p>
+                            <p>Организатор: {{item.account.username}}</p>     
                         </div>
-                        <!-- <b-button class="mt-3" v-else @click="toEventDetails(eventItem)" variant="primary">
-                            Детали мероприятия
-                        </b-button> -->
                     </div>
                 </li>
             </ul>
@@ -150,7 +126,8 @@ export default {
         },
         ...mapActions([
             'getAllEvents',
-            'getEventDetails'
+            'getEventDetails',
+            'getMyEvents'
         ]),
         filterDateBtn(){
             if(this.filterData.startDay && this.filterData.endDay){
@@ -170,15 +147,7 @@ export default {
         resetFilter(){
             this.filterData = {};
             this.getAllEvents()
-        },
-        //   toEventDetails(eventItem){
-        //     console.log(eventItem);
-        //     this.getEventDetails(eventItem.id)
-        //     .then(() => {
-        //         this.$router.push({name: 'EventDetails', params:{id: eventItem.id, event: eventItem}})
-        //     })
-        //     .catch(error => console.log(error))
-        //   }
+        }
     },
     computed: {
         ...mapGetters([
@@ -188,6 +157,7 @@ export default {
     },
     mounted(){
         this.getAllEvents()
+        console.log(this.EVENTS, 'events mounted');
     }
 }
 </script>

@@ -26,51 +26,53 @@
                     <b-button class="ml-3" variant="primary" @click="editEventBtn">Редактировать мероприятие</b-button>
                 </div>
             </div>
-        <div class="mt-5">
-            <div class="d-flex justify-content-around">
-                <div class="d-flex align-items-center">
+
+        <div class="mt-5 d-flex justify-content-between">
+            <div class="d-flex flex-column ml-5">
+                <div class="d-flex align-items-center mt-3">
                     <div class="align-items-center ">
                         <h3>Название мероприятия: </h3>
                     </div>
-                    <div class="align-items-center ml-2">
+                    <div class="align-items-center ml-2 mt-1">
                     <h4>{{EVENT_DETAILS.name}}</h4>
                     </div>
                 </div>
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center description-details">
                     <div class="align-items-center">
                         <h3>Описание мероприятия: </h3>
                     </div>
-                    <div class="align-items-center ml-2">
+                    <div class="align-items-center ml-2 mt-1">
                     <h4>{{EVENT_DETAILS.description}}</h4>
                     </div>
                 </div>
 
             </div>
-            <div class="d-flex justify-content-between details-info">
-                <div class="align-items-center">
+            <div class="d-flex flex-column">
+                <div class="d-flex flex-column align-items-center">
                     <div class="d-flex align-items-center">
                     <b-icon class="mb-2 mr-2 h4" icon="geo-alt-fill"></b-icon> 
-                    <h3 class="align-items-center">Локация</h3>
+                    <h3 class="align-items-center mt-2">Локация</h3>
                     </div>
-                    <h4>{{EVENT_DETAILS.location.address}}</h4>
+                    <h4 class="mt-2">{{EVENT_DETAILS.location.address}}</h4>
                 </div>
-                <div>
+                <div class="d-flex flex-column align-items-center mt-3">
                     <div class="d-flex align-items-center">
                     <b-icon class="mb-2 mr-2 h4" icon="person-circle"></b-icon>
                     <h3>Организатор</h3>
                     </div>
-                    <h4>{{EVENT_DETAILS.account.username}}</h4>
+                    <h4 class="mt-2">{{EVENT_DETAILS.account.username}}</h4>
                 </div>
-                <div>
+                <div class="d-flex flex-column align-items-center mt-3">
                     <div class="d-flex align-items-center">
                     <b-icon class="mb-2 mr-2 h4" icon="calendar-fill"></b-icon>
                     <h3>Дата проведения</h3>
                     </div>
-                    <h4>{{new Date(EVENT_DETAILS.day).toLocaleDateString()}}</h4>
+                    <h4 class="mt-2">{{new Date(EVENT_DETAILS.day).toLocaleDateString()}}</h4>
                 </div>
             </div>
-
+            <div></div>
         </div>
+
         <b-modal id="modalEdit" ref="modalEdit" centered title="Редактирование мероприятия">
             <p class="mt-2 mb-1">Новый заголовок мероприятия: </p>
             <b-form-input required :placeholder="EVENT_DETAILS.name" v-model="updatedName"></b-form-input>
@@ -86,7 +88,7 @@
             <p class="mt-2 mb-1">Новая дата мероприятия: </p>
             <b-form-datepicker :placeholder="new Date(EVENT_DETAILS.day).toLocaleDateString()" v-model="updatedDay" class="mt-2"></b-form-datepicker>
             <p class="mt-2 mb-1">Новая локация мероприятия: </p>
-            <b-form-input :placeholder="EVENT_DETAILS.location.address" v-model="updatedAddress" class="mt-2"></b-form-input>
+            <b-form-input disabled :placeholder="EVENT_DETAILS.location.address" v-model="updatedAddress" class="mt-2"></b-form-input>
                     <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
                         <b-dropdown-item 
                         v-for="locationItem in locations" 
@@ -159,11 +161,14 @@ export default {
             .then(() => {
                 this.$refs['modalDelete'].hide();
                 this.toastSuccess('success', 'Ваше мероприятие успешно удалено')
+        
             })
             .catch(error => {
                 console.log(error);
                 // this.toastError('danger', error.message.split(':')[1])
             })
+                    console.log(this.EVENTS, 'all events')
+                console.log(this.MY_EVENTS, 'my events');
         },
         editEventBtn(){
             this.$refs['modalEdit'].show()
@@ -201,7 +206,7 @@ export default {
             'EVENT_DETAILS',
             'NOT_FOUND',
             'locations',
-            'ERRORS'
+            'MY_EVENTS'
         ])
     },
     created(){
@@ -220,13 +225,11 @@ export default {
     overflow-x: hidden;
 }
 .description-details{
-    max-width: 300px;
-    max-height: 150px;
-    overflow-x: hidden;
+    margin-top: 120px;
 }
-.details-info{
+/* .details-info{
     margin: 100px 25px 0px 25px
-}
+} */
 .details-title{
     margin-left: 290px;
 }

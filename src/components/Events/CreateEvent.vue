@@ -141,7 +141,8 @@ export default {
                 this.toastSuccess('success', 'Ваше мероприятие успешно добавлено');
                 this.eventData = {};
                 this.selectedAddress = '';
-                this.$router.push({name: 'EventsList'})
+                // this.$router.push({name: 'EventsList'})
+                console.log(this.EVENTS, 'all eve');
             })
             .catch(error => {
                 console.log(error.message, 'error component');
@@ -150,15 +151,6 @@ export default {
             } else {
                 this.toastError('danger', 'Выберите дату или локацию для своего мероприятия');
             }
-        },
-        getEvents(){
-            this.$store.dispatch('getAllEvents')
-            .then(res => {
-                console.log(res);
-            })
-            .catch(error => {
-                console.log(error);
-            })
         },
         resetAll(){
             this.eventData = {}

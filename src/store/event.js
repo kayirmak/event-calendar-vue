@@ -53,9 +53,10 @@ const mutations = {
       state.myEvents = myEvents
     },
     setAddEvent(state, payload){
-      state.events.push(payload)
       state.myEvents.push(payload)
-
+    },
+    setAddMyEvent(state, payload){
+      state.myEvents.push(payload)
     },
     setDeleteEvent(state, id){
       state.eventDetails = null
@@ -124,37 +125,42 @@ const actions = {
       },
 
       async addEvent({commit}, eventObj){
-        const res = await apolloClient.mutate({
+        await apolloClient.mutate({
           mutation: ADD_EVENT,
           variables: {
               name: eventObj.name,
               day: eventObj.day,
               description: eventObj.description,
               location: eventObj.location
-          }
+          },
+          refetchQueries: [
+            {query: GET_ALL_EVENTS},
+            {query: GET_MY_EVENTS}
+          ]
         })
         .then((res) => {
           console.log(res.data.createActivity, 'create event');
           commit('setAddEvent', res.data.createActivity)
+          // commit('setAddMyEvent', res.data.createActivity)
+
         })
       },
 
-      async deleteEvent({commit, dispatch}, id){
+      async deleteEvent({commit}, id){
         await apolloClient.mutate({
           mutation: DELETE_EVENT,
           variables: {
             id: id
           },
           refetchQueries: [
-            {query: GET_ALL_EVENTS}
+            {query: GET_ALL_EVENTS},
+            {query: GET_MY_EVENTS}
           ]
         })
         .then((res) => {
           console.log(id, 'id');
           console.log(res.data, 'res delete');
           commit('setDeleteEvent', res.data.removeActivity.id)
-          dispatch('getMyEvents')
-
           commit('setNotFound', true)
         })
         .catch(error => console.log(error))
