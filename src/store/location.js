@@ -20,7 +20,7 @@ const getters = {
     locationsByUser: state => state.locationsByUser,
     isLoadingBtn: state => state.isLoadingBtn,
     isLoading: state => state.isLoading,
-    error: state => state.error
+    error: state => state.error,
 }
 
 const mutations = {
@@ -39,8 +39,6 @@ const mutations = {
         state.locationsByUser = payload
         state.isLoading = false
     },
-
-
     CREATE_LOCATION_START(state) {
         state.isLoadingBtn = true
     },

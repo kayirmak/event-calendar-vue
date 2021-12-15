@@ -25,7 +25,6 @@
             <b-input v-model="title"></b-input>
         </Modal> -->
 
-
         
         <!-- <b-button
             class="location-add"
@@ -123,11 +122,20 @@ export default {
         if(this.title) this.errors = ''
     },
     methods: {
-        makeToast(variant = null, title) {
-            this.$bvToast.toast(`body `, {
-                title: `${title || 'default'}`,
+         toastError(variant = null, body){
+            this.$bvToast.toast(`${body}`, {
+                title: `Ошибка!`,
                 variant: variant,
                 solid: true,
+                autoHideDelay: 700
+            })
+        },
+        toastSuccess(variant = null, body){
+            this.$bvToast.toast(`${body}`, {
+                title: `Отлично!`,
+                variant: variant,
+                solid: true,
+                autoHideDelay: 700
             })
         },
         getAllLocations() {
@@ -139,7 +147,7 @@ export default {
                 return    
             }
             this.$store.dispatch('createLocation', this.title).then(() => {
-                this.makeToast('success', 'Добавление выполнено')
+                this.toastSuccess('success', 'Добавление выполнено')
                 this.closeModal()
             })
             
@@ -152,19 +160,19 @@ export default {
             this.$store.dispatch('editLocation', {
                 id: locationId, title: this.title
             }).then(() => {
-                    this.makeToast('success', 'Изменение выполнено')
+                    this.toastSuccess('success', 'Изменение выполнено')
                     this.closeModal()
                 }).catch(error => {
-                    this.makeToast('danger', error.message.split(':')[1])
+                    this.toastError('danger', error.message.split(':')[1])
                     this.$store.commit('EDIT_LOCATION_FAILURE')
                 })
         },
         deleteLocation(id) {  
             this.$store.dispatch('deleteLocation', id).then(() => {
-                this.makeToast('success', 'Удаление выполнено')
+                this.toastSuccess('success', 'Удаление выполнено')
             })
             .catch(error => {
-                this.makeToast('danger', error.message.split(':')[1])
+                this.toastError('danger', error.message.split(':')[1])
                 this.$store.commit('DELETE_LOCATION_FAILURE', error.message)
                 console.log(error.message);
             })
@@ -179,8 +187,6 @@ export default {
             this.errors = ''
             this.title = ''
         },
-        
-        
     },
         
     mounted() {
@@ -205,9 +211,11 @@ a {
     margin: 10px;
 }
 .location-list {
-    padding: 0;
+    /* padding: 0; */
     display: flex;
     flex-wrap: wrap;
+    /* justify-content: center; */
+    margin: 0 auto;
 }
 .location-list__item {
     width: 18%;
@@ -216,6 +224,12 @@ a {
     border: 1px solid #ddd;
     border-radius: 5px;
     margin: 10px
+}
+.location-list__item:hover{
+    background: rgb(245, 245, 245);
+    transition: 0.2s ease-in-out;
+    transform: scale(1.02);
+    text-decoration: none;
 }
 .btn-location {
     margin: 5px;

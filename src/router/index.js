@@ -5,7 +5,8 @@ import CreateEvent from '../components/Events/CreateEvent.vue';
 import Login from '../components/Auth/Login.vue';
 import Register from '../components/Auth/Register.vue';
 import EventsList from '../components/Events/EventsList.vue';
-import EventDetails from '../components/Events/EventDetails.vue'
+import MyEvents from '../components/Events/MyEvents.vue';
+import EventDetails from '../components/Events/EventDetails.vue';
 import isAuth from '../store/auth'
 
 Vue.use(VueRouter)
@@ -37,6 +38,11 @@ const routes = [
     path: '/events-list',
     name: 'EventsList',
     component: EventsList
+  },
+  {
+    path: '/my-events',
+    name: 'MyEvents',
+    component: MyEvents
   },
   {
     path: '/event-details/:id?',

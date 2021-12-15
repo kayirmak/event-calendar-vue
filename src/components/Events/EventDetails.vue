@@ -2,7 +2,7 @@
   <div>
         <div class="d-flex justify-content-between mt-3" v-if="!EVENT_DETAILS">
             <div class="ml-2">
-                <router-link :to="{name: 'EventsList'}">
+                <router-link :to="{name: 'MyEvents'}">
                 <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
                 </router-link>
             </div>
@@ -12,76 +12,83 @@
           <div></div>
         </div>
         <div v-else>
-            <div class="d-flex justify-content-between align-items-center p-3">
-                <div>
-                    <router-link :to="{name: 'EventsList'}">
+            <div class="d-flex justify-content-between p-3">
+                <div class="mt-3">
+                    <router-link :to="{name: 'MyEvents'}">
                     <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
                     </router-link>
                 </div>
-                <div class="mt-3">
-                    <h5>Детали мероприятия</h5>
+                <div class="mt-3 details-title">
+                    <h3> Детали мероприятия </h3>
                 </div>
                 <div class="mt-3">
                     <b-button variant="primary" @click="deleteEventBtn">Удалить мероприятие</b-button>
                     <b-button class="ml-3" variant="primary" @click="editEventBtn">Редактировать мероприятие</b-button>
                 </div>
             </div>
-        <div class="d-flex justify-content-around align-items-center">
-            <div class="img-details">
+
+        <div class="mt-5 d-flex justify-content-between">
+            <div class="d-flex flex-column ml-5">
+                <div class="d-flex align-items-center mt-3">
+                    <div class="align-items-center ">
+                        <h3>Название мероприятия: </h3>
+                    </div>
+                    <div class="align-items-center ml-2 mt-1">
+                    <h4>{{EVENT_DETAILS.name}}</h4>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center description-details">
+                    <div class="align-items-center">
+                        <h3>Описание мероприятия: </h3>
+                    </div>
+                    <div class="align-items-center ml-2 mt-1">
+                    <h4>{{EVENT_DETAILS.description}}</h4>
+                    </div>
+                </div>
+
             </div>
-            <div class="d-flex flex-column align-content-center">
-                <div class="mt-5 d-flex justify-content-center name-details">
-                <h4>{{EVENT_DETAILS.name}}</h4>
+            <div class="d-flex flex-column">
+                <div class="d-flex flex-column align-items-center">
+                    <div class="d-flex align-items-center">
+                    <b-icon class="mb-2 mr-2 h4" icon="geo-alt-fill"></b-icon> 
+                    <h3 class="align-items-center mt-2">Локация</h3>
+                    </div>
+                    <h4 class="mt-2">{{EVENT_DETAILS.location.address}}</h4>
                 </div>
-                <div class="description-details">
-                    <p class="mt-2">{{EVENT_DETAILS.description}}</p>
+                <div class="d-flex flex-column align-items-center mt-3">
+                    <div class="d-flex align-items-center">
+                    <b-icon class="mb-2 mr-2 h4" icon="person-circle"></b-icon>
+                    <h3>Организатор</h3>
+                    </div>
+                    <h4 class="mt-2">{{EVENT_DETAILS.account.username}}</h4>
                 </div>
-                <div class="mt-5 d-flex justify-content-center align-items-center">
-                    <div>
-                        <b-icon icon="geo-alt-fill"></b-icon>
+                <div class="d-flex flex-column align-items-center mt-3">
+                    <div class="d-flex align-items-center">
+                    <b-icon class="mb-2 mr-2 h4" icon="calendar-fill"></b-icon>
+                    <h3>Дата проведения</h3>
                     </div>
-                    <div class="ml-3 d-flex flex-column align-items-center">
-                        <h5>Локация</h5>
-                        <h6>{{EVENT_DETAILS.location.address}}</h6>
-                    </div>
-                </div>
-                <div class="mt-4 d-flex justify-content-center align-items-center">
-                    <div>
-                        <b-icon icon="person-circle"></b-icon>
-                    </div>
-                    <div class="ml-3 d-flex flex-column align-items-center">
-                        <h5>Организатор</h5>
-                        <h6>{{EVENT_DETAILS.account.username}}</h6>
-                    </div>
-                </div>
-                <div class="mt-4 d-flex justify-content-center align-items-center">
-                    <div>
-                        <b-icon icon="calendar-fill"></b-icon>
-                    </div>
-                    <div class="ml-3 d-flex flex-column align-items-center">
-                        <h5>Дата проведения</h5>
-                        <h6>{{new Date(EVENT_DETAILS.day).toLocaleDateString()}}</h6>
-                    </div>
+                    <h4 class="mt-2">{{new Date(EVENT_DETAILS.day).toLocaleDateString()}}</h4>
                 </div>
             </div>
             <div></div>
         </div>
+
         <b-modal id="modalEdit" ref="modalEdit" centered title="Редактирование мероприятия">
             <p class="mt-2 mb-1">Новый заголовок мероприятия: </p>
-            <b-form-input required v-model="EVENT_DETAILS.name"></b-form-input>
+            <b-form-input required :placeholder="EVENT_DETAILS.name" v-model="updatedName"></b-form-input>
             <p class="mt-2 mb-1">Новое описание мероприятия: </p>
             <b-form-textarea
                 id="textarea"
-                placeholder="Описание"
                 rows="3"
                 max-rows="6"
-                v-model="EVENT_DETAILS.description"
+                v-model="updatedDescription"
+                :placeholder="EVENT_DETAILS.description"
                 required
             ></b-form-textarea>
             <p class="mt-2 mb-1">Новая дата мероприятия: </p>
-            <b-form-datepicker v-model="EVENT_DETAILS.day" class="mt-2"></b-form-datepicker>
+            <b-form-datepicker :placeholder="new Date(EVENT_DETAILS.day).toLocaleDateString()" v-model="updatedDay" class="mt-2"></b-form-datepicker>
             <p class="mt-2 mb-1">Новая локация мероприятия: </p>
-            <b-form-input placeholder="Новая локация" v-model="updatedAddress" class="mt-2"></b-form-input>
+            <b-form-input disabled :placeholder="EVENT_DETAILS.location.address" v-model="updatedAddress" class="mt-2"></b-form-input>
                     <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
                         <b-dropdown-item 
                         v-for="locationItem in locations" 
@@ -110,19 +117,19 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'EventDetails',
     data(){
         return {
             updatedLocationId: '',
-            updatedAddress: ''
+            updatedAddress: '',
+            updatedName: '',
+            updatedDescription: '',
+            updatedDay: '',
         }
     },
     methods: {
-        ...mapMutations([
-            'setDeleteEvent'
-        ]),
         ...mapActions([
             'editEvent',
             'deleteEvent',
@@ -130,9 +137,17 @@ export default {
             'getEventDetails',
             'getAllEvents'
         ]),
-        makeToast(variant = null, title) {
-            this.$bvToast.toast(`body `, {
-                title: `${title || 'default'}`,
+       toastError(variant = null, body){
+            this.$bvToast.toast(`${body}`, {
+                title: `Ошибка!`,
+                variant: variant,
+                solid: true,
+                autoHideDelay: 700
+            })
+        },
+        toastSuccess(variant = null, body){
+            this.$bvToast.toast(`${body}`, {
+                title: `Отлично!`,
                 variant: variant,
                 solid: true,
                 autoHideDelay: 700
@@ -145,36 +160,39 @@ export default {
             this.deleteEvent(this.EVENT_DETAILS.id)
             .then(() => {
                 this.$refs['modalDelete'].hide();
-                this.makeToast('success', 'Ваше мероприятие успешно удалено')
+                this.toastSuccess('success', 'Ваше мероприятие успешно удалено')
+        
             })
             .catch(error => {
                 console.log(error);
-                // this.makeToast('danger', error.message.split(':')[1])
+                // this.toastError('danger', error.message.split(':')[1])
             })
+                    console.log(this.EVENTS, 'all events')
+                console.log(this.MY_EVENTS, 'my events');
         },
         editEventBtn(){
             this.$refs['modalEdit'].show()
             this.getAllLocations()
         },
         addNewEditedEvent(){
-            if(this.EVENT_DETAILS.name && this.EVENT_DETAILS.description  && this.updatedAddress) { 
+            if(this.updatedName && this.updatedDescription  && this.updatedAddress) { 
             this.$store.dispatch('editEvent', {
-                day: this.EVENT_DETAILS.day,
-                description: this.EVENT_DETAILS.description,
+                day: this.updatedDay,
+                description: this.updatedDescription,
                 id: this.EVENT_DETAILS.id,
                 location: this.updatedLocationId,
-                name: this.EVENT_DETAILS.name
+                name: this.updatedName
             })
             .then(() => {
                 this.$refs['modalEdit'].hide();
-                this.makeToast('success', 'Детали мероприятия были успешно изменены')
+                this.toastSuccess('success', 'Детали мероприятия были успешно изменены')
             })
             .catch(error => {
                 console.log(error);
-                this.makeToast('danger', error.message.split(':')[1])
+                this.toastError('danger', error.message.split(':')[1])
             })
             } else {
-                this.makeToast('danger', 'Заполните поля')
+                this.toastError('danger', 'Заполните поля')
             }
         },
         selectLocationId(id, address){
@@ -188,7 +206,7 @@ export default {
             'EVENT_DETAILS',
             'NOT_FOUND',
             'locations',
-            'ERRORS'
+            'MY_EVENTS'
         ])
     },
     created(){
@@ -207,8 +225,12 @@ export default {
     overflow-x: hidden;
 }
 .description-details{
-    max-width: 300px;
-    max-height: 150px;
-    overflow-x: hidden;
+    margin-top: 120px;
+}
+/* .details-info{
+    margin: 100px 25px 0px 25px
+} */
+.details-title{
+    margin-left: 290px;
 }
 </style>

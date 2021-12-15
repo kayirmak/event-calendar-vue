@@ -1,26 +1,21 @@
 <template>
 <div>
     <b-navbar toggleable="lg" type="dark" variant="success">
-    <b-navbar-brand href="#">EVENTS ONLINE</b-navbar-brand>
-
+    <b-navbar-brand :to="{name: 'EventsList'}">
+      EVENTS ONLINE
+    </b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav v-if="isAuth">
-        <b-nav-item>
-          <router-link :to="{name: 'EventsList'}">
+        <b-nav-item active :to="{name: 'EventsList'}">
               Список мероприятий
-          </router-link>
         </b-nav-item>
-        <b-nav-item>
-          <router-link :to="{name: 'CreateEvent'}">
+        <b-nav-item active :to="{name: 'CreateEvent'}">
               Создать мероприятие
-          </router-link>
         </b-nav-item>
-        <b-nav-item>
-          <router-link :to="{name: 'locations'}">
+        <b-nav-item active :to="{name: 'locations'}">
               Локации
-          </router-link>
         </b-nav-item>
       </b-navbar-nav>
 

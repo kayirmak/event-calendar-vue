@@ -17,7 +17,7 @@ export const GET_CURRENT_USER = gql`
 `
 
 
-export const GET_ALL_EVENTS = gql`
+export const GET_MY_EVENTS = gql`
 query{
     findActByUser{
       id
@@ -35,6 +35,26 @@ query{
     }
   }
 `
+
+export const GET_ALL_EVENTS = gql`
+query{
+  findAllActivities{
+    id
+    name
+    description
+    day
+    location{
+      id
+      address
+    }
+    account{
+      id
+      username
+    }
+  }
+}
+`
+
 export const LOCATIONS = gql`
 query {
     locations{

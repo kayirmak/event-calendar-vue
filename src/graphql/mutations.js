@@ -51,9 +51,9 @@ mutation($name:String!, $description: String!, $day: String!, $location: Float!)
       day: $day,
       location: $location
     }){
-      id,
-      day,
-      name,
+      id
+      day
+      name
       description,
       location{
         id

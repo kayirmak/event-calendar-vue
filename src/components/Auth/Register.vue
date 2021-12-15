@@ -78,14 +78,22 @@ export default {
         }
     },
 	methods: {
-		makeToast(variant = null, title) {
-            this.$bvToast.toast(`body `, {
-                title: `${title || 'default'}`,
+		toastError(variant = null, body){
+            this.$bvToast.toast(`${body}`, {
+                title: `Ошибка!`,
                 variant: variant,
                 solid: true,
                 autoHideDelay: 700
             })
-		},
+        },
+        toastSuccess(variant = null, body){
+            this.$bvToast.toast(`${body}`, {
+                title: `Отлично!`,
+                variant: variant,
+                solid: true,
+                autoHideDelay: 700
+            })
+        },
 		registerForm(){
 			const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 			const checkEmail = regex.test(this.user.email)
@@ -97,15 +105,15 @@ export default {
 			})
 			.then(() => {
 				this.$router.push({name: 'Login'})
-				this.makeToast('success', 'Успешно зарегистрирован')
+				this.toastSuccess('success', 'Успешно зарегистрирован')
 			})
 			.catch(error => {
 				console.log(error, 'error');
-				this.makeToast('danger', error.message.split(':')[1])
+				this.toastError('danger', error.message.split(':')[1])
 
 			})
 			} else {
-				this.makeToast('danger', 'Введите адрес эл.почты корректно')
+				this.toastError('danger', 'Введите адрес эл.почты корректно')
 			}
 
 		}
