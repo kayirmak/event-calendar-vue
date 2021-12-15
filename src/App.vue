@@ -21,7 +21,13 @@ export default {
     if(localStorage.getItem('apollo-token')) {
       this.$store.dispatch('getCurrentUser')
     }
-  }
+  },
+  // updated() {
+  //   if(localStorage.getItem('apollo-token')) {
+  //     this.$store.dispatch('getCurrentUser')
+  //   }
+  // }
+
 }
 </script>
 

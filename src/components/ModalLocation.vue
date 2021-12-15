@@ -65,10 +65,14 @@ export default {
 </script>
 
 <style scoped>
+    * {
+        font-family: Didact Gothic;
+    }
     .close-modal {
         cursor: pointer;
     }
     .errors {
+        font-weight: 600;
         color: red
     }
 </style>

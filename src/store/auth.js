@@ -1,16 +1,18 @@
 import { apolloClient, onLogout } from "../vue-apollo"
-import { REGISTER_USER, LOGIN_USER } from "../graphql/mutations"
+import { REGISTER_USER, LOGIN_USER, CHANGE_PASSWORD } from "../graphql/mutations"
 import { GET_CURRENT_USER } from "../graphql/queries"
 
 
 const state = {
     currentUser: null,
     token: localStorage.getItem('apollo-token') || null,
-    isAuth: localStorage.getItem('apollo-token') ? true : false
+    isAuth: localStorage.getItem('apollo-token') ? true : false,
+    errorsChangePassword: null
 }
 
 const getters = {
     isAuth: state => state.isAuth,
+    errorsChangePassword: state => state.errorsChangePassword,
     USER: state => state.currentUser
 }
 
@@ -28,6 +30,12 @@ const mutations = {
       getCurrentUserSuccess(state, payload) {
         state.currentUser = payload
         state.isAuth = true
+      },
+      changePasswordFailure(state, errors) {
+        state.errorsChangePassword = errors.split(':')[1]
+      },
+      changePasswordClear(state) {
+        state.errorsChangePassword = ''
       },
       setLogoutUser(state, payload){
         state.user = payload
@@ -70,11 +78,23 @@ const actions = {
           query: GET_CURRENT_USER
         }).then((res) => {
           console.log(res);
-            commit('getCurrentUserSuccess', {...res.data.getInfo, access_token: token})
+            commit('getCurrentUserSuccess', {...res.data.profile, access_token: token})
         })
         
 
       },
+
+      async changePassword({commit}, payload) {
+        await apolloClient.mutate({
+          mutation: CHANGE_PASSWORD,
+          variables: {
+            old_password: payload.oldPassword,
+            new_password: payload.newPassword,
+            confirm_password: payload.confirmPassword
+          }
+        })
+      },
+
       logoutUser({commit}){
         onLogout(apolloClient)
         commit('setLogoutUser', null)

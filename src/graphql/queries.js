@@ -3,10 +3,16 @@ import gql from 'graphql-tag'
 
 export const GET_CURRENT_USER = gql`
     query{
-        getInfo{
+        profile{
+            email
             username
-            id
-        }
+            activities{
+              name
+            }
+            locations{
+              address
+            }
+          }
     }
 `
 

@@ -56,6 +56,12 @@ const routes = [
     component: () => import('../views/CardLocation')
   },
   {
+    path: '/profile',
+    name: 'Profile',
+    props: true,
+    component: () => import('../views/Profile')
+  },
+  {
     path: '*',
     name: 'Error',
     props: true,

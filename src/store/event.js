@@ -102,7 +102,7 @@ const actions = {
       },
 
       async addEvent({commit}, eventObj){
-        const res = await apolloClient.mutate({
+        await apolloClient.mutate({
           mutation: ADD_EVENT,
           variables: {
               name: eventObj.name,
