@@ -186,8 +186,6 @@ export default {
             this.errors = ''
             this.title = ''
         },
-        
-        
     },
         
     mounted() {

@@ -62,18 +62,6 @@ query {
   }
 `;
 
-export const GET_MY_LOCATIONS = gql`
-query{
-  locationsByUser{
-    id
-    address
-    account{
-      id
-      username
-    }
-  }
-}
-`
 
 export const GET_EVENT_BY_ID = gql`
 query($id: Int!){
