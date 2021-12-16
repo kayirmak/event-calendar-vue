@@ -10,12 +10,12 @@ import { apolloClient } from "../vue-apollo"
 
 const state = {
     events: [],
+    myEvents: [],
     eventDetails: null,
     eventsFromLocation: [],
     notFound: false,
     showBtnDetails: false,
-    errors: '',
-    myEvents: []
+    errors: ''
 }
 
 const getters = {
@@ -55,9 +55,9 @@ const mutations = {
     setAddEvent(state, payload){
       state.myEvents.push(payload)
     },
-    setAddMyEvent(state, payload){
-      state.myEvents.push(payload)
-    },
+    // setAddMyEvent(state, payload){
+    //   state.myEvents.push(payload)
+    // },
     setDeleteEvent(state, id){
       state.eventDetails = null
       state.events = state.events.filter(item => item.id !== id)
@@ -96,32 +96,33 @@ const mutations = {
 
 const actions = {
 
-      async getAllEvents({commit}){
-        await apolloClient.query({
+      async getAllEvents({commit, dispatch}){
+        const res = await apolloClient.query({
           query: GET_ALL_EVENTS
         })
-        .then((res) => {
+        // .then((res) => {
           console.log(res.data.findAllActivities, 'response');
           commit('setAllEvents', res.data.findAllActivities)
+          dispatch('getMyEvents')
           // commit('setNotFound', false)
-        })
-        .catch((error) => {
-          console.log(error);
-          // commit('setNotFound', true)
-        })
+        // })
+        // .catch((error) => {
+        //   console.log(error);
+        //   // commit('setNotFound', true)
+        // })
       },
 
       async getMyEvents({commit}){
-        await apolloClient.query({
+        const res = await apolloClient.query({
           query: GET_MY_EVENTS
         })
-        .then((res) => {
-          console.log(res.data.findActByUser);
+        // .then((res) => {
+          console.log(res.data.findActByUser , 'myevents');
           commit('setMyEvents', res.data.findActByUser)
-        })
-        .catch(error => {
-          console.log(error);
-        })
+        // })
+        // .catch(error => {
+        //   console.log(error);
+        // })
       },
 
       async addEvent({commit}, eventObj){

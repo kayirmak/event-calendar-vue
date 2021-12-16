@@ -12,10 +12,7 @@
       <div></div>
       </div>
       <div>
-        <div class="d-flex justify-content-start mt-3 filter-title">
-            <p> <b>Фильтрация всех мероприятий по интервалу дат</b> </p>
-        </div>
-          <div class="d-flex justify-content-between align-items-center mb-5 ml-2">
+          <div class="d-flex justify-content-between align-items-center mt-5 mb-5 ml-2">
               <div class="d-flex justify-content-start aling-items-center mr-2">
                 <div class="date-block">
                 <label for="datepicker1">Начало даты (ДД/ММ/ГГ)</label>
@@ -25,7 +22,6 @@
                     :min="minStartDay"
                     :max="maxStartDay"
                     v-model="filterData.startDay"
-                    placeholder="Начало даты"
                     :hide-header="true"
                     ></b-form-datepicker>
                 </div>
@@ -38,7 +34,6 @@
                     :max="maxEndDay"
                     v-model="filterData.endDay"
                     :date-disabled-fn="disabledDate"
-                    placeholder="Конец даты"
                     :hide-header="true"
                     ></b-form-datepicker>
                 </div>
@@ -51,18 +46,18 @@
           <!-- </div> -->
         <!-- <div class="d-flex justify-content-end mr-2"> -->
             <div class="justify-content-end mt-3">
-            <router-link :to="{name: 'locations'}">
+            <!-- <router-link :to="{name: 'My-Locations'}">
             <b-button variant="success">
                 Создать новую локацию
             </b-button>
-            </router-link>
+            </router-link> -->
             <!-- </div>
             <div> -->
-            <router-link :to="{name: 'CreateEvent'}">
+            <!-- <router-link :to="{name: 'CreateEvent'}">
             <b-button class="ml-2 mr-2" variant="success">
                 Создать новое мероприятие
             </b-button>
-            </router-link>
+            </router-link> -->
             </div>
         </div>
       </div>
@@ -77,11 +72,20 @@
                         Локация: {{item.location.address}}
                         <div class="mt-2">
                             <p class="mb-1">Дата: {{new Date(item.day).toLocaleDateString()}} </p>
-                            <p>Организатор: {{item.account.username}}</p>     
+                            <p>Организатор: <b>{{item.account.username}}</b></p>     
                         </div>
                     </div>
                 </li>
             </ul>
+            <!-- <div class="d-flex justify-content-center mt-5">
+                <b-pagination
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="perPage"
+                first-number
+            ></b-pagination>
+            </div> -->
+
       </div>
   </div>
 </template>
@@ -100,7 +104,9 @@ export default {
             minStartDay: '',
             maxStartDay: '',
             minEndDay: '',
-            maxEndDay: ''
+            maxEndDay: '',
+            rows: 10,
+            perPage: 1
         }
     },
     methods: {

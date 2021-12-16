@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Header from './components/Header.vue'
 export default {
   components: {
@@ -17,8 +17,14 @@ export default {
       isAuth: 'isAuth'
     })
   },
+  methods: {
+    ...mapActions([
+      'getMyEvents'
+    ])
+  },
   created() {
     if(localStorage.getItem('apollo-token')) {
+      this.getMyEvents()
       this.$store.dispatch('getCurrentUser')
       this.$store.dispatch('getAllLocationsByUser')
     }

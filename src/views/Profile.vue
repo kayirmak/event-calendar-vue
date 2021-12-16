@@ -45,9 +45,9 @@
 
         <div class="profile-data">
             <div class="profile-data__link">
-                <router-link :to="{name: 'EventsList'}">
+                <router-link :to="{name: 'MyEvents'}">
                     Мои мероприятия
-                    <b-badge variant="primary">{{user.activities.length > 99 ? '99+' : user.activities.length}}</b-badge>
+                    <b-badge variant="primary">{{myEvents.length > 99 ? '99+' : myEvents.length}}</b-badge>
                 </router-link>
             </div>
             <div class="prodile-data__link">
@@ -109,7 +109,8 @@ export default {
             user: 'USER',
             locationsByUser: 'locationsByUser',
             isLoadingBtn: 'isLoadingBtn',
-            errorsChangePassword: 'errorsChangePassword'
+            errorsChangePassword: 'errorsChangePassword',
+            myEvents: 'MY_EVENTS'
         })
     },
     methods: {

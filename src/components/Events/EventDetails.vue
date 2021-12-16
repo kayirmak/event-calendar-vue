@@ -47,7 +47,7 @@
                 </div>
 
             </div>
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column mr-5">
                 <div class="d-flex flex-column align-items-center">
                     <div class="d-flex align-items-center">
                     <b-icon class="mb-2 mr-2 h4" icon="geo-alt-fill"></b-icon> 
@@ -70,7 +70,6 @@
                     <h4 class="mt-2">{{new Date(EVENT_DETAILS.day).toLocaleDateString()}}</h4>
                 </div>
             </div>
-            <div></div>
         </div>
 
         <b-modal id="modalEdit" ref="modalEdit" centered title="Редактирование мероприятия">
