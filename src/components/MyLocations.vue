@@ -39,7 +39,7 @@
         </div>
         
         <div class="location-table"></div>
-        <div>
+        <div class="ml-md-auto">
 
             <div v-if="isLoading" class="spinner">
                 <b-spinner type="grow" label="Spinning"></b-spinner>
@@ -207,7 +207,6 @@ a {
     margin: 15px auto 0;
 }
 .location-list {
-    padding: 0;
     display: flex;
     flex-wrap: wrap;
 }
