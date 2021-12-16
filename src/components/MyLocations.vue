@@ -39,7 +39,7 @@
         </div>
         
         <div class="location-table"></div>
-        <div>
+        <div class="ml-md-auto">
 
             <div v-if="isLoading" class="spinner">
                 <b-spinner type="grow" label="Spinning"></b-spinner>
@@ -129,7 +129,7 @@ export default {
                 title: `${title || 'default'}`,
                 variant: variant,
                 solid: true,
-                autoHideDelay: 700
+                autoHideDelay: 2000
             })
         },
         getAllLocationsByUser() {
@@ -203,11 +203,9 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 95%;
     margin: 15px auto 0;
 }
 .location-list {
-    padding: 0;
     display: flex;
     flex-wrap: wrap;
 }

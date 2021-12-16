@@ -2,11 +2,11 @@
   <div>
       <div class="d-flex mt-2">
         <div class="wrapper text-left">
-            <h5 class="mt-2">Все мероприятия</h5>
+            <h4 class="mt-2">Все мероприятия</h4>
         </div>
       </div>
       <div>
-          <div class="d-flex justify-content-between align-items-center mt-5 mb-5 ml-2">
+          <div class="d-flex wrapper justify-content-between align-items-center mt-3 mb-2">
               <div class="d-flex justify-content-start aling-items-center mr-2">
                 <div class="date-block">
                 <label for="datepicker1">Начало даты (ДД/ММ/ГГ)</label>
