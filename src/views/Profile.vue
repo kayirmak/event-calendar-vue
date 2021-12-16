@@ -76,9 +76,8 @@
 
 
         <div class="profile-card">
-            <div>
-                <img src="" alt="">
-            </div>
+            <h3>Профиль</h3>
+            <p class="data-name grey mb-0 mt-3">Имя пользователя</p> 
             <h4 class="profile-card__name">{{user.username}}</h4>
         </div>
     </div>
@@ -177,7 +176,7 @@ a:hover {
 }
 .profile-card {
     width: 20%;
-    padding: 90px 0;
+    padding: 20px 0;
     box-shadow: 1px 1px 4px rgb(216, 216, 216);
 }
 .profile-details {
