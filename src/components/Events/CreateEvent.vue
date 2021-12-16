@@ -110,7 +110,6 @@ export default {
             selectedAddress: '',
             minDay: '',
             maxDay: '',
-            context: null,
             todayDay: today
 
         }
@@ -139,7 +138,6 @@ export default {
         },
         disabledDate(){
             this.minDay = this.todayDay
-            // console.log(this.todayDay);
         },
         addEventBtn(){
             if(this.eventData.day && this.selectedAddress){

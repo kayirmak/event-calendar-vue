@@ -168,7 +168,7 @@ const actions = {
 
       },
 
-      async editEvent({commit}, eventObj){
+      async editEvent({commit, dispatch}, eventObj){
         await apolloClient.mutate({
           mutation: UPDATE_EVENT,
           variables: {
@@ -177,12 +177,13 @@ const actions = {
               id: eventObj.id,
               location: eventObj.location,
               name: eventObj.name
-          }
+          },
         })
         .then((res) => {
           console.log(res.data.updateActivity, 'res edit');
           commit('setEventDetails', res.data.updateActivity)
           commit('setErrors', null)
+          dispatch('getMyEvents')
         })
       },
 
