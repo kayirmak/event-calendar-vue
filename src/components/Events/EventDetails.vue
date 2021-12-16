@@ -113,27 +113,25 @@
 
         <b-modal id="modalEdit" ref="modalEdit" centered title="Редактирование мероприятия">
             <p class="mt-2 mb-1">Новый заголовок мероприятия: </p>
-            <b-form-input required :placeholder="EVENT_DETAILS.name" v-model="updatedName"></b-form-input>
+            <b-form-input required v-model="EVENT_DETAILS.name"></b-form-input>
             <p class="mt-2 mb-1">Новое описание мероприятия: </p>
             <b-form-textarea
                 id="textarea"
                 rows="3"
                 max-rows="6"
-                v-model="updatedDescription"
-                :placeholder="EVENT_DETAILS.description"
+                v-model="EVENT_DETAILS.description"
                 required
             ></b-form-textarea>
             <p class="mt-2 mb-1">Новая дата мероприятия: </p>
             <b-form-datepicker 
-            :placeholder="new Date(EVENT_DETAILS.day).toLocaleDateString()" 
-            v-model="updatedDay" 
+            v-model="EVENT_DETAILS.day" 
             class="mt-2"
             :min="min"
             :date-disabled-fn="disabledDate"
             >
             </b-form-datepicker>
             <p class="mt-2 mb-1">Новая локация мероприятия: </p>
-            <b-form-input disabled :placeholder="EVENT_DETAILS.location.address" v-model="updatedAddress" class="mt-2"></b-form-input>
+            <b-form-input disabled v-model="updatedAddress" :placeholder="EVENT_DETAILS.location.address" class="mt-2"></b-form-input>
                     <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
                         <b-dropdown-item 
                         v-for="locationItem in locations" 
@@ -225,13 +223,13 @@ export default {
             this.getAllLocations()
         },
         addNewEditedEvent(){
-            if(this.updatedName && this.updatedDescription  && this.updatedAddress && this.updatedDay) { 
+            if(this.EVENT_DETAILS.name && this.EVENT_DETAILS.description  && this.updatedAddress && this.EVENT_DETAILS.day) { 
             this.$store.dispatch('editEvent', {
-                day: this.updatedDay,
-                description: this.updatedDescription,
+                day: this.EVENT_DETAILS.day,
+                description: this.EVENT_DETAILS.description,
                 id: this.EVENT_DETAILS.id,
                 location: this.updatedLocationId,
-                name: this.updatedName
+                name: this.EVENT_DETAILS.name
             })
             .then(() => {
                 this.$refs['modalEdit'].hide();
