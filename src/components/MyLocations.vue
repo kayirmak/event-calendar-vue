@@ -129,7 +129,7 @@ export default {
                 title: `${title || 'default'}`,
                 variant: variant,
                 solid: true,
-                autoHideDelay: 700
+                autoHideDelay: 2000
             })
         },
         getAllLocationsByUser() {
@@ -203,7 +203,6 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 95%;
     margin: 15px auto 0;
 }
 .location-list {

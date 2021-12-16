@@ -13,13 +13,11 @@
         </div>
         <div v-else>
             <div class="d-flex justify-content-between p-3">
-                <div class="mt-3">
+                <div class="mt-3 align-items-center">
                     <router-link :to="{name: 'MyEvents'}">
-                    <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
+                        <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
                     </router-link>
-                </div>
-                <div class="mt-3 details-title">
-                    <h3> Детали мероприятия </h3>
+                    <h4 class="d-inline ml-4"> Детали мероприятия </h4>
                 </div>
                 <div class="mt-3">
                     <b-button variant="primary" @click="deleteEventBtn">Удалить мероприятие</b-button>
@@ -65,52 +63,6 @@
                 </div>
             </div>
 
-
-        <!-- <div class="mt-5 d-flex justify-content-between">
-            <div class="d-flex flex-column ml-5">
-                <div class="d-flex align-items-center mt-3">
-                    <div class="align-items-center ">
-                        <h3>Название мероприятия: </h3>
-                    </div>
-                    <div class="align-items-center ml-2 mt-1">
-                    <h4>{{EVENT_DETAILS.name}}</h4>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center description-details">
-                    <div class="align-items-center">
-                        <h3>Описание мероприятия: </h3>
-                    </div>
-                    <div class="align-items-center ml-2 mt-1">
-                    <h4>{{EVENT_DETAILS.description}}</h4>
-                    </div>
-                </div>
-
-            </div>
-            <div class="d-flex flex-column mr-5">
-                <div class="d-flex flex-column align-items-center">
-                    <div class="d-flex align-items-center">
-                    <b-icon class="mb-2 mr-2 h4" icon="geo-alt-fill"></b-icon> 
-                    <h3 class="align-items-center mt-2">Локация</h3>
-                    </div>
-                    <h4 class="mt-2">{{EVENT_DETAILS.location.address}}</h4>
-                </div>
-                <div class="d-flex flex-column align-items-center mt-3">
-                    <div class="d-flex align-items-center">
-                    <b-icon class="mb-2 mr-2 h4" icon="person-circle"></b-icon>
-                    <h3>Организатор</h3>
-                    </div>
-                    <h4 class="mt-2">{{EVENT_DETAILS.account.username}}</h4>
-                </div>
-                <div class="d-flex flex-column align-items-center mt-3">
-                    <div class="d-flex align-items-center">
-                    <b-icon class="mb-2 mr-2 h4" icon="calendar-fill"></b-icon>
-                    <h3>Дата проведения</h3>
-                    </div>
-                    <h4 class="mt-2">{{new Date(EVENT_DETAILS.day).toLocaleDateString()}}</h4>
-                </div>
-            </div>
-        </div> -->
-
         <b-modal id="modalEdit" ref="modalEdit" centered title="Редактирование мероприятия">
             <p class="mt-2 mb-1">Новый заголовок мероприятия: </p>
             <b-form-input required v-model="EVENT_DETAILS.name"></b-form-input>
@@ -131,7 +83,7 @@
             >
             </b-form-datepicker>
             <p class="mt-2 mb-1">Новая локация мероприятия: </p>
-            <b-form-input disabled v-model="updatedAddress" :placeholder="EVENT_DETAILS.location.address" class="mt-2"></b-form-input>
+            <b-form-input disabled v-model="updatedAddress" placeholder="Выберите локацию" class="mt-2"></b-form-input>
                     <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
                         <b-dropdown-item 
                         v-for="locationItem in locations" 

@@ -3,7 +3,6 @@
         <div class="location-table"></div>
         <div>
             <h5 class="location-table__title wrapper">Все локации</h5>
-
             <div v-if="isLoading" class="spinner">
                 <b-spinner type="grow" label="Spinning"></b-spinner>
                 <b-spinner variant="primary" type="grow" label="Spinning"></b-spinner>
@@ -16,31 +15,6 @@
                     </router-link>
                     <div>
                         <span>Автор: <strong>{{location.account.username}}</strong></span>
-                        <!-- <b-button
-                            variant="success"
-                            class="btn-edit__location btn-no-style"
-                            v-b-modal.modal-prevent-closing @click="showModal('EDIT', location.id)"
-                        >
-                            <i class="fas fa-edit"></i>
-                        </b-button>
-                        
-                        <b-button 
-                            variant="danger"
-                            class="btn-delete__location btn-no-style btn-location"
-                            disabled
-                            v-if="isLoadingBtn === location.id"
-                        >
-                            <b-spinner small type="grow"></b-spinner>
-                            Удаление...
-                        </b-button>
-                        <b-button
-                            variant="danger"
-                            class="btn-delete__location btn-no-style btn-location"
-                            @click="deleteLocation(location.id)"
-                            v-else
-                        >
-                            <i class="fa fa-trash"></i>
-                        </b-button> -->
                     </div>
                 </li>
             </ul>
