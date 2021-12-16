@@ -124,7 +124,14 @@
                 required
             ></b-form-textarea>
             <p class="mt-2 mb-1">Новая дата мероприятия: </p>
-            <b-form-datepicker :placeholder="new Date(EVENT_DETAILS.day).toLocaleDateString()" v-model="updatedDay" class="mt-2"></b-form-datepicker>
+            <b-form-datepicker 
+            :placeholder="new Date(EVENT_DETAILS.day).toLocaleDateString()" 
+            v-model="updatedDay" 
+            class="mt-2"
+            :min="min"
+            :date-disabled-fn="disabledDate"
+            >
+            </b-form-datepicker>
             <p class="mt-2 mb-1">Новая локация мероприятия: </p>
             <b-form-input disabled :placeholder="EVENT_DETAILS.location.address" v-model="updatedAddress" class="mt-2"></b-form-input>
                     <b-dropdown id="dropdown-1" text="Выберите локацию" class="m-md-2">
@@ -159,12 +166,17 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'EventDetails',
     data(){
+        const now = new Date()
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+        
         return {
             updatedLocationId: '',
             updatedAddress: '',
             updatedName: '',
             updatedDescription: '',
             updatedDay: '',
+            min: '',
+            todayDay: today
         }
     },
     methods: {
@@ -205,7 +217,7 @@ export default {
                 console.log(error);
                 // this.toastError('danger', error.message.split(':')[1])
             })
-                    console.log(this.EVENTS, 'all events')
+                console.log(this.EVENTS, 'all events')
                 console.log(this.MY_EVENTS, 'my events');
         },
         editEventBtn(){
@@ -213,7 +225,7 @@ export default {
             this.getAllLocations()
         },
         addNewEditedEvent(){
-            if(this.updatedName && this.updatedDescription  && this.updatedAddress) { 
+            if(this.updatedName && this.updatedDescription  && this.updatedAddress && this.updatedDay) { 
             this.$store.dispatch('editEvent', {
                 day: this.updatedDay,
                 description: this.updatedDescription,
@@ -236,6 +248,9 @@ export default {
         selectLocationId(id, address){
             this.updatedLocationId = id
             this.updatedAddress = address
+        },
+        disabledDate(){
+            this.min = this.todayDay
         }
     },
     computed: {
