@@ -1,43 +1,8 @@
 <template>
     <div class="location">
-        <!-- <Modal 
-            v-if="isVisibleLocation === 'CREATE'"
-            @closeModal="closeModal"
-            @btnMethod="createLocation"
-            btnTitle="Добавить"
-            modalTitle="Добавить местоположение"
-            :errors="errors"
-            :isLoadingBtn="isLoadingBtn"
-        >
-            <b-input v-model="title"></b-input>
-        </Modal> -->
-
-        <!-- <Modal 
-            v-if="isVisibleLocation === 'EDIT'"
-            @closeModal="closeModal"
-            @btnMethod="editLocation"
-            btnTitle="Изменить"
-            modalTitle="Редактировать местоположение"
-            :id="id"
-            :errors="errors"
-            :isLoadingBtn="isLoadingBtn"
-        >
-            <b-input v-model="title"></b-input>
-        </Modal> -->
-
-        
-        <!-- <b-button
-            class="location-add"
-            variant="success"
-            @click="showModal('CREATE')"
-            v-b-modal.modal-prevent-closing
-        >
-            Добавить местоположение
-        </b-button> -->
-
         <div class="location-table"></div>
         <div>
-            <h3 class="location-table__title">Все локации</h3>
+            <h5 class="location-table__title wrapper">Все локации</h5>
 
             <div v-if="isLoading" class="spinner">
                 <b-spinner type="grow" label="Spinning"></b-spinner>
@@ -114,9 +79,6 @@ export default {
             const pagesCount = Math.ceil(this.total / this.limit)
             return [...Array(pagesCount).keys()].map(el => el + 1)
         },
-        // currentPage() {
-        //     return Number(this.$route.query.page || 1)
-        // }
     },
     updated() {
         if(this.title) this.errors = ''
@@ -208,19 +170,16 @@ a {
 }
 .location-table__title {
     text-align: left;
-    margin: 10px;
+    margin: 10px auto;
 }
 .location-list {
-    /* padding: 0; */
     display: flex;
     flex-wrap: wrap;
-    /* justify-content: center; */
     margin: 0 auto;
 }
 .location-list__item {
     width: 18%;
     padding: 20px 0;
-    /* box-shadow: 0 5px 2px rgba(54, 54, 54, 0.377); */
     border: 1px solid #ddd;
     border-radius: 5px;
     margin: 10px

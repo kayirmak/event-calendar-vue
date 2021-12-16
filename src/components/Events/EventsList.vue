@@ -1,15 +1,9 @@
 <template>
   <div>
-      <div class="d-flex justify-content-between mt-2">
-        <div class="ml-2">
-            <router-link :to="{}">
-            <!-- <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon> -->
-            </router-link>
+      <div class="d-flex mt-2">
+        <div class="wrapper text-left">
+            <h5 class="mt-2">Все мероприятия</h5>
         </div>
-        <div>
-            <h3 class="mt-2">Список всех мероприятий</h3>
-        </div>
-      <div></div>
       </div>
       <div>
           <div class="d-flex justify-content-between align-items-center mt-5 mb-5 ml-2">
