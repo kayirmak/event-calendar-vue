@@ -34,7 +34,7 @@
                     </div>
                     <div class="align-items-left text-center">
                         <h5>Описание:</h5>
-                        <h5 class="font-weight-bold">lorem</h5>
+                        <h5 class="font-weight-bold">{{EVENT_DETAILS.description}}</h5>
                     </div>
                 </div>
                 <div class="event-details__body">

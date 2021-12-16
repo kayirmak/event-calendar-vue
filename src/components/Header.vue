@@ -51,6 +51,13 @@
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
+  <b-modal id="modalLogout" ref="modalLogout" centered title="Выйти?">
+            Вы уверены, что хотите выйти?
+                <template slot="modal-footer">
+                <b-button variant="primary" @click="logoutFromModal()" class="mr-1">Выйти</b-button>
+                <b-button variant="secondary" @click="$bvModal.hide('modalLogout')">Отмена</b-button>
+            </template>
+        </b-modal>
 </div>
 </template>
 
@@ -79,9 +86,13 @@ export default {
         this.$router.push({name: 'Profile'})
       },
       logoutBtn(){
+        this.$refs['modalLogout'].show()
+      },
+      logoutFromModal(){
         this.logoutUser()
         .then(() => {
           this.$store.dispatch('clearEventStore', null)
+          this.$refs['modalLogout'].hide()
           this.$router.push({name: 'Login'})
         })
       }
