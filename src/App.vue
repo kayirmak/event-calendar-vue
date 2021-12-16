@@ -47,6 +47,11 @@ export default {
   color: #2c3e50;
 }
 
+.wrapper{
+  width: 90%;
+  margin: 0 auto;
+}
+
 #nav {
   padding: 30px;
 }

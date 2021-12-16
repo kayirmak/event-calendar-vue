@@ -25,8 +25,8 @@
             <b-input v-model="title"></b-input>
         </Modal>
 
-        <div class="location-header">
-            <h3 class="location-table__title">Мои локации</h3>
+        <div class="location-header wrapper">
+            <h5 class="location-table__title">Мои локации</h5>
             <b-button
                 class="location-add"
                 variant="success"

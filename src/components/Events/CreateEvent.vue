@@ -1,11 +1,6 @@
 <template>
 <div>
-    <div class="d-flex justify-content-around align-items-center mt-2">
-    <div class="ml-2">
-        <!-- <router-link :to="{name: 'EventsList'}">
-            <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
-        </router-link> -->
-    </div>
+    <div class="d-flex wrapper justify-content-between align-items-center mt-2">
     <div  class="event-title">
         <h5>Создать новое мероприятие</h5>
     </div>
@@ -194,9 +189,4 @@ export default {
 .form-block{
     width: 450px;
 }
-.event-title{
-    margin-left: 285px;
-    margin-top: 20px;
-}
-
 </style>

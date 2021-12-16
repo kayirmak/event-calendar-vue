@@ -12,14 +12,9 @@
         <div></div>
     </div>
     <div v-else>
-    <div class="d-flex justify-content-between mt-4">
-    <!-- <div class="ml-2"> -->
-        <!-- <router-link :to="{}">
-            <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
-        </router-link> -->
-    <!-- </div> -->
+    <div class="d-flex justify-content-between mt-4 wrapper">
     <div class="ml-2">
-        <h3>Мои мероприятия</h3>
+        <h5>Мои мероприятия</h5>
     </div>
     <div>
         <router-link :to="{name: 'CreateEvent'}">
@@ -29,7 +24,7 @@
         </router-link>
     </div>
     </div>
-    <ul class="event-list mt-5" id="event-id">
+    <ul class="event-list " id="event-id">
                 <li class="event-list__item" v-for="eventItem in MY_EVENTS" :key="eventItem.id">
                     <h4 >{{eventItem.name}}</h4>
                     <div>
