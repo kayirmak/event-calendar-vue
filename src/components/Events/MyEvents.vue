@@ -2,9 +2,9 @@
 <div>
     <div class="d-flex justify-content-between mt-4" v-if="MY_EVENTS.length == 0">
         <div class="ml-2">
-            <router-link :to="{}">
+            <!-- <router-link :to="{}">
                 <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
-            </router-link>
+            </router-link> -->
         </div>
         <div>
             <h3>У вас нет мероприятий</h3>
@@ -13,15 +13,21 @@
     </div>
     <div v-else>
     <div class="d-flex justify-content-between mt-4">
-    <div class="ml-2">
-        <router-link :to="{}">
+    <!-- <div class="ml-2"> -->
+        <!-- <router-link :to="{}">
             <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
-        </router-link>
+        </router-link> -->
+    <!-- </div> -->
+    <div class="ml-2">
+        <h3>Мои мероприятия</h3>
     </div>
     <div>
-        <h3>Список ваших мероприятий</h3>
+        <router-link :to="{name: 'CreateEvent'}">
+        <b-button class="ml-2 mr-2" variant="success">
+            Создать новое мероприятие
+        </b-button>
+        </router-link>
     </div>
-    <div></div>
     </div>
     <ul class="event-list mt-5" id="event-id">
                 <li class="event-list__item" v-for="eventItem in MY_EVENTS" :key="eventItem.id">
@@ -64,11 +70,14 @@ export default {
                 this.$router.push({name: 'EventDetails', params:{id: eventItem.id, event: eventItem}})
             })
             .catch(error => console.log(error))
+        },
+        getMyEvents(){
+            this.$store.dispatch('getMyEvents')
         }
     },
-    mounted(){
-        this.getMyEvents()
-    }
+    // mounted(){
+    //     this.getMyEvents()
+    // }
 }
 </script>
 

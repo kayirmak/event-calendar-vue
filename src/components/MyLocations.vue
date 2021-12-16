@@ -129,6 +129,7 @@ export default {
                 title: `${title || 'default'}`,
                 variant: variant,
                 solid: true,
+                autoHideDelay: 700
             })
         },
         getAllLocationsByUser() {

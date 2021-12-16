@@ -35,7 +35,7 @@ query{
     }
   }
 `
-
+// 
 export const GET_ALL_EVENTS = gql`
 query{
   findAllActivities{
@@ -53,7 +53,27 @@ query{
     }
   }
 }
-`
+` 
+
+// query all events with pagination
+// export const GET_ALL_EVENTS = gql`
+// query($skip: Int!, $take: Int!){
+//   findAllActivities(skip: $skip, take: $take){
+//     id
+//     name
+//     description
+//     day
+//     location{
+//       id
+//       address
+//     }
+//     account{
+//       id
+//       username
+//     }
+//   }
+// }
+// `
 
 export const LOCATIONS = gql`
 query {

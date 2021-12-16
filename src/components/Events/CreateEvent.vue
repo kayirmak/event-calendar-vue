@@ -2,9 +2,9 @@
 <div>
     <div class="d-flex justify-content-around align-items-center mt-2">
     <div class="ml-2">
-        <router-link :to="{name: 'EventsList'}">
+        <!-- <router-link :to="{name: 'EventsList'}">
             <b-icon icon="arrow-left-circle-fill" font-scale="2"></b-icon>
-        </router-link>
+        </router-link> -->
     </div>
     <div  class="event-title">
         <h5>Создать новое мероприятие</h5>
@@ -66,6 +66,9 @@
             v-model="eventData.day" 
             class="mb-2"
             :hide-header="true"
+            :date-disabled-fn="disabledDate"
+            :min="minDay"
+            :max="maxDay"
             placeholder="Выберите дату для вашего мероприятия"
             >
             </b-form-datepicker>
@@ -95,6 +98,8 @@ import {mapActions, mapGetters} from 'vuex'
 export default {
     name: "CreateEvent",
     data(){
+        const now = new Date()
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
         return {
             eventData: {
                 name: '',
@@ -104,7 +109,10 @@ export default {
             },
             selectedAddress: '',
             minDay: '',
-            maxDay: ''
+            maxDay: '',
+            context: null,
+            todayDay: today
+
         }
     },
     methods: {
@@ -129,6 +137,10 @@ export default {
                 autoHideDelay: 700
             })
         },
+        disabledDate(){
+            this.minDay = this.todayDay
+            // console.log(this.todayDay);
+        },
         addEventBtn(){
             if(this.eventData.day && this.selectedAddress){
             this.$store.dispatch('addEvent',{
@@ -141,7 +153,7 @@ export default {
                 this.toastSuccess('success', 'Ваше мероприятие успешно добавлено');
                 this.eventData = {};
                 this.selectedAddress = '';
-                // this.$router.push({name: 'EventsList'})
+                this.$router.push({name: 'MyEvents'})
                 console.log(this.EVENTS, 'all eve');
             })
             .catch(error => {
@@ -158,6 +170,13 @@ export default {
         selectLocationId(id, address) {
             this.eventData.locationId = id
             this.selectedAddress = address
+        },
+        onContext(ctx){
+            this.context = ctx
+            console.log(this.context);
+        },
+        onChange(ctx){
+            console.log(ctx);
         }
     },
     computed: {
