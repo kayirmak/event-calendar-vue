@@ -27,7 +27,46 @@
                 </div>
             </div>
 
-        <div class="mt-5 d-flex justify-content-between">
+            <div class="event-details">
+                <div class="event-details__header">
+                    <div class="align-items-center text-center">
+                        <h4>Мероприятие: <strong>{{EVENT_DETAILS.name}}</strong></h4>
+                    </div>
+                    <div class="align-items-left text-center">
+                        <h5>Описание:</h5>
+                        <h5 class="font-weight-bold">lorem</h5>
+                    </div>
+                </div>
+                <div class="event-details__body">
+                     <div class="d-flex flex-column align-items-center mt-3">
+                        <div class="d-flex align-items-center">
+                            <b-icon class="mb-2 mr-2 h4 mt-2" icon="geo-alt-fill"></b-icon> 
+                            <h5 class="align-items-center mt-2">Место проведения</h5>
+                        </div>
+                        <h4 class="mt-2 font-weight-bold">{{EVENT_DETAILS.location.address}}</h4>
+                    </div>
+
+                    <div class="d-flex flex-column align-items-center mt-3">
+                        <div class="d-flex align-items-center">
+                            <b-icon class="mb-2 mr-2 h4 mt-2" icon="person-circle"></b-icon>
+                            <h5 class="align-items-center mt-2">Организатор</h5>
+                        </div>
+                        <h4 class="mt-2 font-weight-bold">{{EVENT_DETAILS.account.username}}</h4>
+                    </div>
+
+                    <div class="d-flex flex-column align-items-center mt-3">
+                        <div class="d-flex align-items-center">
+                            <b-icon class="mb-2 mr-2 h4 mt-2" icon="calendar-fill"></b-icon>
+                            <h5 class="align-items-center mt-2">Дата проведения</h5>
+                        </div>
+                        <h4 class="mt-2 font-weight-bold">{{new Date(EVENT_DETAILS.day).toLocaleDateString()}}</h4>
+                    </div>
+
+                </div>
+            </div>
+
+
+        <!-- <div class="mt-5 d-flex justify-content-between">
             <div class="d-flex flex-column ml-5">
                 <div class="d-flex align-items-center mt-3">
                     <div class="align-items-center ">
@@ -70,7 +109,7 @@
                     <h4 class="mt-2">{{new Date(EVENT_DETAILS.day).toLocaleDateString()}}</h4>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <b-modal id="modalEdit" ref="modalEdit" centered title="Редактирование мероприятия">
             <p class="mt-2 mb-1">Новый заголовок мероприятия: </p>
@@ -231,5 +270,20 @@ export default {
 } */
 .details-title{
     margin-left: 290px;
+}
+.event-details{
+    width: 90%;
+    text-align: left;
+    margin: 0 auto;
+    box-shadow: 1px 1px 4px rgb(216, 216, 216) ;
+    padding: 60px
+}
+.event-details__body{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+.font-weight-bold{
+    font-weight: 600;
 }
 </style>
